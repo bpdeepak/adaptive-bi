@@ -1,3 +1,4 @@
+# ai_service/app/services/data_processor.py
 from datetime import datetime, timedelta
 import pandas as pd
 from app.config import settings
@@ -13,14 +14,14 @@ class DataProcessor:
         self._db = db
         self._sync_db = sync_db # For synchronous operations if needed
 
-        if not self._db and not self._sync_db:
+        if self._db is None and self._sync_db is None:
             raise ValueError("Either an async or a sync database connection must be provided.")
 
     def _get_db_client(self):
         """Returns the appropriate database client based on context."""
-        if self._db:
+        if self._db is not None:
             return self._db
-        elif self._sync_db:
+        elif self._sync_db is not None:
             return self._sync_db
         else:
             raise RuntimeError("No database client available.")
@@ -35,11 +36,10 @@ class DataProcessor:
         logger.info(f"Fetching transaction data from {start_date.strftime('%Y-%m-%d')} to {end_date.strftime('%Y-%m-%d')}")
 
         try:
-            # Use async db client
             transactions_cursor = self._get_db_client().transactions.find(
-                {"timestamp": {"$gte": start_date, "$lte": end_date}}
+                {"transactionDate": {"$gte": start_date, "$lte": end_date}}
             )
-            transactions_list = await transactions_cursor.to_list(length=None) # Fetch all documents
+            transactions_list = await transactions_cursor.to_list(length=None)
 
             if not transactions_list:
                 logger.warning(f"No transaction data found for the last {days} days.")
@@ -47,9 +47,23 @@ class DataProcessor:
 
             df = pd.DataFrame(transactions_list)
 
-            # Convert timestamp to datetime and sort
-            df['timestamp'] = pd.to_datetime(df['timestamp'])
-            df = df.sort_values('timestamp').reset_index(drop=True)
+            # Ensure 'transactionDate' is datetime and then rename to 'timestamp'
+            df['transactionDate'] = pd.to_datetime(df['transactionDate'])
+            df = df.sort_values('transactionDate').reset_index(drop=True)
+            df.rename(columns={'transactionDate': 'timestamp'}, inplace=True) # Renamed for consistency with feature engineering
+
+            # IMPORTANT: Rename 'totalPrice' to 'totalAmount' for consistency with models
+            if 'totalPrice' in df.columns:
+                df.rename(columns={'totalPrice': 'totalAmount'}, inplace=True)
+                # Ensure 'totalAmount' is numeric
+                df['totalAmount'] = pd.to_numeric(df['totalAmount'], errors='coerce').fillna(0)
+            else:
+                logger.warning("Column 'totalPrice' not found in transactions data. Forecasting model may fail.")
+                df['totalAmount'] = 0.0 # Provide a default if column missing
+
+            # Ensure 'quantity' is numeric for anomaly detection and other uses
+            if 'quantity' in df.columns:
+                df['quantity'] = pd.to_numeric(df['quantity'], errors='coerce').fillna(0)
 
             logger.info(f"Fetched {len(df)} transactions.")
             return df
@@ -69,32 +83,45 @@ class DataProcessor:
         logger.info(f"Fetching user behavior data (activities and feedback) from {start_date.strftime('%Y-%m-%d')} to {end_date.strftime('%Y-%m-%d')}")
 
         try:
-            # Fetch user activities (using correct collection name 'user_activities')
             activities_cursor = self._get_db_client().user_activities.find(
                 {"timestamp": {"$gte": start_date, "$lte": end_date}}
             )
             activities_list = await activities_cursor.to_list(length=None)
             activities_df = pd.DataFrame(activities_list)
 
-            # Fetch feedback (using correct collection name 'feedback')
             feedback_cursor = self._get_db_client().feedback.find(
-                {"timestamp": {"$gte": start_date, "$lte": end_date}}
+                {"feedbackDate": {"$gte": start_date, "$lte": end_date}}
             )
             feedback_list = await feedback_cursor.to_list(length=None)
             feedback_df = pd.DataFrame(feedback_list)
 
-            if not activities_list and not feedback_list:
+            if not activities_df.empty:
+                activities_df['timestamp'] = pd.to_datetime(activities_df['timestamp'])
+                activities_df['source_collection'] = 'user_activities'
+            else:
+                logger.warning(f"No user activities data found for the last {days} days.")
+
+            if not feedback_df.empty:
+                feedback_df['feedbackDate'] = pd.to_datetime(feedback_df['feedbackDate'])
+                feedback_df.rename(columns={'feedbackDate': 'timestamp'}, inplace=True)
+                feedback_df['source_collection'] = 'feedback'
+            else:
+                logger.warning(f"No feedback data found for the last {days} days.")
+
+            dataframes_to_concat = []
+            if not activities_df.empty:
+                dataframes_to_concat.append(activities_df)
+            if not feedback_df.empty:
+                dataframes_to_concat.append(feedback_df)
+
+            if not dataframes_to_concat:
                 logger.warning(f"No user activity or feedback data found for the last {days} days.")
                 return pd.DataFrame()
 
-            # Combine and process
-            combined_df = pd.concat([activities_df, feedback_df], ignore_index=True)
+            combined_df = pd.concat(dataframes_to_concat, ignore_index=True)
             if not combined_df.empty:
-                combined_df['timestamp'] = pd.to_datetime(combined_df['timestamp'])
                 combined_df = combined_df.sort_values('timestamp').reset_index(drop=True)
-            else:
-                return pd.DataFrame()
-
+            
             logger.info(f"Fetched {len(activities_df)} activities and {len(feedback_df)} feedback entries.")
             return combined_df
 
@@ -132,7 +159,12 @@ class DataProcessor:
             logger.warning("Input DataFrame is empty for time series preparation.")
             return pd.DataFrame()
 
-        df_ts = df.set_index('timestamp').resample(freq)[value_col].sum().fillna(0).to_frame()
+        # Ensure 'timestamp' is the index and is a DatetimeIndex
+        df_ts = df.set_index('timestamp')
+        df_ts.index = pd.to_datetime(df_ts.index)
+
+        # Resample and sum, then fill NaNs from resampling with 0
+        df_ts = df_ts.resample(freq)[value_col].sum().fillna(0).to_frame()
         df_ts.columns = [value_col]
         df_ts = df_ts.reset_index()
         logger.info(f"Prepared time series data with frequency '{freq}' for '{value_col}'. Rows: {len(df_ts)}")

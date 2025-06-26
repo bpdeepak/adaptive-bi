@@ -38,7 +38,6 @@ class ModelManager:
         Initializes and loads/trains all models. Called once at application startup.
         """
         logger.info("Initializing AI models...")
-        # CORRECTED LINE: Check if async db object is not None
         self.db_connected = get_database() is not None
 
         # Initialize model instances
@@ -68,20 +67,20 @@ class ModelManager:
         """
         Orchestrates the training of all machine learning models.
         """
+        # Ensure db_connected is true *before* proceeding
         if not self.db_connected:
             logger.error("Cannot train models: MongoDB connection not established.")
             return
 
         logger.info("Starting full model retraining process...")
 
-        # Ensure sync DB connection for DataProcessor if async is not passed directly
         try:
-            # Use async db for data processor within FastAPI context
             data_processor = DataProcessor(db=get_database())
 
             # Train Forecasting Model
             logger.info("Training Forecasting Model...")
             transactions_df = await data_processor.get_transactions_data()
+            # Pass 'totalAmount' here as it's now consistently named in the DataFrame from data_processor
             daily_sales_df = data_processor.prepare_time_series_data(transactions_df, 'totalAmount', freq='D')
             if not daily_sales_df.empty:
                 forecast_result = self.forecasting_model.train(daily_sales_df, target_col='totalAmount')
@@ -91,15 +90,14 @@ class ModelManager:
 
             # Train Anomaly Detection Model
             logger.info("Training Anomaly Detection Model...")
-            # For anomaly detection, we can use transaction total amount or user activity features
-            anomaly_df = await data_processor.get_transactions_data() # Example: using transactions for anomalies
+            anomaly_df = await data_processor.get_transactions_data()
             if not anomaly_df.empty:
-                anomaly_features = ['totalAmount', 'quantity'] # Example features for anomaly
+                # Use 'totalAmount' here
+                anomaly_features = ['totalAmount', 'quantity']
                 # Ensure numerical columns for anomaly detection
                 anomaly_df['totalAmount'] = pd.to_numeric(anomaly_df['totalAmount'], errors='coerce').fillna(0)
                 anomaly_df['quantity'] = pd.to_numeric(anomaly_df['quantity'], errors='coerce').fillna(0)
                 
-                # Check if selected features are in the DataFrame and are numerical
                 valid_anomaly_features = [f for f in anomaly_features if f in anomaly_df.columns and pd.api.types.is_numeric_dtype(anomaly_df[f])]
                 if not valid_anomaly_features:
                     logger.warning(f"No valid numeric features for anomaly detection training. Available numeric features: {[c for c in anomaly_df.columns if pd.api.types.is_numeric_dtype(anomaly_df[c])]}")
@@ -122,14 +120,14 @@ class ModelManager:
 
         except Exception as e:
             logger.error(f"Error during full model retraining: {e}", exc_info=True)
-            self.models_loaded = False # Mark models as not fully loaded on error
+            self.models_loaded = False
 
     async def schedule_retraining(self):
         """
         Schedules periodic retraining of all models.
         """
         while True:
-            await asyncio.sleep(settings.RETRAIN_INTERVAL_HOURS * 3600) # Convert hours to seconds
+            await asyncio.sleep(settings.RETRAIN_INTERVAL_HOURS * 3600)
             logger.info(f"Initiating scheduled retraining (every {settings.RETRAIN_INTERVAL_HOURS} hours)...")
             await self.train_all_models()
             if self.models_loaded:
@@ -137,5 +135,4 @@ class ModelManager:
             else:
                 logger.error("Scheduled retraining encountered issues.")
 
-# Create a singleton instance of ModelManager
 model_manager = ModelManager()

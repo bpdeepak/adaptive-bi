@@ -5,11 +5,11 @@ from app.config import settings
 from app.utils.logger import logger
 
 # Async MongoDB client for FastAPI
-client: motor.motor_asyncio.AsyncIOMotorClient = None
+client = None
 db = None
 
 # Synchronous MongoDB client for model training scripts (if needed outside FastAPI context)
-sync_client: MongoClient = None
+sync_client = None
 sync_db = None
 
 async def connect_to_database():
@@ -25,10 +25,6 @@ async def connect_to_database():
         logger.info(f"Successfully connected to MongoDB at {settings.MONGODB_URL.split('@')[-1]}")
     except ConnectionFailure as e:
         logger.error(f"MongoDB connection failed (ConnectionFailure): {e}")
-        # Optionally re-raise or exit if DB is critical for startup
-        raise
-    except ServerSelectionTimeoutError as e:
-        logger.error(f"MongoDB server selection timed out: {e}")
         # Optionally re-raise or exit if DB is critical for startup
         raise
     except Exception as e:
@@ -64,9 +60,6 @@ def connect_to_sync_database():
     except ConnectionFailure as e:
         logger.error(f"Synchronous MongoDB connection failed (ConnectionFailure): {e}")
         raise
-    except ServerSelectionTimeoutError as e:
-        logger.error(f"Synchronous MongoDB server selection timed out: {e}")
-        raise
     except Exception as e:
         logger.error(f"An unexpected error occurred during synchronous MongoDB connection: {e}")
         raise
@@ -93,7 +86,7 @@ if __name__ == "__main__":
     async def test_async_db():
         try:
             await connect_to_database()
-            if db:
+            if db is not None:
                 logger.info("Async DB connection test successful.")
                 collections = await db.list_collection_names()
                 logger.info(f"Collections: {collections}")

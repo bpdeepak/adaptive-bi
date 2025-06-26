@@ -1,3 +1,4 @@
+# ai_service/app/main.py
 from contextlib import asynccontextmanager
 from fastapi import FastAPI, Depends, HTTPException, status
 from fastapi.middleware.cors import CORSMiddleware
@@ -7,6 +8,18 @@ from app.utils.logger import logger
 from app.api.routes import forecast, anomaly, recommend, health # Import routers
 from app.models.model_manager import model_manager, ModelManager
 import asyncio
+from apscheduler.schedulers.asyncio import AsyncIOScheduler # Import APScheduler
+from apscheduler.triggers.interval import IntervalTrigger # Import IntervalTrigger
+
+# Define the periodic task function
+async def periodic_model_retraining():
+    logger.info("Starting scheduled model retraining...")
+    try:
+        await model_manager.train_all_models()
+        logger.info("Scheduled model retraining completed successfully.")
+    except Exception as e:
+        logger.error(f"Error during scheduled model retraining: {e}", exc_info=True)
+
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
@@ -21,15 +34,28 @@ async def lifespan(app: FastAPI):
 
     # Initialize and potentially train models
     try:
-        # Load models at startup, or train if not found/retrain needed
-        # We'll use a separate task for retraining if needed after startup
         await model_manager.initialize_models()
         logger.info("AI models initialized successfully.")
 
-        # Schedule periodic retraining in the background
-        if settings.RETRAIN_INTERVAL_HOURS > 0:
-            logger.info(f"Scheduling model retraining every {settings.RETRAIN_INTERVAL_HOURS} hours.")
-            asyncio.create_task(model_manager.schedule_retraining())
+        # Schedule periodic retraining using APScheduler
+        if settings.MODEL_RETRAIN_INTERVAL_MINUTES > 0:
+            scheduler = AsyncIOScheduler()
+            
+            # Convert minutes to seconds for IntervalTrigger
+            retrain_interval_seconds = settings.MODEL_RETRAIN_INTERVAL_MINUTES * 60
+            
+            scheduler.add_job(
+                periodic_model_retraining,
+                IntervalTrigger(seconds=retrain_interval_seconds),
+                id='model_retraining_job',
+                name='Model Retraining Task',
+                replace_existing=True # Ensures only one job runs if lifespan is called multiple times
+            )
+            scheduler.start()
+            logger.info(f"Model retraining scheduled every {settings.MODEL_RETRAIN_INTERVAL_MINUTES} minutes.")
+            
+            # Store scheduler in app state for graceful shutdown
+            app.state.scheduler = scheduler
 
     except Exception as e:
         logger.error(f"Failed to initialize AI models: {e}", exc_info=True)
@@ -41,6 +67,13 @@ async def lifespan(app: FastAPI):
 
     # Shutdown events
     logger.info("AI Service shutting down...")
+    
+    # Shut down APScheduler gracefully
+    if hasattr(app.state, 'scheduler') and app.state.scheduler.running:
+        logger.info("Shutting down APScheduler...")
+        app.state.scheduler.shutdown()
+        logger.info("APScheduler shut down.")
+        
     await close_database_connection()
     logger.info("AI Service shut down complete.")
 
@@ -49,7 +82,7 @@ app = FastAPI(
     title=settings.APP_NAME,
     version=settings.APP_VERSION,
     debug=settings.DEBUG,
-    lifespan=lifespan,
+    lifespan=lifespan, # Assign the lifespan context manager
     description="FastAPI based AI microservice for Adaptive Business Intelligence. Provides forecasting, anomaly detection, and recommendation capabilities."
 )
 
@@ -96,7 +129,8 @@ async def get_service_status(manager: ModelManager = Depends(get_model_manager))
         "forecasting_model_trained": manager.forecasting_model.is_trained if manager.forecasting_model else False,
         "anomaly_model_trained": manager.anomaly_model.is_trained if manager.anomaly_model else False,
         "recommendation_model_trained": manager.recommendation_model.is_trained if manager.recommendation_model else False,
-        "last_retrain_time": manager.last_retrain_time.isoformat() if manager.last_retrain_time else "N/A"
+        "last_retrain_time": manager.last_retrain_time.isoformat() if manager.last_retrain_time else "N/A",
+        "retrain_interval_minutes": settings.MODEL_RETRAIN_INTERVAL_MINUTES
     }
 
 if __name__ == "__main__":

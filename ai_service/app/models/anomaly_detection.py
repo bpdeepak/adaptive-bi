@@ -1,5 +1,4 @@
 import pandas as pd
-import numpy as np
 from sklearn.ensemble import IsolationForest
 from sklearn.svm import OneClassSVM
 import joblib
@@ -49,25 +48,36 @@ class AnomalyDetectionModel:
         X = df[features]
 
         # Scale features (important for distance-based algorithms like SVM)
+        # Scale features (important for distance-based algorithms like SVM)
         X_scaled = self.feature_engineer.scale_features(X, features, scaler_type='MinMaxScaler', fit=True)
         # Store original feature names for prediction consistency
         self._trained_features = X_scaled.columns.tolist()
 
         self._initialize_model()
         logger.info(f"Starting training for {self.model_type} model with {len(X_scaled)} samples and {len(features)} features.")
+        if self.model is None:
+            logger.error("Model is not initialized. Cannot fit.")
+            return {"status": "failed", "message": "Model initialization failed."}
         self.model.fit(X_scaled)
-
         # No traditional "metrics" for unsupervised anomaly detection,
-        # but we can infer some statistics like the number of outliers detected on training data
-        # For IsolationForest, -1 indicates outlier, 1 indicates inlier
         if self.model_type == "IsolationForest":
-            predictions = self.model.predict(X_scaled)
-            n_outliers = list(predictions).count(-1)
-            outlier_percentage = (n_outliers / len(predictions)) * 100 if len(predictions) > 0 else 0
-            self.metrics = {"outliers_in_training_data": n_outliers, "outlier_percentage": f"{outlier_percentage:.2f}%"}
+            if self.model is not None:
+                predictions = self.model.predict(X_scaled)
+                n_outliers = list(predictions).count(-1)
+                outlier_percentage = (n_outliers / len(predictions)) * 100 if len(predictions) > 0 else 0
+                self.metrics = {"outliers_in_training_data": n_outliers, "outlier_percentage": f"{outlier_percentage:.2f}%"}
+            else:
+                logger.error("Model is None during prediction.")
+                self.metrics = {}
         elif self.model_type == "OneClassSVM":
-            predictions = self.model.predict(X_scaled)
-            n_outliers = list(predictions).count(-1)
+            if self.model is not None:
+                predictions = self.model.predict(X_scaled)
+                n_outliers = list(predictions).count(-1)
+                outlier_percentage = (n_outliers / len(predictions)) * 100 if len(predictions) > 0 else 0
+                self.metrics = {"outliers_in_training_data": n_outliers, "outlier_percentage": f"{outlier_percentage:.2f}%"}
+            else:
+                logger.error("Model is None during prediction.")
+                self.metrics = {}
             outlier_percentage = (n_outliers / len(predictions)) * 100 if len(predictions) > 0 else 0
             self.metrics = {"outliers_in_training_data": n_outliers, "outlier_percentage": f"{outlier_percentage:.2f}%"}
 
@@ -116,15 +126,16 @@ class AnomalyDetectionModel:
 
         logger.info(f"Detected anomalies for {len(df)} samples.")
         return df
-
-    def get_anomaly_details(self, df: pd.DataFrame, anomaly_features: list) -> list:
-        """
-        Extracts details for detected anomalies.
-        """
-        anomalies_df = df[df['is_anomaly'] == True]
-        if anomalies_df.empty:
-            return []
-
+        for _, row in anomalies_df.iterrows():
+            timestamp_value = row.get('timestamp')
+            detail = {
+                "id": str(row.get('_id')), # Assuming _id exists and can be converted to str
+                "timestamp": timestamp_value.isoformat() if timestamp_value is not None and hasattr(timestamp_value, "isoformat") else None,
+                "anomaly_score": float(row['anomaly_score']),
+                "features": {feat: row[feat] for feat in anomaly_features if feat in row}
+            }
+            details.append(detail)
+        return details
         details = []
         for index, row in anomalies_df.iterrows():
             detail = {

@@ -1,10 +1,10 @@
 import pandas as pd
 import numpy as np
 from scipy.sparse import csr_matrix
-from sklearn.metrics.pairwise import cosine_similarity
 from sklearn.decomposition import TruncatedSVD
 import joblib
 import os
+from typing import Optional
 from app.config import settings
 from app.utils.logger import logger
 from app.services.data_processor import DataProcessor
@@ -61,7 +61,7 @@ class RecommendationModel:
         self.save_model()
         return {"status": "success", "message": "Recommendation model trained successfully."}
 
-    def _get_popular_recommendations(self, num_recommendations: int = 10, product_data: pd.DataFrame = None):
+    def _get_popular_recommendations(self, num_recommendations: int = 10, product_data: Optional[pd.DataFrame] = None):
         """
         Provides general popular recommendations (e.g., for cold-start users).
         """
@@ -80,7 +80,7 @@ class RecommendationModel:
         logger.warning("No user-item matrix available to determine popularity. Returning empty list.")
         return []
 
-    async def get_user_recommendations(self, user_id: str, num_recommendations: int = 10, product_data: pd.DataFrame = None):
+    async def get_user_recommendations(self, user_id: str, num_recommendations: int = 10, product_data: Optional[pd.DataFrame] = None):
         """
         Generates personalized product recommendations for a given user.
         """
@@ -109,7 +109,14 @@ class RecommendationModel:
             recommendations_series = user_predicted_ratings.drop(user_interacted_items, errors='ignore')
 
             # Sort and get top N recommendations
-            top_recommendations = recommendations_series.sort_values(ascending=False).head(num_recommendations).index.tolist()
+            if isinstance(recommendations_series, pd.Series):
+                top_recommendations = recommendations_series.sort_values(ascending=False).head(num_recommendations).index.tolist()
+            else:
+                # Convert to Series if not already
+                # If recommendations_series is a DataFrame, select the first row as a Series
+                if isinstance(recommendations_series, pd.DataFrame):
+                    recommendations_series = recommendations_series.iloc[0]
+                top_recommendations = recommendations_series.sort_values(ascending=False).head(num_recommendations).index.tolist()
         else:
             logger.warning(f"Recommendation type {self.model_type} not fully implemented for prediction logic. Returning popular.")
             return self._get_popular_recommendations(num_recommendations, product_data)

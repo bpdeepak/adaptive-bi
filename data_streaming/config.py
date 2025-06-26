@@ -1,45 +1,62 @@
 # adaptive-bi-system/data_streaming/config.py
+
 import os
 from dotenv import load_dotenv
 
-# Load environment variables from .env file
-load_dotenv()
+load_dotenv() # Load environment variables from .env file
 
 class Config:
     """
     Configuration settings for the data streaming service.
     Loads values from environment variables defined in .env.
     """
-    MONGO_USERNAME = os.getenv('MONGO_USERNAME', 'admin')
-    MONGO_PASSWORD = os.getenv('MONGO_PASSWORD', 'admin123')
-    MONGO_HOST = os.getenv('MONGO_HOST', 'localhost') # Use 'mongodb' if running in Docker network
-    MONGO_PORT = int(os.getenv('MONGO_PORT', 27017))
-    MONGO_DB_NAME = os.getenv('MONGO_DB_NAME', 'adaptive_bi')
+    # MongoDB Connection Details (consistent with docker-compose.yml for host/port)
+    MONGO_USERNAME: str = os.getenv('MONGO_USERNAME', 'admin')
+    MONGO_PASSWORD: str = os.getenv('MONGO_PASSWORD', 'admin123')
+    # Use 'mongodb' for Docker internal communication, 'localhost' for host-based execution
+    MONGO_HOST: str = os.getenv('MONGO_HOST', 'mongodb')
+    MONGO_PORT: int = int(os.getenv('MONGO_PORT', 27017))
+    MONGO_DB_NAME: str = os.getenv('MONGO_DB_NAME', 'adaptive_bi')
     
-    # Construct MONGO_URI based on whether it's a Docker internal call or external
-    # If MONGO_HOST is 'mongodb' (docker service name), it implies internal Docker communication
-    if MONGO_HOST == 'mongodb':
-        MONGO_URI = f"mongodb://{MONGO_USERNAME}:{MONGO_PASSWORD}@{MONGO_HOST}:{MONGO_PORT}/{MONGO_DB_NAME}?authSource=admin"
-    else: # Assume localhost or external IP
-        MONGO_URI = f"mongodb://{MONGO_USERNAME}:{MONGO_PASSWORD}@{MONGO_HOST}:{MONGO_PORT}/{MONGO_DB_NAME}?authSource=admin"
+    # Construct MONGO_URI from components for clarity
+    MONGO_URI: str = f"mongodb://{MONGO_USERNAME}:{MONGO_PASSWORD}@{MONGO_HOST}:{MONGO_PORT}/{MONGO_DB_NAME}?authSource=admin"
 
-    STREAM_INTERVAL_SECONDS = float(os.getenv('STREAM_INTERVAL_SECONDS', 0.5))
+    # --- Initial Data Population Settings ---
+    # These numbers determine the initial size of the user and product pools.
+    NUM_INITIAL_USERS: int = int(os.getenv("NUM_INITIAL_USERS", 5000)) # Increased for more users
+    NUM_INITIAL_PRODUCTS: int = int(os.getenv("NUM_INITIAL_PRODUCTS", 1000)) # Increased for more products
 
-    # Data generation parameters
-    NUM_INITIAL_USERS = int(os.getenv('NUM_INITIAL_USERS', 100))
-    NUM_INITIAL_PRODUCTS = int(os.getenv('NUM_INITIAL_PRODUCTS', 50))
-    MAX_TRANSACTIONS_PER_STREAM = int(os.getenv('MAX_TRANSACTIONS_PER_STREAM', 10))
-    MAX_FEEDBACK_PER_STREAM = int(os.getenv('MAX_FEEDBACK_PER_STREAM', 3))
-    NEW_USER_PROBABILITY = float(os.getenv('NEW_USER_PROBABILITY', 0.05)) # 5% chance
-    NEW_PRODUCT_PROBABILITY = float(os.getenv('NEW_PRODUCT_PROBABILITY', 0.02)) # 2% chance
+    # --- Streaming Velocity Control (Records per unit of time) ---
+    # These define the AVERAGE rate of generation.
+    # Adjust these values to control the overall data velocity.
+    STREAMING_VELOCITY_CONFIG = {
+        "transactions_per_second": int(os.getenv("TRANSACTIONS_PER_SECOND", 100)), # E.g., 100 transactions per second
+        "user_activities_per_second": int(os.getenv("USER_ACTIVITIES_PER_SECOND", 250)), # E.g., 250 user activities per second
+        "feedback_per_minute": int(os.getenv("FEEDBACK_PER_MINUTE", 15)), # E.g., 15 feedback entries per minute
+        "new_user_probability_per_batch": float(os.getenv("NEW_USER_PROBABILITY_PER_BATCH", 0.0005)), # Probability of adding a new user per generation cycle
+        "new_product_probability_per_batch": float(os.getenv("NEW_PRODUCT_PROBABILITY_PER_BATCH", 0.0002)), # Probability of adding a new product per generation cycle
+    }
+    
+    # Batch size for inserting data into MongoDB
+    # Larger batches are generally more efficient for high velocity.
+    INSERT_BATCH_SIZE: int = int(os.getenv("INSERT_BATCH_SIZE", 1000))
+
+    # How often to print streaming statistics (in seconds)
+    REPORTING_INTERVAL_SECONDS: int = int(os.getenv("REPORTING_INTERVAL_SECONDS", 10))
+
 
 # Instantiate config
 config = Config()
 
 if __name__ == "__main__":
-    print("--- Current Configuration ---")
-    print(f"MONGO_URI: {config.MONGO_URI}")
-    print(f"STREAM_INTERVAL_SECONDS: {config.STREAM_INTERVAL_SECONDS}")
-    print(f"NUM_INITIAL_USERS: {config.NUM_INITIAL_USERS}")
-    print(f"NUM_INITIAL_PRODUCTS: {config.NUM_INITIAL_PRODUCTS}")
-    print("-----------------------------")
+    print("--- Streaming Config ---")
+    print(f"MongoDB URI: {config.MONGO_URI.split('@')[-1] if '@' in config.MONGO_URI else config.MONGO_URI}")
+    print(f"DB Name: {config.MONGO_DB_NAME}")
+    print(f"Initial Users: {config.NUM_INITIAL_USERS}")
+    print(f"Initial Products: {config.NUM_INITIAL_PRODUCTS}")
+    print("\n--- Velocity Settings ---")
+    for k, v in config.STREAMING_VELOCITY_CONFIG.items():
+        print(f"  {k}: {v}")
+    print(f"Insert Batch Size: {config.INSERT_BATCH_SIZE}")
+    print(f"Reporting Interval: {config.REPORTING_INTERVAL_SECONDS} seconds")
+    print("------------------------")

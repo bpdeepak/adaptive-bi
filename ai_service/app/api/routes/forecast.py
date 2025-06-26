@@ -20,6 +20,7 @@ async def train_forecasting_model(
     try:
         data_processor = DataProcessor(db=db)
         transactions_df = await data_processor.get_transactions_data()
+        # Ensure 'totalAmount' is used here
         daily_sales_df = data_processor.prepare_time_series_data(transactions_df, 'totalAmount', freq='D')
 
         if daily_sales_df.empty:
@@ -51,7 +52,11 @@ async def get_sales_forecast(
     try:
         data_processor = DataProcessor(db=db)
         # Fetch recent historical data to generate features for forecasting
-        historical_transactions_df = await data_processor.get_transactions_data(days=model_manager.forecasting_model.feature_engineer.create_lag_features.__defaults__[1][-1] + 30) # Enough days for lags + some buffer
+        # The number of days here should ideally cover the largest lag + rolling window needed.
+        # Max lag is 14 days, max rolling window is 14 days, so need at least 28 days of history.
+        # Add a buffer for safety, e.g., 60 days.
+        historical_transactions_df = await data_processor.get_transactions_data(days=60) # Sufficient history
+        # Ensure 'totalAmount' is used here
         historical_daily_sales_df = data_processor.prepare_time_series_data(historical_transactions_df, 'totalAmount', freq='D')
 
         if historical_daily_sales_df.empty:
@@ -60,13 +65,14 @@ async def get_sales_forecast(
         forecast_df = model_manager.forecasting_model.forecast_future(
             historical_daily_sales_df,
             horizon=horizon,
-            target_col='totalAmount'
+            target_col='totalAmount' # Ensure 'totalAmount' is used
         )
         
         if forecast_df.empty:
             raise HTTPException(status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, detail="Failed to generate forecast, resulting DataFrame is empty.")
 
         # Format output
+        # Ensure 'totalAmount' is renamed to 'predicted_sales' for output clarity
         forecast_data = forecast_df.rename(columns={'timestamp': 'date', 'totalAmount': 'predicted_sales'}).to_dict(orient='records')
         # Convert datetime objects to ISO format strings
         for item in forecast_data:

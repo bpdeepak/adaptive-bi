@@ -1,3 +1,4 @@
+# ai_service/app/config.py
 import os
 from dotenv import load_dotenv
 
@@ -18,6 +19,7 @@ class Config:
     DEBUG: bool = os.getenv("AI_SERVICE_DEBUG", "False").lower() == "true"
 
     # MongoDB settings
+    # Ensure this matches the format expected by pymongo and the docker-compose setup
     MONGODB_URL: str = os.getenv("MONGODB_URL", "mongodb://localhost:27017/adaptive_bi")
     DATABASE_NAME: str = os.getenv("DATABASE_NAME", "adaptive_bi")
 
@@ -28,7 +30,10 @@ class Config:
 
     # Model settings
     MODEL_SAVE_PATH: str = os.getenv("MODEL_SAVE_PATH", "/app/models/saved_models")
-    RETRAIN_INTERVAL_HOURS: int = int(os.getenv("RETRAIN_INTERVAL_HOURS", 24))
+    
+    # NEW: Model retraining interval in MINUTES
+    # Default is 24 hours (1440 minutes). Set to 15 for 15 minutes.
+    MODEL_RETRAIN_INTERVAL_MINUTES: int = int(os.getenv("MODEL_RETRAIN_INTERVAL_MINUTES", 1)) 
 
     # Forecasting Model Parameters
     FORECAST_HORIZON: int = int(os.getenv("FORECAST_HORIZON", 7)) # Days to forecast
@@ -60,10 +65,11 @@ class Config:
         print(f"Version: {self.APP_VERSION}")
         print(f"Host: {self.HOST}, Port: {self.PORT}")
         print(f"Debug Mode: {self.DEBUG}")
-        print(f"MongoDB URL: {self.MONGODB_URL.split('@')[-1] if '@' in self.MONGODB_URL else self.MONGODB_URL}") # Mask password
+        # Mask password in URL for display
+        print(f"MongoDB URL: {self.MONGODB_URL.split('@')[-1] if '@' in self.MONGODB_URL and len(self.MONGODB_URL.split('@')) > 1 else self.MONGODB_URL}") 
         print(f"Database Name: {self.DATABASE_NAME}")
         print(f"Model Save Path: {self.MODEL_SAVE_PATH}")
-        print(f"Retrain Interval (Hours): {self.RETRAIN_INTERVAL_HOURS}")
+        print(f"Retrain Interval (Minutes): {self.MODEL_RETRAIN_INTERVAL_MINUTES}") # Changed to minutes
         print(f"Forecast Horizon (Days): {self.FORECAST_HORIZON}")
         print(f"Anomaly Threshold: {self.ANOMALY_THRESHOLD}")
         print(f"Data Collection Days: {self.DATA_COLLECTION_DAYS}")

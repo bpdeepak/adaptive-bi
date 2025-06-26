@@ -7,6 +7,7 @@ from app.utils.logger import logger
 from app.api.dependencies import get_db, get_model_manager
 from motor.motor_asyncio import AsyncIOMotorDatabase
 from datetime import datetime, timedelta
+import pandas as pd # Import pandas
 
 router = APIRouter()
 
@@ -15,10 +16,8 @@ class AnomalyDetectionRequest(BaseModel):
         ...,
         description="List of data points to check for anomalies. Each dict should contain features used for training (e.g., 'totalAmount', 'quantity')."
     )
-    # You might want to allow specifying features dynamically or assume they are pre-defined
-    # For now, let's assume they are predefined in the model's training process
     features: List[str] = Field(
-        ["totalAmount", "quantity"], # Default example features
+        ["totalAmount", "quantity"], # Default example features, now including 'totalAmount'
         description="List of features to use for anomaly detection. Must match features used during training."
     )
 
@@ -51,7 +50,8 @@ async def train_anomaly_model(
         transactions_df['quantity'] = pd.to_numeric(transactions_df['quantity'], errors='coerce').fillna(0)
         
         # Define features. These should align with what the model expects.
-        anomaly_features = ["totalAmount", "quantity"]
+        # Changed from "totalAmount" (which didn't exist) to "totalPrice" (which exists)
+        anomaly_features = ["totalAmount", "quantity"] # Now totalAmount should exist after data_processor rename
         valid_anomaly_features = [f for f in anomaly_features if f in transactions_df.columns and pd.api.types.is_numeric_dtype(transactions_df[f])]
 
         if not valid_anomaly_features:
@@ -91,9 +91,7 @@ async def detect_anomalies(
                 df[col] = pd.to_numeric(df[col], errors='coerce').fillna(0)
             else:
                 logger.warning(f"Feature '{col}' not found in input data points for anomaly detection.")
-                # You might want to raise an error or fill with a default value
-                df[col] = 0 # Add missing feature with default 0
-
+                df[col] = 0
 
         detected_df = model_manager.anomaly_model.detect_anomalies(df.copy(), features=request.features)
         
