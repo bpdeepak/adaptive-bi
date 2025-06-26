@@ -1,0 +1,19 @@
+[32m2025-06-26 15:27:27.039[0m | [1mINFO    [0m | [36mapp.main[0m:[36mlifespan[0m:[36m16[0m - [1mAI Service starting up...[0m
+[32m2025-06-26 15:27:27.049[0m | [1mINFO    [0m | [36mapp.database[0m:[36mconnect_to_database[0m:[36m25[0m - [1mSuccessfully connected to MongoDB at mongodb:27017/adaptive_bi?authSource=admin[0m
+[32m2025-06-26 15:27:27.049[0m | [1mINFO    [0m | [36mapp.models.model_manager[0m:[36minitialize_models[0m:[36m39[0m - [1mInitializing AI models...[0m
+[32m2025-06-26 15:27:27.049[0m | [31m[1mERROR   [0m | [36mapp.main[0m:[36mlifespan[0m:[36m35[0m - [31m[1mFailed to initialize AI models: Database objects do not implement truth value testing or bool(). Please compare with None instead: database is not None[0m
+[32m2025-06-26 15:44:39.276[0m | [1mINFO    [0m | [36mapp.main[0m:[36mlifespan[0m:[36m43[0m - [1mAI Service shutting down...[0m
+[32m2025-06-26 15:44:39.278[0m | [1mINFO    [0m | [36mapp.database[0m:[36mclose_database_connection[0m:[36m45[0m - [1mMongoDB connection closed.[0m
+[32m2025-06-26 15:44:39.279[0m | [1mINFO    [0m | [36mapp.main[0m:[36mlifespan[0m:[36m45[0m - [1mAI Service shut down complete.[0m
+[32m2025-06-26 15:45:47.686[0m | [1mINFO    [0m | [36mapp.main[0m:[36mlifespan[0m:[36m16[0m - [1mAI Service starting up...[0m
+[32m2025-06-26 15:45:47.698[0m | [1mINFO    [0m | [36mapp.database[0m:[36mconnect_to_database[0m:[36m25[0m - [1mSuccessfully connected to MongoDB at mongodb:27017/adaptive_bi?authSource=admin[0m
+[32m2025-06-26 15:45:47.698[0m | [1mINFO    [0m | [36mapp.models.model_manager[0m:[36minitialize_models[0m:[36m40[0m - [1mInitializing AI models...[0m
+[32m2025-06-26 15:45:47.698[0m | [33m[1mWARNING [0m | [36mapp.models.forecasting[0m:[36mload_model[0m:[36m223[0m - [33m[1mForecasting model not found at /app/models/saved_models/forecasting_model_RandomForestRegressor.joblib. Model needs to be trained.[0m
+[32m2025-06-26 15:45:47.698[0m | [33m[1mWARNING [0m | [36mapp.models.anomaly_detection[0m:[36mload_model[0m:[36m169[0m - [33m[1mAnomaly detection model not found at /app/models/saved_models/anomaly_model_IsolationForest.joblib. Model needs to be trained.[0m
+[32m2025-06-26 15:45:47.698[0m | [33m[1mWARNING [0m | [36mapp.models.recommendation[0m:[36mload_model[0m:[36m160[0m - [33m[1mRecommendation model not found at /app/models/saved_models/recommendation_model_SVD.joblib. Model needs to be trained.[0m
+[32m2025-06-26 15:45:47.698[0m | [33m[1mWARNING [0m | [36mapp.models.model_manager[0m:[36minitialize_models[0m:[36m58[0m - [33m[1mOne or more models not found or failed to load. Initiating initial training.[0m
+[32m2025-06-26 15:45:47.698[0m | [1mINFO    [0m | [36mapp.models.model_manager[0m:[36mtrain_all_models[0m:[36m75[0m - [1mStarting full model retraining process...[0m
+[32m2025-06-26 15:45:47.699[0m | [31m[1mERROR   [0m | [36mapp.models.model_manager[0m:[36mtrain_all_models[0m:[36m124[0m - [31m[1mError during full model retraining: Database objects do not implement truth value testing or bool(). Please compare with None instead: database is not None[0m
+[32m2025-06-26 15:45:47.699[0m | [31m[1mERROR   [0m | [36mapp.models.model_manager[0m:[36minitialize_models[0m:[36m65[0m - [31m[1mNot all models are trained/ready after initialization phase.[0m
+[32m2025-06-26 15:45:47.699[0m | [1mINFO    [0m | [36mapp.main[0m:[36mlifespan[0m:[36m27[0m - [1mAI models initialized successfully.[0m
+[32m2025-06-26 15:45:47.699[0m | [1mINFO    [0m | [36mapp.main[0m:[36mlifespan[0m:[36m31[0m - [1mScheduling model retraining every 24 hours.[0m

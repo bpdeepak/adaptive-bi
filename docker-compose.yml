@@ -1,0 +1,68 @@
+# adaptive-bi-system/docker-compose.yml
+version: '3.8'
+
+services:
+  mongodb:
+    image: mongo:6.0 # Using MongoDB 6.0 as specified in the provided docker-compose.yml
+    container_name: adaptive-bi-mongodb
+    restart: always
+    ports:
+      - "27017:27017" # Maps host port 27017 to container port 27017
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: admin # MongoDB root username
+      MONGO_INITDB_ROOT_PASSWORD: admin123 # MongoDB root password
+      MONGO_INITDB_DATABASE: adaptive_bi # Default database to initialize
+    volumes:
+      - mongodb_data:/data/db # Persistent volume for MongoDB data
+      - ./data_streaming/init-mongo.js:/docker-entrypoint-initdb.d/init-mongo.js:ro # Init script
+    networks:
+      - adaptive-bi-network # Custom network for inter-service communication
+
+  backend:
+    build: ./backend
+    container_name: adaptive-bi-backend
+    restart: always
+    ports:
+      - "3000:3000" # Maps host port 3000 to container port 3000
+    environment:
+      # These environment variables will be passed into the backend container
+      NODE_ENV: development
+      BACKEND_PORT: 3000 # Your server.js uses BACKEND_PORT
+      MONGO_URI: mongodb://admin:admin123@mongodb:27017/adaptive_bi?authSource=admin # Docker internal URI
+      JWT_SECRET: a_very_secret_key_for_jwt_development_only_123456
+      JWT_EXPIRES_IN: 1h
+      FRONTEND_URL: http://localhost:5173 # As used in your server.js for Socket.IO CORS
+    depends_on:
+      - mongodb
+    volumes:
+      - ./backend:/app # Mount the backend code into the container for live updates during development
+      - /app/node_modules # Exclude node_modules from host bind mount to prevent issues
+    networks:
+      - adaptive-bi-network # Connects to the same network as MongoDB
+  
+  ai_service:
+    build: ./ai_service
+    container_name: adaptive-bi-ai-service
+    restart: always
+    ports:
+      - "8000:8000" # Expose AI service port
+    environment:
+      MONGODB_URL: mongodb://admin:admin123@mongodb:27017/adaptive_bi?authSource=admin
+      DATABASE_NAME: adaptive_bi
+      MODEL_SAVE_PATH: /app/models/saved_models
+      JWT_SECRET: a_very_secret_key_for_jwt_development_only_123456 # Keep consistent with backend for potential shared secrets
+      # Add other AI-specific environment variables as needed
+    depends_on:
+      - mongodb
+    volumes:
+      - ./ai_service:/app
+      - ./ai_service/models/saved_models:/app/models/saved_models # Persistent storage for models
+    networks:
+      - adaptive-bi-network
+
+volumes:
+  mongodb_data: # Define the named volume
+
+networks:
+  adaptive-bi-network: # Define the custom network
+    driver: bridge

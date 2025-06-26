@@ -1,0 +1,4 @@
+# adaptive-bi-system/data_streaming/requirements.txt
+pymongo==4.7.1
+Faker==25.0.0 # For generating realistic synthetic data
+python-dotenv==1.0.1 # To load environment variables from .env
