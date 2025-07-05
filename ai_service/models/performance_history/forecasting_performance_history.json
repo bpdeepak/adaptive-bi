@@ -1,85 +1,5 @@
 [
   {
-    "timestamp": "2025-07-05T06:56:41.491149",
-    "model_name": "forecasting",
-    "metrics": {
-      "rmse": 2063.2120364727475,
-      "r2_score": 0.08944182883111584,
-      "trained_on_samples": 144,
-      "evaluated_on_samples": 37
-    },
-    "additional_info": {
-      "trained_on_samples": 144,
-      "evaluated_on_samples": 37,
-      "data_days": 181,
-      "model_type": "RandomForestRegressor"
-    }
-  },
-  {
-    "timestamp": "2025-07-05T06:58:41.535491",
-    "model_name": "forecasting",
-    "metrics": {
-      "rmse": 2468.84890054526,
-      "r2_score": 0.10306069397987117,
-      "trained_on_samples": 144,
-      "evaluated_on_samples": 37
-    },
-    "additional_info": {
-      "trained_on_samples": 144,
-      "evaluated_on_samples": 37,
-      "data_days": 181,
-      "model_type": "RandomForestRegressor"
-    }
-  },
-  {
-    "timestamp": "2025-07-05T07:00:41.476080",
-    "model_name": "forecasting",
-    "metrics": {
-      "rmse": 2408.684792735807,
-      "r2_score": -0.12317485419093299,
-      "trained_on_samples": 144,
-      "evaluated_on_samples": 37
-    },
-    "additional_info": {
-      "trained_on_samples": 144,
-      "evaluated_on_samples": 37,
-      "data_days": 181,
-      "model_type": "RandomForestRegressor"
-    }
-  },
-  {
-    "timestamp": "2025-07-05T07:02:41.492537",
-    "model_name": "forecasting",
-    "metrics": {
-      "rmse": 2589.404079024897,
-      "r2_score": 0.13629706550035992,
-      "trained_on_samples": 144,
-      "evaluated_on_samples": 37
-    },
-    "additional_info": {
-      "trained_on_samples": 144,
-      "evaluated_on_samples": 37,
-      "data_days": 181,
-      "model_type": "RandomForestRegressor"
-    }
-  },
-  {
-    "timestamp": "2025-07-05T07:04:41.202035",
-    "model_name": "forecasting",
-    "metrics": {
-      "rmse": 2452.0877137437483,
-      "r2_score": 0.046022120221923646,
-      "trained_on_samples": 144,
-      "evaluated_on_samples": 37
-    },
-    "additional_info": {
-      "trained_on_samples": 144,
-      "evaluated_on_samples": 37,
-      "data_days": 181,
-      "model_type": "RandomForestRegressor"
-    }
-  },
-  {
     "timestamp": "2025-07-05T07:06:41.385563",
     "model_name": "forecasting",
     "metrics": {
@@ -789,6 +709,86 @@
     "metrics": {
       "rmse": 2809.8282357254297,
       "r2_score": 0.07790881153764928,
+      "trained_on_samples": 144,
+      "evaluated_on_samples": 37
+    },
+    "additional_info": {
+      "trained_on_samples": 144,
+      "evaluated_on_samples": 37,
+      "data_days": 181,
+      "model_type": "RandomForestRegressor"
+    }
+  },
+  {
+    "timestamp": "2025-07-05T12:59:20.992764",
+    "model_name": "forecasting",
+    "metrics": {
+      "rmse": 3000.4907292826524,
+      "r2_score": -0.14556072083501936,
+      "trained_on_samples": 144,
+      "evaluated_on_samples": 37
+    },
+    "additional_info": {
+      "trained_on_samples": 144,
+      "evaluated_on_samples": 37,
+      "data_days": 181,
+      "model_type": "RandomForestRegressor"
+    }
+  },
+  {
+    "timestamp": "2025-07-05T13:40:23.788898",
+    "model_name": "forecasting",
+    "metrics": {
+      "rmse": 2208.5400677868843,
+      "r2_score": -0.5321469903520744,
+      "trained_on_samples": 144,
+      "evaluated_on_samples": 37
+    },
+    "additional_info": {
+      "trained_on_samples": 144,
+      "evaluated_on_samples": 37,
+      "data_days": 181,
+      "model_type": "RandomForestRegressor"
+    }
+  },
+  {
+    "timestamp": "2025-07-05T14:01:57.244566",
+    "model_name": "forecasting",
+    "metrics": {
+      "rmse": 2760.1768576594045,
+      "r2_score": -0.12674125418510118,
+      "trained_on_samples": 144,
+      "evaluated_on_samples": 37
+    },
+    "additional_info": {
+      "trained_on_samples": 144,
+      "evaluated_on_samples": 37,
+      "data_days": 181,
+      "model_type": "RandomForestRegressor"
+    }
+  },
+  {
+    "timestamp": "2025-07-05T14:16:57.183830",
+    "model_name": "forecasting",
+    "metrics": {
+      "rmse": 2295.9058253809303,
+      "r2_score": -0.08917382486002334,
+      "trained_on_samples": 144,
+      "evaluated_on_samples": 37
+    },
+    "additional_info": {
+      "trained_on_samples": 144,
+      "evaluated_on_samples": 37,
+      "data_days": 181,
+      "model_type": "RandomForestRegressor"
+    }
+  },
+  {
+    "timestamp": "2025-07-05T14:31:56.888889",
+    "model_name": "forecasting",
+    "metrics": {
+      "rmse": 1551.7422630127196,
+      "r2_score": 0.0917426008033011,
       "trained_on_samples": 144,
       "evaluated_on_samples": 37
     },

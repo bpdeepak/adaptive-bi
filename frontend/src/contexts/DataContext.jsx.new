@@ -55,11 +55,11 @@ export const DataProvider = ({ children }) => {
   const loadAllData = useCallback(async () => {
     // Prevent multiple simultaneous loads
     if (isLoadingRef.current) {
-      console.log('� Data loading already in progress, skipping...');
+      console.log('🔄 Data loading already in progress, skipping...');
       return;
     }
 
-    console.log('�🚀 Starting to load all data from real APIs...');
+    console.log('🚀 Starting to load all data from real APIs...');
     
     isLoadingRef.current = true;
     
@@ -135,18 +135,6 @@ export const DataProvider = ({ children }) => {
     }
   }, []);
 
-      // Customer data
-      if (customerResult.status === 'fulfilled' && customerResult.value.success) {
-        newState.customerData = customerResult.value.data;
-        console.log('✅ Customer data loaded successfully');
-      } else {
-        console.error('❌ Customer data failed to load');
-      }
-
-      // AI insights
-      if (aiStatusResult.status === 'fulfilled' && aiStatusResult.value.success) {
-        newState.aiInsights = aiStatusResult.value.data;
-        console.log('✅ AI insights loaded successfully');
   // Refresh specific data type (optimized)
   const refreshData = useCallback(async (dataType) => {
     console.log(`🔄 Refreshing ${dataType} data...`);

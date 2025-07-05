@@ -1,0 +1,462 @@
+[2025-07-05T13:47:08.097Z] [ERROR] ❌ Backend Error: Network - /ai/status {
+  "message": "Request aborted",
+  "code": "ECONNABORTED"
+}
+[2025-07-05T13:47:08.098Z] [ERROR] ❌ AI Status API call failed: AxiosError: Request aborted
+[2025-07-05T13:47:08.099Z] [ERROR] ❌ Backend Error: Network - /metrics/sales {
+  "message": "Request aborted",
+  "code": "ECONNABORTED"
+}
+[2025-07-05T13:47:08.100Z] [ERROR] ❌ Sales Data API call failed: AxiosError: Request aborted
+[2025-07-05T13:47:08.101Z] [ERROR] ❌ Backend Error: Network - /metrics/products {
+  "message": "Request aborted",
+  "code": "ECONNABORTED"
+}
+[2025-07-05T13:47:08.101Z] [ERROR] ❌ Product Data API call failed: AxiosError: Request aborted
+[2025-07-05T13:47:08.102Z] [ERROR] ❌ Backend Error: Network - /ai/status {
+  "message": "Request aborted",
+  "code": "ECONNABORTED"
+}
+[2025-07-05T13:47:08.102Z] [ERROR] ❌ AI Status API call failed: AxiosError: Request aborted
+[2025-07-05T13:47:08.103Z] [ERROR] ❌ Backend Error: Network - /dashboard/stats {
+  "message": "Request aborted",
+  "code": "ECONNABORTED"
+}
+[2025-07-05T13:47:08.103Z] [ERROR] ❌ Dashboard Stats API call failed: AxiosError: Request aborted
+[2025-07-05T13:47:08.105Z] [ERROR] ❌ Backend Error: Network - /metrics/sales {
+  "message": "Request aborted",
+  "code": "ECONNABORTED"
+}
+[2025-07-05T13:47:08.106Z] [ERROR] ❌ Sales Data API call failed: AxiosError: Request aborted
+[2025-07-05T13:47:08.106Z] [ERROR] ❌ Backend Error: Network - /metrics/customers {
+  "message": "Request aborted",
+  "code": "ECONNABORTED"
+}
+[2025-07-05T13:47:08.107Z] [ERROR] ❌ Customer Data API call failed: AxiosError: Request aborted
+[2025-07-05T13:47:08.108Z] [ERROR] ❌ Backend Error: Network - /metrics/products {
+  "message": "Request aborted",
+  "code": "ECONNABORTED"
+}
+[2025-07-05T13:47:08.108Z] [ERROR] ❌ Product Data API call failed: AxiosError: Request aborted
+[2025-07-05T13:47:08.108Z] [ERROR] ❌ Dashboard data failed to load
+[2025-07-05T13:47:08.109Z] [ERROR] ❌ Sales data failed to load
+[2025-07-05T13:47:08.109Z] [ERROR] ❌ Product data failed to load
+[2025-07-05T13:47:08.109Z] [ERROR] ❌ Customer data failed to load
+[2025-07-05T13:47:08.110Z] [ERROR] ❌ AI insights failed to load
+[2025-07-05T13:47:08.110Z] [ERROR] 🚨 No data was loaded from any API
+[2025-07-05T13:47:08.112Z] [ERROR] Fetch Error: NetworkError when attempting to fetch resource. URL: http://localhost:8000/api/v1/health/
+[2025-07-05T13:47:08.112Z] [ERROR] Fetch Error: NetworkError when attempting to fetch resource. URL: http://localhost:8000/api/v1/health/
+[2025-07-05T13:47:08.113Z] [ERROR] ❌ Backend Error: Network - /metrics/customers {
+  "message": "Request aborted",
+  "code": "ECONNABORTED"
+}
+[2025-07-05T13:47:08.113Z] [ERROR] ❌ Customer Data API call failed: AxiosError: Request aborted
+[2025-07-05T13:47:08.114Z] [ERROR] ❌ Dashboard data failed to load
+[2025-07-05T13:47:08.114Z] [ERROR] ❌ Sales data failed to load
+[2025-07-05T13:47:08.115Z] [ERROR] ❌ Product data failed to load
+[2025-07-05T13:47:08.115Z] [ERROR] ❌ Customer data failed to load
+[2025-07-05T13:47:08.116Z] [ERROR] ❌ AI insights failed to load
+[2025-07-05T13:47:08.116Z] [ERROR] 🚨 No data was loaded from any API
+[2025-07-05T13:47:08.275Z] [LOG] 📊 DataContext mounted - loading initial data...
+[2025-07-05T13:47:08.275Z] [LOG] 🚀 Starting to load all data from real APIs...
+[2025-07-05T13:47:08.276Z] [LOG] 🔄 Making API call for Dashboard Stats...
+[2025-07-05T13:47:08.276Z] [LOG] 📊 Fetching dashboard stats...
+[2025-07-05T13:47:08.276Z] [LOG] 🔄 Making API call for Sales Data...
+[2025-07-05T13:47:08.277Z] [LOG] 💰 Fetching sales metrics...
+[2025-07-05T13:47:08.277Z] [LOG] 🔄 Making API call for Product Data...
+[2025-07-05T13:47:08.277Z] [LOG] 📦 Fetching product metrics...
+[2025-07-05T13:47:08.277Z] [LOG] 🔄 Making API call for Customer Data...
+[2025-07-05T13:47:08.278Z] [LOG] 👥 Fetching customer metrics...
+[2025-07-05T13:47:08.278Z] [LOG] 🔄 Making API call for AI Status...
+[2025-07-05T13:47:08.278Z] [LOG] 🤖 Fetching AI status...
+[2025-07-05T13:47:08.279Z] [LOG] 📊 DataContext mounted - loading initial data...
+[2025-07-05T13:47:08.280Z] [LOG] 🚀 Starting to load all data from real APIs...
+[2025-07-05T13:47:08.280Z] [LOG] 🔄 Making API call for Dashboard Stats...
+[2025-07-05T13:47:08.280Z] [LOG] 📊 Fetching dashboard stats...
+[2025-07-05T13:47:08.280Z] [LOG] 🔄 Making API call for Sales Data...
+[2025-07-05T13:47:08.280Z] [LOG] 💰 Fetching sales metrics...
+[2025-07-05T13:47:08.281Z] [LOG] 🔄 Making API call for Product Data...
+[2025-07-05T13:47:08.281Z] [LOG] 📦 Fetching product metrics...
+[2025-07-05T13:47:08.281Z] [LOG] 🔄 Making API call for Customer Data...
+[2025-07-05T13:47:08.281Z] [LOG] 👥 Fetching customer metrics...
+[2025-07-05T13:47:08.282Z] [LOG] 🔄 Making API call for AI Status...
+[2025-07-05T13:47:08.282Z] [LOG] 🤖 Fetching AI status...
+[2025-07-05T13:47:08.282Z] [LOG] 🔵 Backend Request: GET http://localhost:5173/api/dashboard/stats
+[2025-07-05T13:47:08.282Z] [LOG] 🔵 Backend Request: GET http://localhost:5173/api/metrics/sales
+[2025-07-05T13:47:08.282Z] [LOG] 🔵 Backend Request: GET http://localhost:5173/api/metrics/products
+[2025-07-05T13:47:08.283Z] [LOG] 🔵 Backend Request: GET http://localhost:5173/api/metrics/customers
+[2025-07-05T13:47:08.283Z] [LOG] 🔵 Backend Request: GET http://localhost:5173/api/ai/status
+[2025-07-05T13:47:08.283Z] [LOG] 🔵 Backend Request: GET http://localhost:5173/api/dashboard/stats
+[2025-07-05T13:47:08.283Z] [LOG] 🔵 Backend Request: GET http://localhost:5173/api/metrics/sales
+[2025-07-05T13:47:08.283Z] [LOG] 🔵 Backend Request: GET http://localhost:5173/api/metrics/products
+[2025-07-05T13:47:08.284Z] [LOG] 🔵 Backend Request: GET http://localhost:5173/api/metrics/customers
+[2025-07-05T13:47:08.284Z] [LOG] 🔵 Backend Request: GET http://localhost:5173/api/ai/status
+[2025-07-05T13:47:08.302Z] [ERROR] ❌ Backend Error: 401 - /dashboard/stats {
+  "message": "Request failed with status code 401",
+  "code": "ERR_BAD_REQUEST"
+}
+[2025-07-05T13:47:08.304Z] [ERROR] ❌ Dashboard Stats API call failed: AxiosError: Request failed with status code 401
+[2025-07-05T13:47:08.308Z] [ERROR] ❌ Backend Error: Network - /ai/status {
+  "message": "Request aborted",
+  "code": "ECONNABORTED"
+}
+[2025-07-05T13:47:08.308Z] [ERROR] ❌ AI Status API call failed: AxiosError: Request aborted
+[2025-07-05T13:47:08.309Z] [ERROR] ❌ Backend Error: Network - /ai/status {
+  "message": "Request aborted",
+  "code": "ECONNABORTED"
+}
+[2025-07-05T13:47:08.309Z] [ERROR] ❌ AI Status API call failed: AxiosError: Request aborted
+[2025-07-05T13:47:08.310Z] [ERROR] ❌ Backend Error: Network - /metrics/sales {
+  "message": "Request aborted",
+  "code": "ECONNABORTED"
+}
+[2025-07-05T13:47:08.310Z] [ERROR] ❌ Sales Data API call failed: AxiosError: Request aborted
+[2025-07-05T13:47:08.311Z] [ERROR] ❌ Backend Error: Network - /metrics/sales {
+  "message": "Request aborted",
+  "code": "ECONNABORTED"
+}
+[2025-07-05T13:47:08.311Z] [ERROR] ❌ Sales Data API call failed: AxiosError: Request aborted
+[2025-07-05T13:47:08.311Z] [ERROR] ❌ Backend Error: Network - /metrics/products {
+  "message": "Request aborted",
+  "code": "ECONNABORTED"
+}
+[2025-07-05T13:47:08.312Z] [ERROR] ❌ Product Data API call failed: AxiosError: Request aborted
+[2025-07-05T13:47:08.312Z] [ERROR] ❌ Backend Error: Network - /metrics/products {
+  "message": "Request aborted",
+  "code": "ECONNABORTED"
+}
+[2025-07-05T13:47:08.312Z] [ERROR] ❌ Product Data API call failed: AxiosError: Request aborted
+[2025-07-05T13:47:08.313Z] [ERROR] ❌ Backend Error: Network - /metrics/customers {
+  "message": "Request aborted",
+  "code": "ECONNABORTED"
+}
+[2025-07-05T13:47:08.314Z] [ERROR] ❌ Customer Data API call failed: AxiosError: Request aborted
+[2025-07-05T13:47:08.314Z] [ERROR] ❌ Dashboard data failed to load
+[2025-07-05T13:47:08.314Z] [ERROR] ❌ Sales data failed to load
+[2025-07-05T13:47:08.314Z] [ERROR] ❌ Product data failed to load
+[2025-07-05T13:47:08.314Z] [ERROR] ❌ Customer data failed to load
+[2025-07-05T13:47:08.314Z] [ERROR] ❌ AI insights failed to load
+[2025-07-05T13:47:08.315Z] [ERROR] 🚨 No data was loaded from any API
+[2025-07-05T13:47:08.315Z] [ERROR] ❌ Backend Error: Network - /dashboard/stats {
+  "message": "Request aborted",
+  "code": "ECONNABORTED"
+}
+[2025-07-05T13:47:08.316Z] [ERROR] ❌ Dashboard Stats API call failed: AxiosError: Request aborted
+[2025-07-05T13:47:08.316Z] [ERROR] ❌ Backend Error: Network - /metrics/customers {
+  "message": "Request aborted",
+  "code": "ECONNABORTED"
+}
+[2025-07-05T13:47:08.317Z] [ERROR] ❌ Customer Data API call failed: AxiosError: Request aborted
+[2025-07-05T13:47:08.317Z] [ERROR] ❌ Dashboard data failed to load
+[2025-07-05T13:47:08.317Z] [ERROR] ❌ Sales data failed to load
+[2025-07-05T13:47:08.317Z] [ERROR] ❌ Product data failed to load
+[2025-07-05T13:47:08.317Z] [ERROR] ❌ Customer data failed to load
+[2025-07-05T13:47:08.317Z] [ERROR] ❌ AI insights failed to load
+[2025-07-05T13:47:08.318Z] [ERROR] 🚨 No data was loaded from any API
+[2025-07-05T13:47:08.318Z] [ERROR] Fetch Error: NetworkError when attempting to fetch resource. URL: http://localhost:8000/api/v1/health/
+[2025-07-05T13:47:08.318Z] [ERROR] Fetch Error: NetworkError when attempting to fetch resource. URL: http://localhost:8000/api/v1/health/
+[2025-07-05T13:47:08.097Z] [ERROR] ❌ Backend Error: Network - /ai/status {
+  "message": "Request aborted",
+  "code": "ECONNABORTED"
+}
+[2025-07-05T13:47:08.098Z] [ERROR] ❌ AI Status API call failed: AxiosError: Request aborted
+[2025-07-05T13:47:08.099Z] [ERROR] ❌ Backend Error: Network - /metrics/sales {
+  "message": "Request aborted",
+  "code": "ECONNABORTED"
+}
+[2025-07-05T13:47:08.100Z] [ERROR] ❌ Sales Data API call failed: AxiosError: Request aborted
+[2025-07-05T13:47:08.101Z] [ERROR] ❌ Backend Error: Network - /metrics/products {
+  "message": "Request aborted",
+  "code": "ECONNABORTED"
+}
+[2025-07-05T13:47:08.101Z] [ERROR] ❌ Product Data API call failed: AxiosError: Request aborted
+[2025-07-05T13:47:08.102Z] [ERROR] ❌ Backend Error: Network - /ai/status {
+  "message": "Request aborted",
+  "code": "ECONNABORTED"
+}
+[2025-07-05T13:47:08.102Z] [ERROR] ❌ AI Status API call failed: AxiosError: Request aborted
+[2025-07-05T13:47:08.103Z] [ERROR] ❌ Backend Error: Network - /dashboard/stats {
+  "message": "Request aborted",
+  "code": "ECONNABORTED"
+}
+[2025-07-05T13:47:08.103Z] [ERROR] ❌ Dashboard Stats API call failed: AxiosError: Request aborted
+[2025-07-05T13:47:08.105Z] [ERROR] ❌ Backend Error: Network - /metrics/sales {
+  "message": "Request aborted",
+  "code": "ECONNABORTED"
+}
+[2025-07-05T13:47:08.106Z] [ERROR] ❌ Sales Data API call failed: AxiosError: Request aborted
+[2025-07-05T13:47:08.106Z] [ERROR] ❌ Backend Error: Network - /metrics/customers {
+  "message": "Request aborted",
+  "code": "ECONNABORTED"
+}
+[2025-07-05T13:47:08.107Z] [ERROR] ❌ Customer Data API call failed: AxiosError: Request aborted
+[2025-07-05T13:47:08.108Z] [ERROR] ❌ Backend Error: Network - /metrics/products {
+  "message": "Request aborted",
+  "code": "ECONNABORTED"
+}
+[2025-07-05T13:47:08.108Z] [ERROR] ❌ Product Data API call failed: AxiosError: Request aborted
+[2025-07-05T13:47:08.108Z] [ERROR] ❌ Dashboard data failed to load
+[2025-07-05T13:47:08.109Z] [ERROR] ❌ Sales data failed to load
+[2025-07-05T13:47:08.109Z] [ERROR] ❌ Product data failed to load
+[2025-07-05T13:47:08.109Z] [ERROR] ❌ Customer data failed to load
+[2025-07-05T13:47:08.110Z] [ERROR] ❌ AI insights failed to load
+[2025-07-05T13:47:08.110Z] [ERROR] 🚨 No data was loaded from any API
+[2025-07-05T13:47:08.112Z] [ERROR] Fetch Error: NetworkError when attempting to fetch resource. URL: http://localhost:8000/api/v1/health/
+[2025-07-05T13:47:08.112Z] [ERROR] Fetch Error: NetworkError when attempting to fetch resource. URL: http://localhost:8000/api/v1/health/
+[2025-07-05T13:47:08.113Z] [ERROR] ❌ Backend Error: Network - /metrics/customers {
+  "message": "Request aborted",
+  "code": "ECONNABORTED"
+}
+[2025-07-05T13:47:08.113Z] [ERROR] ❌ Customer Data API call failed: AxiosError: Request aborted
+[2025-07-05T13:47:08.114Z] [ERROR] ❌ Dashboard data failed to load
+[2025-07-05T13:47:08.114Z] [ERROR] ❌ Sales data failed to load
+[2025-07-05T13:47:08.115Z] [ERROR] ❌ Product data failed to load
+[2025-07-05T13:47:08.115Z] [ERROR] ❌ Customer data failed to load
+[2025-07-05T13:47:08.116Z] [ERROR] ❌ AI insights failed to load
+[2025-07-05T13:47:08.116Z] [ERROR] 🚨 No data was loaded from any API
+[2025-07-05T13:47:08.275Z] [LOG] 📊 DataContext mounted - loading initial data...
+[2025-07-05T13:47:08.275Z] [LOG] 🚀 Starting to load all data from real APIs...
+[2025-07-05T13:47:08.276Z] [LOG] 🔄 Making API call for Dashboard Stats...
+[2025-07-05T13:47:08.276Z] [LOG] 📊 Fetching dashboard stats...
+[2025-07-05T13:47:08.276Z] [LOG] 🔄 Making API call for Sales Data...
+[2025-07-05T13:47:08.277Z] [LOG] 💰 Fetching sales metrics...
+[2025-07-05T13:47:08.277Z] [LOG] 🔄 Making API call for Product Data...
+[2025-07-05T13:47:08.277Z] [LOG] 📦 Fetching product metrics...
+[2025-07-05T13:47:08.277Z] [LOG] 🔄 Making API call for Customer Data...
+[2025-07-05T13:47:08.278Z] [LOG] 👥 Fetching customer metrics...
+[2025-07-05T13:47:08.278Z] [LOG] 🔄 Making API call for AI Status...
+[2025-07-05T13:47:08.278Z] [LOG] 🤖 Fetching AI status...
+[2025-07-05T13:47:08.279Z] [LOG] 📊 DataContext mounted - loading initial data...
+[2025-07-05T13:47:08.280Z] [LOG] 🚀 Starting to load all data from real APIs...
+[2025-07-05T13:47:08.280Z] [LOG] 🔄 Making API call for Dashboard Stats...
+[2025-07-05T13:47:08.280Z] [LOG] 📊 Fetching dashboard stats...
+[2025-07-05T13:47:08.280Z] [LOG] 🔄 Making API call for Sales Data...
+[2025-07-05T13:47:08.280Z] [LOG] 💰 Fetching sales metrics...
+[2025-07-05T13:47:08.281Z] [LOG] 🔄 Making API call for Product Data...
+[2025-07-05T13:47:08.281Z] [LOG] 📦 Fetching product metrics...
+[2025-07-05T13:47:08.281Z] [LOG] 🔄 Making API call for Customer Data...
+[2025-07-05T13:47:08.281Z] [LOG] 👥 Fetching customer metrics...
+[2025-07-05T13:47:08.282Z] [LOG] 🔄 Making API call for AI Status...
+[2025-07-05T13:47:08.282Z] [LOG] 🤖 Fetching AI status...
+[2025-07-05T13:47:08.282Z] [LOG] 🔵 Backend Request: GET http://localhost:5173/api/dashboard/stats
+[2025-07-05T13:47:08.282Z] [LOG] 🔵 Backend Request: GET http://localhost:5173/api/metrics/sales
+[2025-07-05T13:47:08.282Z] [LOG] 🔵 Backend Request: GET http://localhost:5173/api/metrics/products
+[2025-07-05T13:47:08.283Z] [LOG] 🔵 Backend Request: GET http://localhost:5173/api/metrics/customers
+[2025-07-05T13:47:08.283Z] [LOG] 🔵 Backend Request: GET http://localhost:5173/api/ai/status
+[2025-07-05T13:47:08.283Z] [LOG] 🔵 Backend Request: GET http://localhost:5173/api/dashboard/stats
+[2025-07-05T13:47:08.283Z] [LOG] 🔵 Backend Request: GET http://localhost:5173/api/metrics/sales
+[2025-07-05T13:47:08.283Z] [LOG] 🔵 Backend Request: GET http://localhost:5173/api/metrics/products
+[2025-07-05T13:47:08.284Z] [LOG] 🔵 Backend Request: GET http://localhost:5173/api/metrics/customers
+[2025-07-05T13:47:08.284Z] [LOG] 🔵 Backend Request: GET http://localhost:5173/api/ai/status
+[2025-07-05T13:47:08.302Z] [ERROR] ❌ Backend Error: 401 - /dashboard/stats {
+  "message": "Request failed with status code 401",
+  "code": "ERR_BAD_REQUEST"
+}
+[2025-07-05T13:47:08.304Z] [ERROR] ❌ Dashboard Stats API call failed: AxiosError: Request failed with status code 401
+[2025-07-05T13:47:08.308Z] [ERROR] ❌ Backend Error: Network - /ai/status {
+  "message": "Request aborted",
+  "code": "ECONNABORTED"
+}
+[2025-07-05T13:47:08.308Z] [ERROR] ❌ AI Status API call failed: AxiosError: Request aborted
+[2025-07-05T13:47:08.309Z] [ERROR] ❌ Backend Error: Network - /ai/status {
+  "message": "Request aborted",
+  "code": "ECONNABORTED"
+}
+[2025-07-05T13:47:08.309Z] [ERROR] ❌ AI Status API call failed: AxiosError: Request aborted
+[2025-07-05T13:47:08.310Z] [ERROR] ❌ Backend Error: Network - /metrics/sales {
+  "message": "Request aborted",
+  "code": "ECONNABORTED"
+}
+[2025-07-05T13:47:08.310Z] [ERROR] ❌ Sales Data API call failed: AxiosError: Request aborted
+[2025-07-05T13:47:08.311Z] [ERROR] ❌ Backend Error: Network - /metrics/sales {
+  "message": "Request aborted",
+  "code": "ECONNABORTED"
+}
+[2025-07-05T13:47:08.311Z] [ERROR] ❌ Sales Data API call failed: AxiosError: Request aborted
+[2025-07-05T13:47:08.311Z] [ERROR] ❌ Backend Error: Network - /metrics/products {
+  "message": "Request aborted",
+  "code": "ECONNABORTED"
+}
+[2025-07-05T13:47:08.312Z] [ERROR] ❌ Product Data API call failed: AxiosError: Request aborted
+[2025-07-05T13:47:08.312Z] [ERROR] ❌ Backend Error: Network - /metrics/products {
+  "message": "Request aborted",
+  "code": "ECONNABORTED"
+}
+[2025-07-05T13:47:08.312Z] [ERROR] ❌ Product Data API call failed: AxiosError: Request aborted
+[2025-07-05T13:47:08.313Z] [ERROR] ❌ Backend Error: Network - /metrics/customers {
+  "message": "Request aborted",
+  "code": "ECONNABORTED"
+}
+[2025-07-05T13:47:08.314Z] [ERROR] ❌ Customer Data API call failed: AxiosError: Request aborted
+[2025-07-05T13:47:08.314Z] [ERROR] ❌ Dashboard data failed to load
+[2025-07-05T13:47:08.314Z] [ERROR] ❌ Sales data failed to load
+[2025-07-05T13:47:08.314Z] [ERROR] ❌ Product data failed to load
+[2025-07-05T13:47:08.314Z] [ERROR] ❌ Customer data failed to load
+[2025-07-05T13:47:08.314Z] [ERROR] ❌ AI insights failed to load
+[2025-07-05T13:47:08.315Z] [ERROR] 🚨 No data was loaded from any API
+[2025-07-05T13:47:08.315Z] [ERROR] ❌ Backend Error: Network - /dashboard/stats {
+  "message": "Request aborted",
+  "code": "ECONNABORTED"
+}
+[2025-07-05T13:47:08.316Z] [ERROR] ❌ Dashboard Stats API call failed: AxiosError: Request aborted
+[2025-07-05T13:47:08.316Z] [ERROR] ❌ Backend Error: Network - /metrics/customers {
+  "message": "Request aborted",
+  "code": "ECONNABORTED"
+}
+[2025-07-05T13:47:08.317Z] [ERROR] ❌ Customer Data API call failed: AxiosError: Request aborted
+[2025-07-05T13:47:08.317Z] [ERROR] ❌ Dashboard data failed to load
+[2025-07-05T13:47:08.317Z] [ERROR] ❌ Sales data failed to load
+[2025-07-05T13:47:08.317Z] [ERROR] ❌ Product data failed to load
+[2025-07-05T13:47:08.317Z] [ERROR] ❌ Customer data failed to load
+[2025-07-05T13:47:08.317Z] [ERROR] ❌ AI insights failed to load
+[2025-07-05T13:47:08.318Z] [ERROR] 🚨 No data was loaded from any API
+[2025-07-05T13:47:08.318Z] [ERROR] Fetch Error: NetworkError when attempting to fetch resource. URL: http://localhost:8000/api/v1/health/
+[2025-07-05T13:47:08.318Z] [ERROR] Fetch Error: NetworkError when attempting to fetch resource. URL: http://localhost:8000/api/v1/health/
+[2025-07-05T13:47:08.503Z] [LOG] 📊 DataContext mounted - loading initial data...
+[2025-07-05T13:47:08.503Z] [LOG] 🚀 Starting to load all data from real APIs...
+[2025-07-05T13:47:08.503Z] [LOG] 🔄 Making API call for Dashboard Stats...
+[2025-07-05T13:47:08.504Z] [LOG] 📊 Fetching dashboard stats...
+[2025-07-05T13:47:08.504Z] [LOG] 🔄 Making API call for Sales Data...
+[2025-07-05T13:47:08.504Z] [LOG] 💰 Fetching sales metrics...
+[2025-07-05T13:47:08.505Z] [LOG] 🔄 Making API call for Product Data...
+[2025-07-05T13:47:08.505Z] [LOG] 📦 Fetching product metrics...
+[2025-07-05T13:47:08.505Z] [LOG] 🔄 Making API call for Customer Data...
+[2025-07-05T13:47:08.505Z] [LOG] 👥 Fetching customer metrics...
+[2025-07-05T13:47:08.505Z] [LOG] 🔄 Making API call for AI Status...
+[2025-07-05T13:47:08.506Z] [LOG] 🤖 Fetching AI status...
+[2025-07-05T13:47:08.506Z] [LOG] 📊 DataContext mounted - loading initial data...
+[2025-07-05T13:47:08.507Z] [LOG] 🚀 Starting to load all data from real APIs...
+[2025-07-05T13:47:08.507Z] [LOG] 🔄 Making API call for Dashboard Stats...
+[2025-07-05T13:47:08.507Z] [LOG] 📊 Fetching dashboard stats...
+[2025-07-05T13:47:08.507Z] [LOG] 🔄 Making API call for Sales Data...
+[2025-07-05T13:47:08.507Z] [LOG] 💰 Fetching sales metrics...
+[2025-07-05T13:47:08.507Z] [LOG] 🔄 Making API call for Product Data...
+[2025-07-05T13:47:08.508Z] [LOG] 📦 Fetching product metrics...
+[2025-07-05T13:47:08.508Z] [LOG] 🔄 Making API call for Customer Data...
+[2025-07-05T13:47:08.508Z] [LOG] 👥 Fetching customer metrics...
+[2025-07-05T13:47:08.508Z] [LOG] 🔄 Making API call for AI Status...
+[2025-07-05T13:47:08.508Z] [LOG] 🤖 Fetching AI status...
+[2025-07-05T13:47:08.509Z] [LOG] 🔵 Backend Request: GET http://localhost:5173/api/dashboard/stats
+[2025-07-05T13:47:08.509Z] [LOG] 🔵 Backend Request: GET http://localhost:5173/api/metrics/sales
+[2025-07-05T13:47:08.509Z] [LOG] 🔵 Backend Request: GET http://localhost:5173/api/metrics/products
+[2025-07-05T13:47:08.509Z] [LOG] 🔵 Backend Request: GET http://localhost:5173/api/metrics/customers
+[2025-07-05T13:47:08.509Z] [LOG] 🔵 Backend Request: GET http://localhost:5173/api/ai/status
+[2025-07-05T13:47:08.510Z] [LOG] 🔵 Backend Request: GET http://localhost:5173/api/dashboard/stats
+[2025-07-05T13:47:08.510Z] [LOG] 🔵 Backend Request: GET http://localhost:5173/api/metrics/sales
+[2025-07-05T13:47:08.510Z] [LOG] 🔵 Backend Request: GET http://localhost:5173/api/metrics/products
+[2025-07-05T13:47:08.510Z] [LOG] 🔵 Backend Request: GET http://localhost:5173/api/metrics/customers
+[2025-07-05T13:47:08.510Z] [LOG] 🔵 Backend Request: GET http://localhost:5173/api/ai/status
+[2025-07-05T13:47:08.530Z] [ERROR] ❌ Backend Error: 429 - /dashboard/stats {
+  "message": "Request failed with status code 429",
+  "code": "ERR_BAD_REQUEST"
+}
+[2025-07-05T13:47:08.531Z] [ERROR] ❌ Dashboard Stats API call failed: AxiosError: Request failed with status code 429
+[2025-07-05T13:47:08.532Z] [ERROR] ❌ Backend Error: 429 - /metrics/sales {
+  "message": "Request failed with status code 429",
+  "code": "ERR_BAD_REQUEST"
+}
+[2025-07-05T13:47:08.532Z] [ERROR] ❌ Sales Data API call failed: AxiosError: Request failed with status code 429
+[2025-07-05T13:47:08.533Z] [ERROR] ❌ Backend Error: 429 - /metrics/products {
+  "message": "Request failed with status code 429",
+  "code": "ERR_BAD_REQUEST"
+}
+[2025-07-05T13:47:08.534Z] [ERROR] ❌ Product Data API call failed: AxiosError: Request failed with status code 429
+[2025-07-05T13:47:08.538Z] [ERROR] ❌ Backend Error: 429 - /metrics/customers {
+  "message": "Request failed with status code 429",
+  "code": "ERR_BAD_REQUEST"
+}
+[2025-07-05T13:47:08.539Z] [ERROR] ❌ Customer Data API call failed: AxiosError: Request failed with status code 429
+[2025-07-05T13:47:08.540Z] [ERROR] ❌ Backend Error: 429 - /ai/status {
+  "message": "Request failed with status code 429",
+  "code": "ERR_BAD_REQUEST"
+}
+[2025-07-05T13:47:08.540Z] [ERROR] ❌ AI Status API call failed: AxiosError: Request failed with status code 429
+[2025-07-05T13:47:08.540Z] [ERROR] ❌ Dashboard data failed to load
+[2025-07-05T13:47:08.541Z] [ERROR] ❌ Sales data failed to load
+[2025-07-05T13:47:08.541Z] [ERROR] ❌ Product data failed to load
+[2025-07-05T13:47:08.541Z] [ERROR] ❌ Customer data failed to load
+[2025-07-05T13:47:08.541Z] [ERROR] ❌ AI insights failed to load
+[2025-07-05T13:47:08.542Z] [ERROR] 🚨 No data was loaded from any API
+[2025-07-05T13:47:08.543Z] [ERROR] ❌ Backend Error: 429 - /dashboard/stats {
+  "message": "Request failed with status code 429",
+  "code": "ERR_BAD_REQUEST"
+}
+[2025-07-05T13:47:08.544Z] [ERROR] ❌ Dashboard Stats API call failed: AxiosError: Request failed with status code 429
+[2025-07-05T13:47:08.545Z] [ERROR] ❌ Backend Error: 429 - /metrics/sales {
+  "message": "Request failed with status code 429",
+  "code": "ERR_BAD_REQUEST"
+}
+[2025-07-05T13:47:08.545Z] [ERROR] ❌ Sales Data API call failed: AxiosError: Request failed with status code 429
+[2025-07-05T13:47:08.546Z] [ERROR] ❌ Backend Error: 429 - /metrics/products {
+  "message": "Request failed with status code 429",
+  "code": "ERR_BAD_REQUEST"
+}
+[2025-07-05T13:47:08.546Z] [ERROR] ❌ Product Data API call failed: AxiosError: Request failed with status code 429
+[2025-07-05T13:47:08.546Z] [ERROR] ❌ Backend Error: 429 - /metrics/customers {
+  "message": "Request failed with status code 429",
+  "code": "ERR_BAD_REQUEST"
+}
+[2025-07-05T13:47:08.546Z] [ERROR] ❌ Customer Data API call failed: AxiosError: Request failed with status code 429
+[2025-07-05T13:47:08.547Z] [ERROR] ❌ Backend Error: 429 - /ai/status {
+  "message": "Request failed with status code 429",
+  "code": "ERR_BAD_REQUEST"
+}
+[2025-07-05T13:47:08.547Z] [ERROR] ❌ AI Status API call failed: AxiosError: Request failed with status code 429
+[2025-07-05T13:47:08.548Z] [ERROR] ❌ Dashboard data failed to load
+[2025-07-05T13:47:08.548Z] [ERROR] ❌ Sales data failed to load
+[2025-07-05T13:47:08.548Z] [ERROR] ❌ Product data failed to load
+[2025-07-05T13:47:08.548Z] [ERROR] ❌ Customer data failed to load
+[2025-07-05T13:47:08.548Z] [ERROR] ❌ AI insights failed to load
+[2025-07-05T13:47:08.548Z] [ERROR] 🚨 No data was loaded from any API
+[2025-07-05T13:47:51.043Z] [LOG] 🔐 Attempting login...
+[2025-07-05T13:47:51.046Z] [LOG] 🔵 Backend Request: POST http://localhost:5173/api/auth/login
+[2025-07-05T13:47:51.095Z] [ERROR] ❌ Backend Error: 429 - /auth/login {
+  "message": "Request failed with status code 429",
+  "code": "ERR_BAD_REQUEST"
+}
+[2025-07-05T13:47:51.095Z] [WARN] Backend authentication failed: Request failed with status code 429
+[2025-07-05T13:47:51.096Z] [LOG] Using mock authentication for development
+[2025-07-05T13:47:51.112Z] [LOG] 🔵 Backend Request: GET http://localhost:5173/api/auth/me
+[2025-07-05T13:47:51.131Z] [ERROR] ❌ Backend Error: 429 - /auth/me {
+  "message": "Request failed with status code 429",
+  "code": "ERR_BAD_REQUEST"
+}
+[2025-07-05T13:47:51.131Z] [ERROR] Auth check failed: AxiosError: Request failed with status code 429
+[2025-07-05T13:48:01.723Z] [ERROR] Failed to fetch AI status: TypeError: (intermediate value).getAIStatus is not a function
+[2025-07-05T13:48:01.724Z] [LOG] 📈 Fetching forecast...
+[2025-07-05T13:48:01.724Z] [LOG] 🔍 Detecting anomalies...
+[2025-07-05T13:48:01.725Z] [LOG] 💡 Fetching recommendations...
+[2025-07-05T13:48:01.725Z] [ERROR] Failed to fetch AI status: TypeError: (intermediate value).getAIStatus is not a function
+[2025-07-05T13:48:01.725Z] [LOG] 📈 Fetching forecast...
+[2025-07-05T13:48:01.726Z] [LOG] 🔍 Detecting anomalies...
+[2025-07-05T13:48:01.726Z] [LOG] 💡 Fetching recommendations...
+[2025-07-05T13:48:01.727Z] [LOG] 🔵 Backend Request: GET http://localhost:5173/api/ai/forecast
+[2025-07-05T13:48:01.727Z] [LOG] 🔵 Backend Request: POST http://localhost:5173/api/ai/anomaly
+[2025-07-05T13:48:01.727Z] [LOG] 🔵 Backend Request: GET http://localhost:5173/api/ai/recommendations
+[2025-07-05T13:48:01.727Z] [LOG] 🔵 Backend Request: GET http://localhost:5173/api/ai/forecast
+[2025-07-05T13:48:01.727Z] [LOG] 🔵 Backend Request: POST http://localhost:5173/api/ai/anomaly
+[2025-07-05T13:48:01.727Z] [LOG] 🔵 Backend Request: GET http://localhost:5173/api/ai/recommendations
+[2025-07-05T13:48:01.740Z] [ERROR] ❌ Backend Error: 429 - /ai/forecast {
+  "message": "Request failed with status code 429",
+  "code": "ERR_BAD_REQUEST"
+}
+[2025-07-05T13:48:01.745Z] [ERROR] ❌ Backend Error: 429 - /ai/anomaly {
+  "message": "Request failed with status code 429",
+  "code": "ERR_BAD_REQUEST"
+}
+[2025-07-05T13:48:01.747Z] [ERROR] ❌ Backend Error: 429 - /ai/recommendations {
+  "message": "Request failed with status code 429",
+  "code": "ERR_BAD_REQUEST"
+}
+[2025-07-05T13:48:01.748Z] [ERROR] ❌ Backend Error: 429 - /ai/forecast {
+  "message": "Request failed with status code 429",
+  "code": "ERR_BAD_REQUEST"
+}
+[2025-07-05T13:48:01.749Z] [ERROR] ❌ Backend Error: 429 - /ai/anomaly {
+  "message": "Request failed with status code 429",
+  "code": "ERR_BAD_REQUEST"
+}
+[2025-07-05T13:48:01.749Z] [ERROR] ❌ Backend Error: 429 - /ai/recommendations {
+  "message": "Request failed with status code 429",
+  "code": "ERR_BAD_REQUEST"
+}

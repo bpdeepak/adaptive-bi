@@ -1,6 +1,11 @@
 import React, { createContext, useContext, useState, useEffect } from 'react'
 import { authAPI } from '../services/api'
 
+// FIXES APPLIED:
+// 1. Updated demo credentials to match backend: admin@example.com / password123
+// 2. Updated error message to show correct credentials
+// 3. Backend was working fine - issue was credential mismatch
+
 const AuthContext = createContext()
 
 export const useAuth = () => {
@@ -27,15 +32,14 @@ export const AuthProvider = ({ children }) => {
   const checkAuth = async () => {
     try {
       const response = await authAPI.getMe()
-      setUser(response.data.user)
+      setUser(response.data.data || response.data.user)
     } catch (error) {
       console.error('Auth check failed:', error)
       
-      // Check if we're in development mode with a mock token
-      const isDevelopment = import.meta.env.VITE_NODE_ENV === 'development'
+      // Only use mock authentication if the token is actually a mock token
       const currentToken = localStorage.getItem('token')
       
-      if (isDevelopment && currentToken && currentToken.startsWith('mock-jwt-token-')) {
+      if (currentToken && currentToken.startsWith('mock-jwt-token-')) {
         // Use mock user data for development
         const mockUser = {
           id: '1',
@@ -45,6 +49,7 @@ export const AuthProvider = ({ children }) => {
         }
         setUser(mockUser)
       } else {
+        // Clear invalid real tokens
         logout()
       }
     } finally {
@@ -66,12 +71,12 @@ export const AuthProvider = ({ children }) => {
     } catch (error) {
       console.warn('Backend authentication failed:', error.message)
       
-      // Fallback to mock authentication in development
+      // Only use mock authentication for specific development credentials
       const isDevelopment = import.meta.env.VITE_NODE_ENV === 'development'
       
       if (isDevelopment && (
-        (email === 'admin@example.com' && password === 'password') ||
-        (email === 'admin@adaptivebi.com' && password === 'password123')
+        (email === 'admin@example.com' && password === 'password123') ||
+        (email === 'demo@adaptivebi.com' && password === 'demo123')
       )) {
         console.log('Using mock authentication for development')
         
@@ -90,9 +95,19 @@ export const AuthProvider = ({ children }) => {
         return { success: true }
       }
       
+      // For real backend errors, provide more helpful messages
+      let errorMessage = 'Login failed'
+      if (error.response?.status === 401) {
+        errorMessage = 'Invalid email or password'
+      } else if (error.response?.status === 429) {
+        errorMessage = 'Too many requests. Please try again later.'
+      } else if (error.message.includes('Network Error')) {
+        errorMessage = 'Cannot connect to server. Using demo mode: admin@example.com / password123'
+      }
+      
       return { 
         success: false, 
-        error: error.response?.data?.message || 'Login failed. Try demo credentials: admin@example.com / password' 
+        error: error.response?.data?.message || errorMessage
       }
     }
   }

@@ -1,90 +1,5 @@
 [
   {
-    "timestamp": "2025-07-05T06:56:42.286096",
-    "model_name": "anomaly_detection",
-    "metrics": {
-      "outliers_in_training_data": 5,
-      "outlier_percentage": "1.00%"
-    },
-    "additional_info": {
-      "training_samples": 500,
-      "features_used": [
-        "totalAmount",
-        "quantity"
-      ],
-      "contamination": 0.01,
-      "model_type": "IsolationForest"
-    }
-  },
-  {
-    "timestamp": "2025-07-05T06:58:42.328982",
-    "model_name": "anomaly_detection",
-    "metrics": {
-      "outliers_in_training_data": 5,
-      "outlier_percentage": "1.00%"
-    },
-    "additional_info": {
-      "training_samples": 500,
-      "features_used": [
-        "totalAmount",
-        "quantity"
-      ],
-      "contamination": 0.01,
-      "model_type": "IsolationForest"
-    }
-  },
-  {
-    "timestamp": "2025-07-05T07:00:42.256799",
-    "model_name": "anomaly_detection",
-    "metrics": {
-      "outliers_in_training_data": 5,
-      "outlier_percentage": "1.00%"
-    },
-    "additional_info": {
-      "training_samples": 500,
-      "features_used": [
-        "totalAmount",
-        "quantity"
-      ],
-      "contamination": 0.01,
-      "model_type": "IsolationForest"
-    }
-  },
-  {
-    "timestamp": "2025-07-05T07:02:42.276659",
-    "model_name": "anomaly_detection",
-    "metrics": {
-      "outliers_in_training_data": 5,
-      "outlier_percentage": "1.00%"
-    },
-    "additional_info": {
-      "training_samples": 500,
-      "features_used": [
-        "totalAmount",
-        "quantity"
-      ],
-      "contamination": 0.01,
-      "model_type": "IsolationForest"
-    }
-  },
-  {
-    "timestamp": "2025-07-05T07:04:41.983933",
-    "model_name": "anomaly_detection",
-    "metrics": {
-      "outliers_in_training_data": 5,
-      "outlier_percentage": "1.00%"
-    },
-    "additional_info": {
-      "training_samples": 500,
-      "features_used": [
-        "totalAmount",
-        "quantity"
-      ],
-      "contamination": 0.01,
-      "model_type": "IsolationForest"
-    }
-  },
-  {
     "timestamp": "2025-07-05T07:06:42.152098",
     "model_name": "anomaly_detection",
     "metrics": {
@@ -834,6 +749,91 @@
   },
   {
     "timestamp": "2025-07-05T08:34:44.272531",
+    "model_name": "anomaly_detection",
+    "metrics": {
+      "outliers_in_training_data": 5,
+      "outlier_percentage": "1.00%"
+    },
+    "additional_info": {
+      "training_samples": 500,
+      "features_used": [
+        "totalAmount",
+        "quantity"
+      ],
+      "contamination": 0.01,
+      "model_type": "IsolationForest"
+    }
+  },
+  {
+    "timestamp": "2025-07-05T12:59:21.804594",
+    "model_name": "anomaly_detection",
+    "metrics": {
+      "outliers_in_training_data": 5,
+      "outlier_percentage": "1.00%"
+    },
+    "additional_info": {
+      "training_samples": 500,
+      "features_used": [
+        "totalAmount",
+        "quantity"
+      ],
+      "contamination": 0.01,
+      "model_type": "IsolationForest"
+    }
+  },
+  {
+    "timestamp": "2025-07-05T13:40:24.148659",
+    "model_name": "anomaly_detection",
+    "metrics": {
+      "outliers_in_training_data": 5,
+      "outlier_percentage": "1.00%"
+    },
+    "additional_info": {
+      "training_samples": 500,
+      "features_used": [
+        "totalAmount",
+        "quantity"
+      ],
+      "contamination": 0.01,
+      "model_type": "IsolationForest"
+    }
+  },
+  {
+    "timestamp": "2025-07-05T14:01:57.579682",
+    "model_name": "anomaly_detection",
+    "metrics": {
+      "outliers_in_training_data": 5,
+      "outlier_percentage": "1.00%"
+    },
+    "additional_info": {
+      "training_samples": 500,
+      "features_used": [
+        "totalAmount",
+        "quantity"
+      ],
+      "contamination": 0.01,
+      "model_type": "IsolationForest"
+    }
+  },
+  {
+    "timestamp": "2025-07-05T14:16:57.517717",
+    "model_name": "anomaly_detection",
+    "metrics": {
+      "outliers_in_training_data": 5,
+      "outlier_percentage": "1.00%"
+    },
+    "additional_info": {
+      "training_samples": 500,
+      "features_used": [
+        "totalAmount",
+        "quantity"
+      ],
+      "contamination": 0.01,
+      "model_type": "IsolationForest"
+    }
+  },
+  {
+    "timestamp": "2025-07-05T14:31:57.093005",
     "model_name": "anomaly_detection",
     "metrics": {
       "outliers_in_training_data": 5,

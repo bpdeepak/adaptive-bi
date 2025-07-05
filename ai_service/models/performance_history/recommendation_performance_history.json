@@ -1,53 +1,5 @@
 [
   {
-    "timestamp": "2025-07-05T06:56:42.956734",
-    "model_name": "recommendation",
-    "metrics": {
-      "users": 27,
-      "items": 81,
-      "components": 26,
-      "total_interactions": 85,
-      "sparsity_percentage": 3.89
-    },
-    "additional_info": {}
-  },
-  {
-    "timestamp": "2025-07-05T06:58:43.009348",
-    "model_name": "recommendation",
-    "metrics": {
-      "users": 27,
-      "items": 81,
-      "components": 26,
-      "total_interactions": 85,
-      "sparsity_percentage": 3.89
-    },
-    "additional_info": {}
-  },
-  {
-    "timestamp": "2025-07-05T07:00:42.925968",
-    "model_name": "recommendation",
-    "metrics": {
-      "users": 27,
-      "items": 81,
-      "components": 26,
-      "total_interactions": 85,
-      "sparsity_percentage": 3.89
-    },
-    "additional_info": {}
-  },
-  {
-    "timestamp": "2025-07-05T07:02:42.963638",
-    "model_name": "recommendation",
-    "metrics": {
-      "users": 27,
-      "items": 81,
-      "components": 26,
-      "total_interactions": 85,
-      "sparsity_percentage": 3.89
-    },
-    "additional_info": {}
-  },
-  {
     "timestamp": "2025-07-05T07:04:42.648404",
     "model_name": "recommendation",
     "metrics": {
@@ -596,6 +548,54 @@
       "components": 29,
       "total_interactions": 92,
       "sparsity_percentage": 3.48
+    },
+    "additional_info": {}
+  },
+  {
+    "timestamp": "2025-07-05T12:59:22.524678",
+    "model_name": "recommendation",
+    "metrics": {
+      "users": 32,
+      "items": 98,
+      "components": 31,
+      "total_interactions": 101,
+      "sparsity_percentage": 3.22
+    },
+    "additional_info": {}
+  },
+  {
+    "timestamp": "2025-07-05T14:01:57.926379",
+    "model_name": "recommendation",
+    "metrics": {
+      "users": 45,
+      "items": 132,
+      "components": 44,
+      "total_interactions": 136,
+      "sparsity_percentage": 2.29
+    },
+    "additional_info": {}
+  },
+  {
+    "timestamp": "2025-07-05T14:16:57.731550",
+    "model_name": "recommendation",
+    "metrics": {
+      "users": 44,
+      "items": 129,
+      "components": 43,
+      "total_interactions": 133,
+      "sparsity_percentage": 2.34
+    },
+    "additional_info": {}
+  },
+  {
+    "timestamp": "2025-07-05T14:31:57.207779",
+    "model_name": "recommendation",
+    "metrics": {
+      "users": 46,
+      "items": 135,
+      "components": 45,
+      "total_interactions": 139,
+      "sparsity_percentage": 2.24
     },
     "additional_info": {}
   }

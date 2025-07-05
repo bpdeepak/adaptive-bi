@@ -7,9 +7,9 @@ class FrontendLogger {
     this.maxLogs = 1000 // Maximum number of logs to keep in memory
     this.isEnabled = true
     this.originalConsole = {}
-    this.loggerServerUrl = 'http://localhost:3001'
-    this.batchSize = 10
-    this.flushInterval = 5000 // Send logs every 5 seconds
+    this.loggerServerUrl = 'http://localhost:3001' // This will work inside the container
+    this.batchSize = 20 // Increased batch size to reduce requests
+    this.flushInterval = 10000 // Send logs every 10 seconds instead of 5
     this.pendingLogs = []
     
     // Store original console methods
@@ -176,6 +176,12 @@ class FrontendLogger {
     const logsToSend = [...this.pendingLogs]
     this.pendingLogs = []
 
+    // Disable remote logging for now - just log locally
+    // This prevents network errors to localhost:3001
+    this.originalConsole.log(`📤 Would send ${logsToSend.length} logs to server (remote logging disabled)`)
+    
+    // You can enable this later when you have a proper logger server running
+    /*
     try {
       const response = await fetch(`${this.loggerServerUrl}/api/logs`, {
         method: 'POST',
@@ -196,6 +202,7 @@ class FrontendLogger {
       this.pendingLogs.unshift(...logsToSend)
       this.originalConsole.error('Failed to send logs to server:', error.message)
     }
+    */
   }
 
   async sendStoredLogs() {

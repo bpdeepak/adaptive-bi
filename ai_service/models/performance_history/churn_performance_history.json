@@ -1,55 +1,5 @@
 [
   {
-    "timestamp": "2025-07-05T06:56:51.995634",
-    "model_name": "churn",
-    "metrics": {
-      "auc_score": 0.9414582734502251,
-      "accuracy": 0.8466135458167331,
-      "churn_rate": 0.7077106993424985
-    },
-    "additional_info": {}
-  },
-  {
-    "timestamp": "2025-07-05T06:58:52.100083",
-    "model_name": "churn",
-    "metrics": {
-      "auc_score": 0.9402705094659073,
-      "accuracy": 0.850597609561753,
-      "churn_rate": 0.7099282296650717
-    },
-    "additional_info": {}
-  },
-  {
-    "timestamp": "2025-07-05T07:00:51.020037",
-    "model_name": "churn",
-    "metrics": {
-      "auc_score": 0.9402705094659073,
-      "accuracy": 0.850597609561753,
-      "churn_rate": 0.7099282296650717
-    },
-    "additional_info": {}
-  },
-  {
-    "timestamp": "2025-07-05T07:02:51.106089",
-    "model_name": "churn",
-    "metrics": {
-      "auc_score": 0.9413960289364321,
-      "accuracy": 0.8466135458167331,
-      "churn_rate": 0.7097546379413525
-    },
-    "additional_info": {}
-  },
-  {
-    "timestamp": "2025-07-05T07:05:00.597893",
-    "model_name": "churn",
-    "metrics": {
-      "auc_score": 0.9364225796521473,
-      "accuracy": 0.8426294820717132,
-      "churn_rate": 0.7099282296650717
-    },
-    "additional_info": {}
-  },
-  {
     "timestamp": "2025-07-05T07:06:49.929157",
     "model_name": "churn",
     "metrics": {
@@ -496,6 +446,56 @@
       "auc_score": 0.9534396294311308,
       "accuracy": 0.8762475049900199,
       "churn_rate": 0.704259148170366
+    },
+    "additional_info": {}
+  },
+  {
+    "timestamp": "2025-07-05T12:59:31.789730",
+    "model_name": "churn",
+    "metrics": {
+      "auc_score": 0.9514166154791155,
+      "accuracy": 0.868,
+      "churn_rate": 0.7046818727490997
+    },
+    "additional_info": {}
+  },
+  {
+    "timestamp": "2025-07-05T13:40:33.504917",
+    "model_name": "churn",
+    "metrics": {
+      "auc_score": 0.9335671147477109,
+      "accuracy": 0.8276553106212425,
+      "churn_rate": 0.7093862815884476
+    },
+    "additional_info": {}
+  },
+  {
+    "timestamp": "2025-07-05T14:02:06.663293",
+    "model_name": "churn",
+    "metrics": {
+      "auc_score": 0.9310709874727989,
+      "accuracy": 0.8319838056680162,
+      "churn_rate": 0.7025547445255474
+    },
+    "additional_info": {}
+  },
+  {
+    "timestamp": "2025-07-05T14:17:06.735925",
+    "model_name": "churn",
+    "metrics": {
+      "auc_score": 0.9212915950632713,
+      "accuracy": 0.8178137651821862,
+      "churn_rate": 0.7001216545012166
+    },
+    "additional_info": {}
+  },
+  {
+    "timestamp": "2025-07-05T14:32:04.393020",
+    "model_name": "churn",
+    "metrics": {
+      "auc_score": 0.9503362038457002,
+      "accuracy": 0.8600405679513184,
+      "churn_rate": 0.7015834348355664
     },
     "additional_info": {}
   }
