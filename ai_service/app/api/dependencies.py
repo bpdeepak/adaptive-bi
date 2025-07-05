@@ -1,15 +1,15 @@
 from app.database import get_database
 from app.models.model_manager import ModelManager
-from motor.motor_asyncio import AsyncIOMotorDatabase
+from typing import Any
 from fastapi import HTTPException, status
 from app.utils.logger import logger
 
-def get_db() -> AsyncIOMotorDatabase:
+def get_db() -> Any:
     """
     Dependency to get the MongoDB database instance.
     """
     db = get_database()
-    if not db:
+    if db is None:
         logger.error("Database connection not available.")
         raise HTTPException(status_code=status.HTTP_503_SERVICE_UNAVAILABLE, detail="Database connection not available")
     return db

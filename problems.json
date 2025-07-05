@@ -1,0 +1,172 @@
+[{
+	"resource": "/home/deepak/Dev/ABI-v3/ai_service/app/api/routes/advanced_endpoints.py",
+	"owner": "python",
+	"code": {
+		"value": "reportCallIssue",
+		"target": {
+			"$mid": 1,
+			"path": "/microsoft/pylance-release/blob/main/docs/diagnostics/reportCallIssue.md",
+			"scheme": "https",
+			"authority": "github.com"
+		}
+	},
+	"severity": 8,
+	"message": "No parameter named \"current_demand\"",
+	"source": "Pylance",
+	"startLineNumber": 37,
+	"startColumn": 13,
+	"endLineNumber": 37,
+	"endColumn": 27
+},{
+	"resource": "/home/deepak/Dev/ABI-v3/ai_service/app/api/routes/advanced_endpoints.py",
+	"owner": "python",
+	"code": {
+		"value": "reportCallIssue",
+		"target": {
+			"$mid": 1,
+			"path": "/microsoft/pylance-release/blob/main/docs/diagnostics/reportCallIssue.md",
+			"scheme": "https",
+			"authority": "github.com"
+		}
+	},
+	"severity": 8,
+	"message": "No parameter named \"seasonal_factor\"",
+	"source": "Pylance",
+	"startLineNumber": 38,
+	"startColumn": 13,
+	"endLineNumber": 38,
+	"endColumn": 28
+},{
+	"resource": "/home/deepak/Dev/ABI-v3/ai_service/app/api/routes/advanced_endpoints.py",
+	"owner": "python",
+	"code": {
+		"value": "reportCallIssue",
+		"target": {
+			"$mid": 1,
+			"path": "/microsoft/pylance-release/blob/main/docs/diagnostics/reportCallIssue.md",
+			"scheme": "https",
+			"authority": "github.com"
+		}
+	},
+	"severity": 8,
+	"message": "No parameter named \"competitor_price\"",
+	"source": "Pylance",
+	"startLineNumber": 39,
+	"startColumn": 13,
+	"endLineNumber": 39,
+	"endColumn": 29
+},{
+	"resource": "/home/deepak/Dev/ABI-v3/ai_service/app/models/advanced_models.py",
+	"owner": "python",
+	"code": {
+		"value": "reportAssignmentType",
+		"target": {
+			"$mid": 1,
+			"path": "/microsoft/pylance-release/blob/main/docs/diagnostics/reportAssignmentType.md",
+			"scheme": "https",
+			"authority": "github.com"
+		}
+	},
+	"severity": 8,
+	"message": "Expression with type \"tuple[Unknown | DataFrame | ... | Series[Unknown], Unknown | DataFrame | ... | Series[Unknown]] | tuple[Unknown | DataFrame | ... | Series[Unknown], Unknown | DataFrame | ... | Series[Unknown], Unknown]\" cannot be assigned to target tuple\n  Type \"tuple[Unknown | DataFrame | ... | Series[Unknown], Unknown | DataFrame | ... | Series[Unknown], Unknown]\" is incompatible with target tuple\n    Tuple size mismatch; expected 2 but received 3",
+	"source": "Pylance",
+	"startLineNumber": 530,
+	"startColumn": 25,
+	"endLineNumber": 530,
+	"endColumn": 47
+},{
+	"resource": "/home/deepak/Dev/ABI-v3/ai_service/app/models/model_manager.py",
+	"owner": "python",
+	"code": {
+		"value": "reportAttributeAccessIssue",
+		"target": {
+			"$mid": 1,
+			"path": "/microsoft/pylance-release/blob/main/docs/diagnostics/reportAttributeAccessIssue.md",
+			"scheme": "https",
+			"authority": "github.com"
+		}
+	},
+	"severity": 8,
+	"message": "Cannot access attribute \"track_performance\" for class \"ModelPerformanceTracker\"\n  Attribute \"track_performance\" is unknown",
+	"source": "Pylance",
+	"startLineNumber": 384,
+	"startColumn": 66,
+	"endLineNumber": 384,
+	"endColumn": 83
+},{
+	"resource": "/home/deepak/Dev/ABI-v3/ai_service/app/models/model_manager.py",
+	"owner": "python",
+	"code": {
+		"value": "reportAttributeAccessIssue",
+		"target": {
+			"$mid": 1,
+			"path": "/microsoft/pylance-release/blob/main/docs/diagnostics/reportAttributeAccessIssue.md",
+			"scheme": "https",
+			"authority": "github.com"
+		}
+	},
+	"severity": 8,
+	"message": "Cannot access attribute \"track_performance\" for class \"ModelPerformanceTracker\"\n  Attribute \"track_performance\" is unknown",
+	"source": "Pylance",
+	"startLineNumber": 660,
+	"startColumn": 66,
+	"endLineNumber": 660,
+	"endColumn": 83
+},{
+	"resource": "/home/deepak/Dev/ABI-v3/ai_service/app/services/pricing_service.py",
+	"owner": "python",
+	"code": {
+		"value": "reportOptionalMemberAccess",
+		"target": {
+			"$mid": 1,
+			"path": "/microsoft/pylance-release/blob/main/docs/diagnostics/reportOptionalMemberAccess.md",
+			"scheme": "https",
+			"authority": "github.com"
+		}
+	},
+	"severity": 8,
+	"message": "\"load_model\" is not a known attribute of \"None\"",
+	"source": "Pylance",
+	"startLineNumber": 196,
+	"startColumn": 36,
+	"endLineNumber": 196,
+	"endColumn": 46
+},{
+	"resource": "/home/deepak/Dev/ABI-v3/ai_service/app/services/pricing_service.py",
+	"owner": "python",
+	"code": {
+		"value": "reportOptionalMemberAccess",
+		"target": {
+			"$mid": 1,
+			"path": "/microsoft/pylance-release/blob/main/docs/diagnostics/reportOptionalMemberAccess.md",
+			"scheme": "https",
+			"authority": "github.com"
+		}
+	},
+	"severity": 8,
+	"message": "\"is_trained\" is not a known attribute of \"None\"",
+	"source": "Pylance",
+	"startLineNumber": 197,
+	"startColumn": 39,
+	"endLineNumber": 197,
+	"endColumn": 49
+},{
+	"resource": "/home/deepak/Dev/ABI-v3/ai_service/app/services/pricing_service.py",
+	"owner": "python",
+	"code": {
+		"value": "reportOptionalMemberAccess",
+		"target": {
+			"$mid": 1,
+			"path": "/microsoft/pylance-release/blob/main/docs/diagnostics/reportOptionalMemberAccess.md",
+			"scheme": "https",
+			"authority": "github.com"
+		}
+	},
+	"severity": 8,
+	"message": "\"predict_optimal_price\" is not a known attribute of \"None\"",
+	"source": "Pylance",
+	"startLineNumber": 228,
+	"startColumn": 52,
+	"endLineNumber": 228,
+	"endColumn": 73
+}]

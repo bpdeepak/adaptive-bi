@@ -3,66 +3,93 @@ version: '3.8'
 
 services:
   mongodb:
-    image: mongo:6.0 # Using MongoDB 6.0 as specified in the provided docker-compose.yml
+    image: mongo:6.0
     container_name: adaptive-bi-mongodb
     restart: always
     ports:
-      - "27017:27017" # Maps host port 27017 to container port 27017
+      - "27017:27017"
     environment:
-      MONGO_INITDB_ROOT_USERNAME: admin # MongoDB root username
-      MONGO_INITDB_ROOT_PASSWORD: admin123 # MongoDB root password
-      MONGO_INITDB_DATABASE: adaptive_bi # Default database to initialize
+      # MongoDB credentials and DB name are still good to define explicitly here
+      # as they are specific to the MongoDB container's initialization.
+      MONGO_INITDB_ROOT_USERNAME: admin
+      MONGO_INITDB_ROOT_PASSWORD: admin123
+      MONGO_INITDB_DATABASE: adaptive_bi
     volumes:
-      - mongodb_data:/data/db # Persistent volume for MongoDB data
-      - ./data_streaming/init-mongo.js:/docker-entrypoint-initdb.d/init-mongo.js:ro # Init script
+      - mongodb_data:/data/db
+      - ./data_streaming/init-mongo.js:/docker-entrypoint-initdb.d/init-mongo.js:ro
     networks:
-      - adaptive-bi-network # Custom network for inter-service communication
+      - adaptive-bi-network
+
+  redis:
+    image: redis:7.0-alpine
+    container_name: adaptive-bi-redis
+    restart: always
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+    networks:
+      - adaptive-bi-network
 
   backend:
     build: ./backend
     container_name: adaptive-bi-backend
     restart: always
     ports:
-      - "3000:3000" # Maps host port 3000 to container port 3000
+      - "3000:3000"
+    # Frontend URL and JWT secret are also typically read from .env by Node.js app directly
+    # But defining them here ensures they are set in the container's environment.
+    # For a clean approach, you'd configure your Node.js app to load from process.env directly.
     environment:
-      # These environment variables will be passed into the backend container
+      # These are still explicitly defined for the backend service,
+      # as the backend's `config` might not be set up to load a `.env` file
+      # from the root `adaptive-bi-system` directory. If it is, you could remove these.
       NODE_ENV: development
-      BACKEND_PORT: 3000 # Your server.js uses BACKEND_PORT
-      MONGO_URI: mongodb://admin:admin123@mongodb:27017/adaptive_bi?authSource=admin # Docker internal URI
+      BACKEND_PORT: 3000
+      MONGO_URI: mongodb://admin:admin123@mongodb:27017/adaptive_bi?authSource=admin
       JWT_SECRET: a_very_secret_key_for_jwt_development_only_123456
       JWT_EXPIRES_IN: 1h
-      FRONTEND_URL: http://localhost:5173 # As used in your server.js for Socket.IO CORS
+      FRONTEND_URL: http://localhost:5173
     depends_on:
       - mongodb
     volumes:
-      - ./backend:/app # Mount the backend code into the container for live updates during development
-      - /app/node_modules # Exclude node_modules from host bind mount to prevent issues
+      - ./backend:/app
+      - /app/node_modules
     networks:
-      - adaptive-bi-network # Connects to the same network as MongoDB
+      - adaptive-bi-network
   
   ai_service:
     build: ./ai_service
     container_name: adaptive-bi-ai-service
     restart: always
     ports:
-      - "8000:8000" # Expose AI service port
-    environment:
-      MONGODB_URL: mongodb://admin:admin123@mongodb:27017/adaptive_bi?authSource=admin
-      DATABASE_NAME: adaptive_bi
-      MODEL_SAVE_PATH: /app/models/saved_models
-      JWT_SECRET: a_very_secret_key_for_jwt_development_only_123456 # Keep consistent with backend for potential shared secrets
-      # Add other AI-specific environment variables as needed
+      - "8000:8000"
+    # AGGRESSIVE memory limits to force better memory management
+    mem_limit: 3g
+    mem_reservation: 1g
+    memswap_limit: 3g
+    cpus: 1.5
+    # --- IMPORTANT CHANGE START ---
+    # Load all environment variables from the .env file in the project root
+    env_file:
+      - ./.env # This tells Docker Compose to load variables from the .env file
+    # --- IMPORTANT CHANGE END ---
+    # The `environment` block below is now removed because all these variables
+    # should be present in your root `.env` file.
     depends_on:
       - mongodb
+      - redis
     volumes:
       - ./ai_service:/app
       - ./ai_service/models/saved_models:/app/models/saved_models # Persistent storage for models
+      - ./ai_service/logs:/app/logs
     networks:
       - adaptive-bi-network
 
 volumes:
-  mongodb_data: # Define the named volume
+  mongodb_data:
+  redis_data:
 
 networks:
-  adaptive-bi-network: # Define the custom network
+  adaptive-bi-network:
     driver: bridge

@@ -27,7 +27,7 @@ OUTPUT="${ROOT_DIR_NAME}-Codebase-Dump-${DATE}.md"
 # Add directory tree (excluding unwanted dirs)
 echo "## Project Directory Structure" >> "$OUTPUT"
 echo '```' >> "$OUTPUT"
-tree -F --dirsfirst -I '__pycache__|venv|models|node_modules|.git|dist|build' >> "$OUTPUT"
+tree -F --dirsfirst -I '__pycache__|venv|node_modules|.git|dist|build' >> "$OUTPUT"
 echo '```' >> "$OUTPUT"
 echo -e "\n\n" >> "$OUTPUT"
 

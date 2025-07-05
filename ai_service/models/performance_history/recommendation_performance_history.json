@@ -1,0 +1,26 @@
+[
+  {
+    "timestamp": "2025-07-05T06:20:43.013171",
+    "model_name": "recommendation",
+    "metrics": {
+      "users": 23,
+      "items": 70,
+      "components": 22,
+      "total_interactions": 73,
+      "sparsity_percentage": 4.53
+    },
+    "additional_info": {}
+  },
+  {
+    "timestamp": "2025-07-05T06:22:43.132573",
+    "model_name": "recommendation",
+    "metrics": {
+      "users": 23,
+      "items": 70,
+      "components": 22,
+      "total_interactions": 73,
+      "sparsity_percentage": 4.53
+    },
+    "additional_info": {}
+  }
+]

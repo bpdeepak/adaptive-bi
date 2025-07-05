@@ -55,9 +55,9 @@ class ForecastingModel:
 
         df_copy = df_copy.dropna().reset_index(drop=True)
 
-        # Calculate minimum samples needed based on lags and rolling windows
-        max_lag = max(settings.FORECASTING_LAG_FEATURES) if hasattr(settings, 'FORECASTING_LAG_FEATURES') and settings.FORECASTING_LAG_FEATURES else 14
-        max_window = max(settings.FORECASTING_ROLLING_WINDOW_FEATURES) if hasattr(settings, 'FORECASTING_ROLLING_WINDOW_FEATURES') and settings.FORECASTING_ROLLING_WINDOW_FEATURES else 14
+        # Calculate minimum samples needed based on lags and rolling windows (hardcoded to match feature engineering above)
+        max_lag = 14  # Matches lags=[1, 2, 3, 7, 14]
+        max_window = 14  # Matches windows=[7, 14]
         min_samples_needed = max(max_lag, max_window) + 2 # Need at least (max lag/window) + 1 for features and +1 for target
 
         if len(df_copy) < min_samples_needed:
@@ -91,18 +91,22 @@ class ForecastingModel:
 
         self._initialize_model()
         logger.info(f"Starting training for {self.model_type} model with {len(X_train)} samples.")
-        self.model.fit(X_train, y_train)
+        if self.model is not None:
+            self.model.fit(X_train, y_train)
 
-        if not X_test.empty and not y_test.empty:
-            y_pred = self.model.predict(X_test)
-            rmse = np.sqrt(mean_squared_error(y_test, y_pred))
-            r2 = r2_score(y_test, y_pred)
-            self.metrics = {"rmse": rmse, "r2_score": r2, "trained_on_samples": len(X_train), "evaluated_on_samples": len(X_test)}
+            if not X_test.empty and not y_test.empty:
+                y_pred = self.model.predict(X_test)
+                rmse = np.sqrt(mean_squared_error(y_test, y_pred))
+                r2 = r2_score(y_test, y_pred)
+                self.metrics = {"rmse": rmse, "r2_score": r2, "trained_on_samples": len(X_train), "evaluated_on_samples": len(X_test)}
+            else:
+                self.metrics = {"rmse": "N/A", "r2_score": "N/A", "trained_on_samples": len(X_train), "evaluated_on_samples": 0, "message": "Not enough data for test evaluation."}
+                logger.warning("Not enough data to create a test set for forecasting model evaluation.")
+
+            self.is_trained = True
         else:
-            self.metrics = {"rmse": "N/A", "r2_score": "N/A", "trained_on_samples": len(X_train), "evaluated_on_samples": 0, "message": "Not enough data for test evaluation."}
-            logger.warning("Not enough data to create a test set for forecasting model evaluation.")
-
-        self.is_trained = True
+            logger.error("Model initialization failed.")
+            return {"status": "failed", "message": "Model initialization failed."}
         logger.info(f"Forecasting model training complete. Metrics: {self.metrics}")
 
         self.save_model()

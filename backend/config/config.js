@@ -25,8 +25,6 @@ const config = {
     database: {
         uri: process.env.MONGO_URI || 'mongodb://localhost:27017/adaptive_bi', // Default if not in .env
         options: {
-            useNewUrlParser: true, // Deprecated in Mongoose 6+, but harmless
-            useUnifiedTopology: true, // Deprecated in Mongoose 6+, but harmless
             maxPoolSize: 10,
             serverSelectionTimeoutMS: 5000,
             socketTimeoutMS: 45000,

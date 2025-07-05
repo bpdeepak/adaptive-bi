@@ -14,7 +14,8 @@ class Config:
     MONGO_USERNAME: str = os.getenv('MONGO_USERNAME', 'admin')
     MONGO_PASSWORD: str = os.getenv('MONGO_PASSWORD', 'admin123')
     # Use 'mongodb' for Docker internal communication, 'localhost' for host-based execution
-    MONGO_HOST: str = os.getenv('MONGO_HOST', 'mongodb')
+    # Clean the MONGO_HOST to remove any comments or extra text
+    MONGO_HOST: str = os.getenv('MONGO_HOST', 'mongodb').split('#')[0].strip()
     MONGO_PORT: int = int(os.getenv('MONGO_PORT', 27017))
     MONGO_DB_NAME: str = os.getenv('MONGO_DB_NAME', 'adaptive_bi')
     

@@ -29,11 +29,11 @@ class Config:
     ACCESS_TOKEN_EXPIRE_MINUTES: int = int(os.getenv("ACCESS_TOKEN_EXPIRE_MINUTES", 30))
 
     # Model settings
-    MODEL_SAVE_PATH: str = os.getenv("MODEL_SAVE_PATH", "/app/models/saved_models")
+    MODEL_SAVE_PATH: str = os.getenv("MODEL_SAVE_PATH", "models/saved_models")
     
     # NEW: Model retraining interval in MINUTES
-    # Default is 24 hours (1440 minutes). Set to 15 for 15 minutes.
-    MODEL_RETRAIN_INTERVAL_MINUTES: int = int(os.getenv("MODEL_RETRAIN_INTERVAL_MINUTES", 1)) 
+    # Default is 0 (COMPLETELY DISABLED) to prevent memory crashes.
+    MODEL_RETRAIN_INTERVAL_MINUTES: int = int(os.getenv("MODEL_RETRAIN_INTERVAL_MINUTES", 0)) 
 
     # Forecasting Model Parameters
     FORECAST_HORIZON: int = int(os.getenv("FORECAST_HORIZON", 7)) # Days to forecast
@@ -44,14 +44,23 @@ class Config:
     ANOMALY_MODEL_TYPE: str = os.getenv("ANOMALY_MODEL_TYPE", "IsolationForest") # IsolationForest or OneClassSVM
 
     # Recommendation Model Parameters
-    MIN_INTERACTIONS_FOR_RECOMMENDATION: int = int(os.getenv("MIN_INTERACTIONS_FOR_RECOMMENDATION", 5))
+    MIN_INTERACTIONS_FOR_RECOMMENDATION: int = int(os.getenv("MIN_INTERACTIONS_FOR_RECOMMENDATION", 2))
     RECOMMENDER_MODEL_TYPE: str = os.getenv("RECOMMENDER_MODEL_TYPE", "SVD") # SVD or KNNWithMeans
 
-    # Data collection window for training
-    DATA_COLLECTION_DAYS: int = int(os.getenv("DATA_COLLECTION_DAYS", 90)) # Data from last 90 days for training
+    # Data collection window for training - DRASTICALLY REDUCED for memory conservation
+    DATA_COLLECTION_DAYS: int = int(os.getenv("DATA_COLLECTION_DAYS", 3)) # Data from last 3 days for training (reduced from 90)
 
     # CORS settings
     CORS_ORIGINS: list = os.getenv("CORS_ORIGINS", "*").split(",") # Allows all origins for development
+
+    # Memory-efficient model training configuration - ULTRA AGGRESSIVE
+    MEMORY_SAFE_MODE: bool = os.getenv("MEMORY_SAFE_MODE", "True").lower() == "true"
+    MAX_PARALLEL_MODELS: int = int(os.getenv("MAX_PARALLEL_MODELS", 1))  # Train only one model at a time to save memory
+    MAX_USERS_FOR_SIMILARITY: int = int(os.getenv("MAX_USERS_FOR_SIMILARITY", 100))  # Limit users for knowledge graph similarity (reduced from 1000)
+    MAX_TRANSACTIONS_CHUNK: int = int(os.getenv("MAX_TRANSACTIONS_CHUNK", 2000))  # Chunk size for large datasets (reduced from 50000)
+    MAX_ACTIVITIES_CHUNK: int = int(os.getenv("MAX_ACTIVITIES_CHUNK", 5000))  # Chunk size for activities (reduced from 100000)
+    ENABLE_MEMORY_MONITORING: bool = os.getenv("ENABLE_MEMORY_MONITORING", "True").lower() == "true"
+    FORCE_GC_AFTER_TRAINING: bool = os.getenv("FORCE_GC_AFTER_TRAINING", "True").lower() == "true"
 
     def __init__(self):
         # Ensure model save path exists
@@ -74,6 +83,13 @@ class Config:
         print(f"Anomaly Threshold: {self.ANOMALY_THRESHOLD}")
         print(f"Data Collection Days: {self.DATA_COLLECTION_DAYS}")
         print(f"CORS Origins: {self.CORS_ORIGINS}")
+        print(f"Memory Safe Mode: {self.MEMORY_SAFE_MODE}")
+        print(f"Max Parallel Models: {self.MAX_PARALLEL_MODELS}")
+        print(f"Max Users for Similarity: {self.MAX_USERS_FOR_SIMILARITY}")
+        print(f"Max Transactions Chunk: {self.MAX_TRANSACTIONS_CHUNK}")
+        print(f"Max Activities Chunk: {self.MAX_ACTIVITIES_CHUNK}")
+        print(f"Enable Memory Monitoring: {self.ENABLE_MEMORY_MONITORING}")
+        print(f"Force GC After Training: {self.FORCE_GC_AFTER_TRAINING}")
         print("--------------------------------\n")
 
 # Instantiate config

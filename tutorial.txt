@@ -1,0 +1,11 @@
+source venv/bin/activate
+
+mongosh "mongodb://admin:admin123@localhost:27017/adaptive_bi?authSource=admin"
+
+docker-compose build ai_service
+
+docker-compose rm -s -f ai_service
+
+docker-compose up ai_service
+
+docker-compose up -d --build

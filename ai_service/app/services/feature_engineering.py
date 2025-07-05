@@ -1,5 +1,6 @@
 import pandas as pd
 import numpy as np
+from typing import Optional, List
 from sklearn.preprocessing import StandardScaler, MinMaxScaler, LabelEncoder
 from app.utils.logger import logger
 
@@ -165,7 +166,7 @@ class FeatureEngineer:
                 raise ValueError("encoder_type must be 'LabelEncoder'")
         return df
 
-    def get_features_and_target(self, df: pd.DataFrame, target_col: str, feature_cols: list = None):
+    def get_features_and_target(self, df: pd.DataFrame, target_col: str, feature_cols: Optional[List[str]] = None):
         """
         Separates features (X) and target (y) from a DataFrame.
         """

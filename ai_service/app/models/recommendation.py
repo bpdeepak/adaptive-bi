@@ -37,6 +37,9 @@ class RecommendationModel:
             logger.warning("No user-item interaction data to train recommendation model.")
             return {"status": "failed", "message": "No data for training."}
 
+        # Log matrix dimensions for debugging
+        logger.info(f"User-item matrix shape: {self.user_item_matrix.shape} (users: {self.user_item_matrix.shape[0]}, items: {self.user_item_matrix.shape[1]})")
+
         # Create mappers for user and item IDs
         self.user_mapper = {user_id: idx for idx, user_id in enumerate(self.user_item_matrix.index)}
         self.item_mapper = {item_id: idx for idx, item_id in enumerate(self.user_item_matrix.columns)}
@@ -47,19 +50,43 @@ class RecommendationModel:
         sparse_user_item = csr_matrix(self.user_item_matrix.values)
 
         if self.model_type == "SVD":
-            self.model = TruncatedSVD(n_components=self.n_components, random_state=42)
-            logger.info(f"Initialized TruncatedSVD with {self.n_components} components.")
+            # Adjust n_components based on matrix dimensions to avoid errors
+            max_components = min(self.user_item_matrix.shape) - 1
+            actual_components = min(self.n_components, max_components, 50)  # Cap at 50 for performance
+            
+            if actual_components <= 0:
+                logger.warning(f"Cannot create SVD model: insufficient data dimensions {self.user_item_matrix.shape}")
+                return {"status": "failed", "message": "Insufficient data dimensions for SVD."}
+            
+            self.model = TruncatedSVD(n_components=actual_components, random_state=42)
+            logger.info(f"Initialized TruncatedSVD with {actual_components} components (requested {self.n_components}, max possible {max_components}).")
         # elif self.model_type == "KNNWithMeans":
             # For KNN based models, you'd typically use surprise library or custom implementation
             # self.model = ...
         else:
             raise ValueError(f"Unsupported recommendation model type: {self.model_type}")
 
-        self.model.fit(sparse_user_item)
-        self.is_trained = True
-        logger.info("Recommendation model training complete.")
-        self.save_model()
-        return {"status": "success", "message": "Recommendation model trained successfully."}
+        try:
+            self.model.fit(sparse_user_item)
+            self.is_trained = True
+            logger.info(f"Recommendation model training complete. Matrix sparsity: {(sparse_user_item.nnz / (sparse_user_item.shape[0] * sparse_user_item.shape[1]) * 100):.2f}%")
+            self.save_model()
+            
+            # Return training metrics
+            return {
+                "status": "success", 
+                "message": "Recommendation model trained successfully.",
+                "metrics": {
+                    "users": self.user_item_matrix.shape[0],
+                    "items": self.user_item_matrix.shape[1],
+                    "components": actual_components,
+                    "total_interactions": int(sparse_user_item.nnz),
+                    "sparsity_percentage": round((sparse_user_item.nnz / (sparse_user_item.shape[0] * sparse_user_item.shape[1]) * 100), 2)
+                }
+            }
+        except Exception as e:
+            logger.error(f"Error during recommendation model training: {e}")
+            return {"status": "failed", "message": f"Training error: {str(e)}"}
 
     def _get_popular_recommendations(self, num_recommendations: int = 10, product_data: Optional[pd.DataFrame] = None):
         """
@@ -74,7 +101,7 @@ class RecommendationModel:
             # If product_data is available, try to get names
             if product_data is not None and not product_data.empty:
                 popular_products_info = product_data[product_data['productId'].isin(popular_item_ids)]
-                return popular_products_info[['productId', 'productName']].to_dict(orient='records')
+                return popular_products_info[['productId', 'name']].to_dict(orient='records')
             return [{"productId": pid} for pid in popular_item_ids]
         
         logger.warning("No user-item matrix available to determine popularity. Returning empty list.")
@@ -131,7 +158,7 @@ class RecommendationModel:
             ordered_recommendations = []
             for prod_id in top_recommendations:
                 if prod_id in product_dict:
-                    ordered_recommendations.append({"productId": prod_id, "productName": product_dict[prod_id][0]}) # Assuming productName is first item
+                    ordered_recommendations.append({"productId": prod_id, "name": product_dict[prod_id][0]}) # Assuming name is first item
             return ordered_recommendations
         
         return [{"productId": pid} for pid in top_recommendations]
