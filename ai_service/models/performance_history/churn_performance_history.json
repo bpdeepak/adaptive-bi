@@ -1,55 +1,5 @@
 [
   {
-    "timestamp": "2025-07-05T07:06:49.929157",
-    "model_name": "churn",
-    "metrics": {
-      "auc_score": 0.9389044943820224,
-      "accuracy": 0.8466135458167331,
-      "churn_rate": 0.708557749850389
-    },
-    "additional_info": {}
-  },
-  {
-    "timestamp": "2025-07-05T07:08:49.264786",
-    "model_name": "churn",
-    "metrics": {
-      "auc_score": 0.9474772222647577,
-      "accuracy": 0.8622754491017964,
-      "churn_rate": 0.704191616766467
-    },
-    "additional_info": {}
-  },
-  {
-    "timestamp": "2025-07-05T07:10:49.816256",
-    "model_name": "churn",
-    "metrics": {
-      "auc_score": 0.9456223306894447,
-      "accuracy": 0.8582834331337326,
-      "churn_rate": 0.7028160575194727
-    },
-    "additional_info": {}
-  },
-  {
-    "timestamp": "2025-07-05T07:12:50.198922",
-    "model_name": "churn",
-    "metrics": {
-      "auc_score": 0.9456223306894447,
-      "accuracy": 0.8582834331337326,
-      "churn_rate": 0.7028160575194727
-    },
-    "additional_info": {}
-  },
-  {
-    "timestamp": "2025-07-05T07:14:49.594192",
-    "model_name": "churn",
-    "metrics": {
-      "auc_score": 0.9566951074214997,
-      "accuracy": 0.8902195608782435,
-      "churn_rate": 0.7058118633912522
-    },
-    "additional_info": {}
-  },
-  {
     "timestamp": "2025-07-05T07:16:52.718380",
     "model_name": "churn",
     "metrics": {
@@ -496,6 +446,56 @@
       "auc_score": 0.9503362038457002,
       "accuracy": 0.8600405679513184,
       "churn_rate": 0.7015834348355664
+    },
+    "additional_info": {}
+  },
+  {
+    "timestamp": "2025-07-06T05:51:31.375484",
+    "model_name": "churn",
+    "metrics": {
+      "auc_score": 0.9428899411680298,
+      "accuracy": 0.8560885608856088,
+      "churn_rate": 0.7441860465116279
+    },
+    "additional_info": {}
+  },
+  {
+    "timestamp": "2025-07-06T06:06:31.784309",
+    "model_name": "churn",
+    "metrics": {
+      "auc_score": 0.9534361340456532,
+      "accuracy": 0.88,
+      "churn_rate": 0.7093373493975904
+    },
+    "additional_info": {}
+  },
+  {
+    "timestamp": "2025-07-06T06:21:33.035145",
+    "model_name": "churn",
+    "metrics": {
+      "auc_score": 0.981908190819082,
+      "accuracy": 0.9423076923076923,
+      "churn_rate": 0.6486486486486487
+    },
+    "additional_info": {}
+  },
+  {
+    "timestamp": "2025-07-06T06:36:34.398670",
+    "model_name": "churn",
+    "metrics": {
+      "auc_score": 0.9797309919671213,
+      "accuracy": 0.9285714285714286,
+      "churn_rate": 0.6549707602339181
+    },
+    "additional_info": {}
+  },
+  {
+    "timestamp": "2025-07-06T06:51:31.344913",
+    "model_name": "churn",
+    "metrics": {
+      "auc_score": 0.955200149644594,
+      "accuracy": 0.934640522875817,
+      "churn_rate": 0.650294695481336
     },
     "additional_info": {}
   }

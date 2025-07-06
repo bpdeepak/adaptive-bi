@@ -26,10 +26,10 @@ const Login = () => {
     }
   }, [isAuthenticated, navigate, from]);
 
-  // Clear errors when component mounts
+  // Clear errors when component mounts (only once)
   useEffect(() => {
     clearError();
-  }, [clearError]);
+  }, [clearError]); // Add clearError to dependencies since it's wrapped with useCallback
 
   const validateForm = () => {
     const newErrors = {};

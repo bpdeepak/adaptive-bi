@@ -56,24 +56,26 @@ aiServiceClient.interceptors.response.use(
  */
 exports.getDemandForecast = asyncHandler(async (req, res, next) => {
   try {
-    const { period = 30, category, horizon = 30 } = req.query;
+    const { horizon = 7, category } = req.query;
     
-    const response = await aiServiceClient.post('/api/v1/forecast/predict', {
-      period: parseInt(period),
-      category,
-      horizon: parseInt(horizon),
-      userId: req.user.userId
+    // Use GET request with query parameters - matches AI service API
+    const response = await aiServiceClient.get('/api/v1/forecast/predict', {
+      params: {
+        horizon: parseInt(horizon)
+      }
     });
 
     logger.info(`Forecast requested by user ${req.user.userId}`, {
-      period,
-      category,
-      horizon
+      horizon,
+      category
     });
 
     res.status(200).json({
       success: true,
-      data: response.data,
+      data: {
+        message: response.data.message,
+        forecast: response.data.forecast
+      },
       message: 'Demand forecast generated successfully'
     });
 
@@ -147,20 +149,26 @@ exports.getAnomalyDetection = asyncHandler(async (req, res, next) => {
 exports.getRecommendations = asyncHandler(async (req, res, next) => {
   try {
     const { user_id, num_recommendations = 5 } = req.query;
+    const targetUserId = user_id || req.user.userId || 1;
     
-    const response = await aiServiceClient.post('/api/v1/recommend/user-recommendations', {
-      user_id: user_id || req.user.userId,
-      num_recommendations: parseInt(num_recommendations)
+    // Use GET request to the correct endpoint - matches AI service API
+    const response = await aiServiceClient.get(`/api/v1/recommend/user/${targetUserId}`, {
+      params: {
+        num_recommendations: parseInt(num_recommendations)
+      }
     });
 
     logger.info(`Recommendations requested by user ${req.user.userId}`, {
-      target_user: user_id || req.user.userId,
+      target_user: targetUserId,
       num_recommendations
     });
 
     res.status(200).json({
       success: true,
-      data: response.data,
+      data: {
+        message: response.data.message,
+        recommendations: response.data.recommendations
+      },
       message: 'Recommendations generated successfully'
     });
 
@@ -200,11 +208,19 @@ exports.getPricingSimulation = asyncHandler(async (req, res, next) => {
       });
     }
 
-    const response = await aiServiceClient.post('/api/v1/ai/pricing/predict', {
+    // Use POST request with query parameters - matches AI service API
+    const params = {
       product_id,
       current_demand: parseFloat(current_demand),
-      seasonal_factor: parseFloat(seasonal_factor),
-      competitor_price: competitor_price ? parseFloat(competitor_price) : null
+      seasonal_factor: parseFloat(seasonal_factor)
+    };
+    
+    if (competitor_price !== undefined) {
+      params.competitor_price = parseFloat(competitor_price);
+    }
+
+    const response = await aiServiceClient.post('/api/v1/ai/pricing/predict', {}, {
+      params
     });
 
     logger.info(`Pricing simulation requested by user ${req.user.userId}`, {
@@ -215,7 +231,9 @@ exports.getPricingSimulation = asyncHandler(async (req, res, next) => {
 
     res.status(200).json({
       success: true,
-      data: response.data,
+      data: {
+        optimal_price: response.data.optimal_price
+      },
       message: 'Pricing simulation completed successfully'
     });
 

@@ -44,7 +44,7 @@ export const ENDPOINTS = {
   },
   
   // Health
-  HEALTH: '/api/health',
+  HEALTH: '/health',
 };
 
 // AI Service Direct Endpoints

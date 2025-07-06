@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useReducer, useEffect } from 'react';
+import React, { createContext, useContext, useReducer, useEffect, useCallback } from 'react';
 import { authService } from '../services/api';
 import { STORAGE_KEYS, SUCCESS_MESSAGES } from '../utils/constants';
 import toast from 'react-hot-toast';
@@ -115,7 +115,8 @@ export const AuthProvider = ({ children }) => {
             payload: response,
           });
         })
-        .catch(() => {
+        .catch((error) => {
+          console.log('Token validation failed:', error.message);
           // Token is invalid, clear storage
           localStorage.removeItem(STORAGE_KEYS.TOKEN);
           localStorage.removeItem(STORAGE_KEYS.USER);
@@ -127,13 +128,13 @@ export const AuthProvider = ({ children }) => {
     } else {
       dispatch({
         type: AUTH_ACTIONS.LOAD_USER_FAILURE,
-        payload: 'No token found',
+        payload: null, // Changed from 'No token found' to null to avoid showing error
       });
     }
   }, []);
 
   // Login function
-  const login = async (credentials) => {
+  const login = useCallback(async (credentials) => {
     try {
       dispatch({ type: AUTH_ACTIONS.LOGIN_START });
       
@@ -157,10 +158,10 @@ export const AuthProvider = ({ children }) => {
       });
       throw error;
     }
-  };
+  }, []);
 
   // Register function
-  const register = async (userData) => {
+  const register = useCallback(async (userData) => {
     try {
       dispatch({ type: AUTH_ACTIONS.REGISTER_START });
       
@@ -184,28 +185,28 @@ export const AuthProvider = ({ children }) => {
       });
       throw error;
     }
-  };
+  }, []);
 
   // Logout function
-  const logout = () => {
+  const logout = useCallback(() => {
     authService.logout();
     dispatch({ type: AUTH_ACTIONS.LOGOUT });
     toast.success(SUCCESS_MESSAGES.LOGOUT_SUCCESS);
-  };
+  }, []);
 
   // Clear error
-  const clearError = () => {
+  const clearError = useCallback(() => {
     dispatch({ type: AUTH_ACTIONS.CLEAR_ERROR });
-  };
+  }, []);
 
   // Update user data
-  const updateUser = (userData) => {
+  const updateUser = useCallback((userData) => {
     localStorage.setItem(STORAGE_KEYS.USER, JSON.stringify(userData));
     dispatch({
       type: AUTH_ACTIONS.LOAD_USER_SUCCESS,
       payload: { data: userData },
     });
-  };
+  }, []);
 
   const value = {
     ...state,

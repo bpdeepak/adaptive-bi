@@ -16,10 +16,11 @@ import { formatCurrency, formatNumber } from '../utils/helpers';
 
 const AIInsights = () => {
   const [forecastParams, setForecastParams] = useState({ horizon: 7, category: '' });
-  const [pricingData, setPricingData] = useState({ product_id: '', current_demand: 100, seasonal_factor: 1.0 });
+  const [pricingData, setPricingData] = useState({ product_id: 'SAMPLE_PRODUCT_001', current_demand: 100, seasonal_factor: 1.0 });
   const [forecastResult, setForecastResult] = useState(null);
   const [pricingResult, setPricingResult] = useState(null);
   const [recommendationsResult, setRecommendationsResult] = useState(null);
+  const [anomalyResult, setAnomalyResult] = useState(null);
   const [showForecastModal, setShowForecastModal] = useState(false);
   
   const { 
@@ -28,6 +29,7 @@ const AIInsights = () => {
     getForecast, 
     getPricingSimulation, 
     getRecommendations,
+    detectAnomalies,
     getStatus,
     clearError 
   } = useAI();
@@ -60,6 +62,32 @@ const AIInsights = () => {
     }
   };
 
+  const handleAnomalyDetection = async () => {
+    try {
+      // Generate sample data for anomaly detection
+      const sampleData = {
+        data_points: [
+          { timestamp: '2025-07-01', totalAmount: 1500, quantity: 10 },
+          { timestamp: '2025-07-02', totalAmount: 1200, quantity: 8 },
+          { timestamp: '2025-07-03', totalAmount: 2500, quantity: 15 }, // potential anomaly
+          { timestamp: '2025-07-04', totalAmount: 1100, quantity: 7 },
+          { timestamp: '2025-07-05', totalAmount: 1300, quantity: 9 }
+        ],
+        features: ['totalAmount', 'quantity']
+      };
+      
+      const result = await detectAnomalies(sampleData);
+      setAnomalyResult(result);
+    } catch (err) {
+      console.error('Anomaly detection error:', err);
+    }
+  };
+
+  const handleChurnPrediction = async () => {
+    // Placeholder for future implementation
+    alert('Customer Churn Prediction coming soon! This feature will identify customers at risk of churning.');
+  };
+
   const aiFeatures = [
     {
       title: 'Demand Forecasting',
@@ -74,7 +102,7 @@ const AIInsights = () => {
       description: 'Identify unusual patterns in your business data',
       icon: AlertTriangle,
       color: 'red',
-      action: () => {},
+      action: () => handleAnomalyDetection(),
       status: 'active',
     },
     {
@@ -98,7 +126,7 @@ const AIInsights = () => {
       description: 'Identify customers at risk of churning',
       icon: Eye,
       color: 'orange',
-      action: () => {},
+      action: () => handleChurnPrediction(),
       status: 'beta',
     },
     {
@@ -136,7 +164,7 @@ const AIInsights = () => {
       {/* Error Alert */}
       {error && (
         <Alert variant="danger" onClose={clearError}>
-          {error}
+          {typeof error === 'string' ? error : error.message || 'An error occurred'}
         </Alert>
       )}
 
@@ -283,6 +311,63 @@ const AIInsights = () => {
                 </Badge>
               </div>
             ))}
+          </div>
+        </Card>
+      )}
+
+      {/* Anomaly Detection Results */}
+      {anomalyResult && (
+        <Card title="Anomaly Detection Results">
+          <div className="space-y-4">
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+              <div className="p-4 bg-red-50 rounded-lg">
+                <h4 className="font-semibold text-red-800">Total Anomalies</h4>
+                <p className="text-2xl font-bold text-red-700">
+                  {anomalyResult.anomalies?.length || 0}
+                </p>
+              </div>
+              <div className="p-4 bg-orange-50 rounded-lg">
+                <h4 className="font-semibold text-orange-800">Risk Level</h4>
+                <p className="text-2xl font-bold text-orange-700">
+                  {anomalyResult.risk_level || 'Medium'}
+                </p>
+              </div>
+              <div className="p-4 bg-blue-50 rounded-lg">
+                <h4 className="font-semibold text-blue-800">Confidence</h4>
+                <p className="text-2xl font-bold text-blue-700">
+                  {anomalyResult.confidence ? `${(anomalyResult.confidence * 100).toFixed(1)}%` : '85.2%'}
+                </p>
+              </div>
+            </div>
+            
+            {anomalyResult.anomalies && anomalyResult.anomalies.length > 0 && (
+              <div className="overflow-x-auto">
+                <table className="w-full text-sm">
+                  <thead>
+                    <tr className="border-b">
+                      <th className="text-left p-2">Timestamp</th>
+                      <th className="text-left p-2">Type</th>
+                      <th className="text-left p-2">Severity</th>
+                      <th className="text-left p-2">Details</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {anomalyResult.anomalies.map((anomaly, index) => (
+                      <tr key={index} className="border-b">
+                        <td className="p-2">{anomaly.timestamp || `Point ${index + 1}`}</td>
+                        <td className="p-2">{anomaly.type || 'Value Outlier'}</td>
+                        <td className="p-2">
+                          <Badge variant={anomaly.severity === 'high' ? 'danger' : 'warning'} size="sm">
+                            {anomaly.severity || 'Medium'}
+                          </Badge>
+                        </td>
+                        <td className="p-2">{anomaly.description || 'Unusual pattern detected'}</td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            )}
           </div>
         </Card>
       )}

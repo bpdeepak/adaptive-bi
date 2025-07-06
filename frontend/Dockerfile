@@ -16,11 +16,12 @@ RUN npm install
 # Copy source code
 COPY . .
 
-# Change ownership
-RUN chown -R frontend:nodejs /app
+# Change ownership and set proper permissions
+RUN chown -R frontend:nodejs /app && \
+    chmod -R 755 /app
 
-# Switch to non-root user  
-USER frontend
+# Don't switch to non-root user for now to debug the permission issue
+# USER frontend
 
 # Expose port
 EXPOSE 5173
