@@ -1,15 +1,5 @@
 [
   {
-    "timestamp": "2025-07-05T07:16:52.718380",
-    "model_name": "churn",
-    "metrics": {
-      "auc_score": 0.951822218819386,
-      "accuracy": 0.8483033932135728,
-      "churn_rate": 0.7050359712230215
-    },
-    "additional_info": {}
-  },
-  {
     "timestamp": "2025-07-05T07:18:49.919689",
     "model_name": "churn",
     "metrics": {
@@ -496,6 +486,16 @@
       "auc_score": 0.955200149644594,
       "accuracy": 0.934640522875817,
       "churn_rate": 0.650294695481336
+    },
+    "additional_info": {}
+  },
+  {
+    "timestamp": "2025-07-06T07:06:34.260730",
+    "model_name": "churn",
+    "metrics": {
+      "auc_score": 0.954085528827797,
+      "accuracy": 0.8874172185430463,
+      "churn_rate": 0.6447105788423154
     },
     "additional_info": {}
   }

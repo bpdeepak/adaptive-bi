@@ -1,17 +1,5 @@
 [
   {
-    "timestamp": "2025-07-05T07:14:43.063128",
-    "model_name": "recommendation",
-    "metrics": {
-      "users": 28,
-      "items": 84,
-      "components": 27,
-      "total_interactions": 88,
-      "sparsity_percentage": 3.74
-    },
-    "additional_info": {}
-  },
-  {
     "timestamp": "2025-07-05T07:16:43.135291",
     "model_name": "recommendation",
     "metrics": {
@@ -596,6 +584,18 @@
       "components": 50,
       "total_interactions": 1499,
       "sparsity_percentage": 2.37
+    },
+    "additional_info": {}
+  },
+  {
+    "timestamp": "2025-07-06T07:06:26.383195",
+    "model_name": "recommendation",
+    "metrics": {
+      "users": 80,
+      "items": 798,
+      "components": 50,
+      "total_interactions": 1507,
+      "sparsity_percentage": 2.36
     },
     "additional_info": {}
   }
