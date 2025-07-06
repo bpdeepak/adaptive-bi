@@ -3,22 +3,16 @@ node_modules/
 /.pnp
 .pnp.js
 
-# Testing
-/coverage
-
-# Production
-/build
+# Production builds
 /dist
+/build
 
 # Environment variables
+.env
 .env.local
 .env.development.local
 .env.test.local
 .env.production.local
-
-# IDE
-.vscode/
-.idea/
 
 # Logs
 npm-debug.log*
@@ -27,16 +21,26 @@ yarn-error.log*
 pnpm-debug.log*
 lerna-debug.log*
 
-# Runtime data
-pids
-*.pid
-*.seed
-*.pid.lock
-
-# OS
+# Editor directories and files
+.vscode/*
+!.vscode/extensions.json
+.idea
 .DS_Store
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+
+# Vite cache
+.vite/
+
+# ESLint cache
+.eslintcache
+
+# OS generated files
 Thumbs.db
 
-# Temporary folders
-tmp/
-temp/
+# Temporary files
+*.tmp
+*.temp

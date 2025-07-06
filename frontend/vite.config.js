@@ -4,28 +4,24 @@ import react from '@vitejs/plugin-react'
 export default defineConfig({
   plugins: [react()],
   server: {
+    host: '0.0.0.0',
     port: 5173,
-    host: '0.0.0.0', // Allow external connections
     watch: {
-      usePolling: true, // Needed for Docker on some systems
+      usePolling: true,
     },
-    proxy: {
-      '/api': {
-        target: 'http://backend:3000', // Use Docker service name
-        changeOrigin: true,
-        secure: false,
-        configure: (proxy, _options) => {
-          proxy.on('error', (err, _req, _res) => {
-            console.log('proxy error', err);
-          });
-          proxy.on('proxyReq', (proxyReq, req, _res) => {
-            console.log('Sending Request to the Target:', req.method, req.url);
-          });
-          proxy.on('proxyRes', (proxyRes, req, _res) => {
-            console.log('Received Response from the Target:', proxyRes.statusCode, req.url);
-          });
-        },
-      }
-    }
-  }
+  },
+  css: {
+    postcss: './postcss.config.cjs',
+  },
+  build: {
+    outDir: 'dist',
+    sourcemap: true,
+  },
+  // Fix for Docker permission issues
+  optimizeDeps: {
+    include: ['react', 'react-dom'],
+  },
+  esbuild: {
+    target: 'es2020',
+  },
 })

@@ -1,229 +1,386 @@
-import React from 'react'
-import { useData } from '../contexts/DataContext'
-import KPICard from '../components/KPICard'
-import ChartCard from '../components/ChartCard'
-import StatusIndicator from '../components/StatusIndicator'
+import React from 'react';
 import { 
-  DollarSign, 
-  ShoppingCart, 
-  Users, 
-  TrendingUp,
-  RefreshCw,
-  Activity
-} from 'lucide-react'
-import {
-  LineChart,
-  Line,
-  AreaChart,
-  Area,
-  BarChart,
-  Bar,
-  XAxis,
-  YAxis,
-  CartesianGrid,
-  Tooltip,
+  LineChart, 
+  Line, 
+  BarChart, 
+  Bar, 
+  XAxis, 
+  YAxis, 
+  CartesianGrid, 
+  Tooltip, 
   ResponsiveContainer,
   PieChart,
   Pie,
   Cell
-} from 'recharts'
+} from 'recharts';
+import { 
+  TrendingUp, 
+  TrendingDown, 
+  DollarSign, 
+  ShoppingCart, 
+  Users, 
+  Package,
+  AlertTriangle,
+  Brain,
+  Activity
+} from 'lucide-react';
+import { useMetrics, useRealTimeUpdates } from '../hooks/useData';
+import { Card, LoadingSpinner, Badge, EmptyState } from '../components/UI';
+import { formatCurrency, formatNumber, calculatePercentageChange } from '../utils/helpers';
+import { CHART_COLORS } from '../utils/constants';
 
-const Dashboard = () => {
-  const { dashboardData, salesMetrics, loading, refreshData } = useData()
-
+// MetricCard component for KPI display
+const MetricCard = ({ title, value, change, icon: Icon, trend, loading = false }) => {
+  const isPositive = change >= 0;
+  const TrendIcon = isPositive ? TrendingUp : TrendingDown;
+  
   if (loading) {
     return (
-      <div className="flex items-center justify-center h-64">
-        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary-600"></div>
-      </div>
-    )
+      <Card className="animate-pulse">
+        <div className="flex items-center justify-between">
+          <div>
+            <div className="h-4 bg-gray-200 rounded w-24 mb-2"></div>
+            <div className="h-8 bg-gray-200 rounded w-32"></div>
+          </div>
+          <div className="h-12 w-12 bg-gray-200 rounded-full"></div>
+        </div>
+      </Card>
+    );
   }
 
-  // Sample data - replace with real data from your APIs
-  const revenueData = [
-    { name: 'Jan', revenue: 45000, target: 50000 },
-    { name: 'Feb', revenue: 52000, target: 50000 },
-    { name: 'Mar', revenue: 48000, target: 50000 },
-    { name: 'Apr', revenue: 61000, target: 55000 },
-    { name: 'May', revenue: 55000, target: 55000 },
-    { name: 'Jun', revenue: 67000, target: 60000 },
-  ]
+  return (
+    <Card className="hover:shadow-md transition-shadow">
+      <div className="flex items-center justify-between">
+        <div>
+          <p className="text-sm font-medium text-gray-600">{title}</p>
+          <p className="text-2xl font-bold text-gray-900">{value}</p>
+          {change !== undefined && (
+            <div className={`flex items-center mt-2 text-sm ${
+              isPositive ? 'text-green-600' : 'text-red-600'
+            }`}>
+              <TrendIcon className="w-4 h-4 mr-1" />
+              <span>{Math.abs(change).toFixed(1)}%</span>
+              <span className="text-gray-500 ml-1">vs last period</span>
+            </div>
+          )}
+        </div>
+        <div className={`p-3 rounded-full ${
+          isPositive ? 'bg-green-100' : 'bg-red-100'
+        }`}>
+          <Icon className={`w-6 h-6 ${
+            isPositive ? 'text-green-600' : 'text-red-600'
+          }`} />
+        </div>
+      </div>
+    </Card>
+  );
+};
 
-  const salesData = [
-    { name: 'Electronics', value: 35, color: '#3B82F6' },
-    { name: 'Books', value: 25, color: '#8B5CF6' },
-    { name: 'Apparel', value: 20, color: '#10B981' },
-    { name: 'Home', value: 20, color: '#F59E0B' },
-  ]
+// Chart component for sales trend
+const SalesTrendChart = ({ data, loading }) => {
+  if (loading) {
+    return (
+      <Card title="Sales Trend">
+        <div className="h-64 flex items-center justify-center">
+          <LoadingSpinner size="lg" />
+        </div>
+      </Card>
+    );
+  }
 
-  const activityData = [
-    { time: '00:00', users: 120 },
-    { time: '04:00', users: 80 },
-    { time: '08:00', users: 350 },
-    { time: '12:00', users: 480 },
-    { time: '16:00', users: 520 },
-    { time: '20:00', users: 280 },
-  ]
+  if (!data || data.length === 0) {
+    return (
+      <Card title="Sales Trend">
+        <EmptyState 
+          title="No sales data available"
+          description="Sales trend data will appear here once transactions are recorded."
+        />
+      </Card>
+    );
+  }
+
+  return (
+    <Card title="Sales Trend" subtitle="Daily revenue over the last 30 days">
+      <div className="h-64 w-full">
+        <ResponsiveContainer width="100%" height="100%">
+          <LineChart data={data}>
+            <CartesianGrid strokeDasharray="3 3" />
+            <XAxis 
+              dataKey="_id" 
+              tick={{ fontSize: 12 }}
+              tickFormatter={(value) => new Date(value).toLocaleDateString()}
+            />
+            <YAxis 
+              tick={{ fontSize: 12 }}
+              tickFormatter={(value) => `$${(value / 1000).toFixed(0)}k`}
+            />
+            <Tooltip 
+              formatter={(value) => [formatCurrency(value), 'Revenue']}
+              labelFormatter={(label) => new Date(label).toLocaleDateString()}
+            />
+            <Line 
+              type="monotone" 
+              dataKey="dailyRevenue" 
+              stroke={CHART_COLORS.primary}
+              strokeWidth={2}
+              dot={{ fill: CHART_COLORS.primary, strokeWidth: 2, r: 4 }}
+              activeDot={{ r: 6 }}
+            />
+          </LineChart>
+        </ResponsiveContainer>
+      </div>
+    </Card>
+  );
+};
+
+// Top products chart
+const TopProductsChart = ({ data, loading }) => {
+  if (loading) {
+    return (
+      <Card title="Top Selling Products">
+        <div className="h-64 flex items-center justify-center">
+          <LoadingSpinner size="lg" />
+        </div>
+      </Card>
+    );
+  }
+
+  if (!data || data.length === 0) {
+    return (
+      <Card title="Top Selling Products">
+        <EmptyState 
+          title="No product data available"
+          description="Top selling products will appear here."
+        />
+      </Card>
+    );
+  }
+
+  return (
+    <Card title="Top Selling Products" subtitle="Best performing products by quantity sold">
+      <div className="h-64 w-full">
+        <ResponsiveContainer width="100%" height="100%">
+          <BarChart data={data} layout="horizontal">
+            <CartesianGrid strokeDasharray="3 3" />
+            <XAxis type="number" tick={{ fontSize: 12 }} />
+            <YAxis 
+              type="category" 
+              dataKey="name" 
+              tick={{ fontSize: 12 }}
+              width={100}
+            />
+            <Tooltip formatter={(value) => [formatNumber(value), 'Quantity Sold']} />
+            <Bar 
+              dataKey="totalQuantitySold" 
+              fill={CHART_COLORS.secondary}
+              radius={[0, 4, 4, 0]}
+            />
+          </BarChart>
+        </ResponsiveContainer>
+      </div>
+    </Card>
+  );
+};
+
+// Customer acquisition chart
+const CustomerChart = ({ data, loading }) => {
+  if (loading) {
+    return (
+      <Card title="Customer Growth">
+        <div className="h-64 flex items-center justify-center">
+          <LoadingSpinner size="lg" />
+        </div>
+      </Card>
+    );
+  }
+
+  if (!data || data.length === 0) {
+    return (
+      <Card title="Customer Growth">
+        <EmptyState 
+          title="No customer data available"
+          description="Customer growth data will appear here."
+        />
+      </Card>
+    );
+  }
+
+  return (
+    <Card title="Customer Growth" subtitle="New customer registrations over time">
+      <div className="h-64 w-full">
+        <ResponsiveContainer width="100%" height="100%">
+          <LineChart data={data}>
+            <CartesianGrid strokeDasharray="3 3" />
+            <XAxis 
+              dataKey="_id" 
+              tick={{ fontSize: 12 }}
+              tickFormatter={(value) => new Date(value).toLocaleDateString()}
+            />
+            <YAxis tick={{ fontSize: 12 }} />
+            <Tooltip 
+              formatter={(value) => [formatNumber(value), 'New Customers']}
+              labelFormatter={(label) => new Date(label).toLocaleDateString()}
+            />
+            <Line 
+              type="monotone" 
+              dataKey="newCustomers" 
+              stroke={CHART_COLORS.success}
+              strokeWidth={2}
+              dot={{ fill: CHART_COLORS.success, strokeWidth: 2, r: 4 }}
+            />
+          </LineChart>
+        </ResponsiveContainer>
+      </div>
+    </Card>
+  );
+};
+
+// System status component
+const SystemStatus = () => {
+  const { isConnected } = useRealTimeUpdates();
+  
+  return (
+    <Card title="System Status">
+      <div className="space-y-4">
+        <div className="flex items-center justify-between">
+          <div className="flex items-center">
+            <Activity className="w-5 h-5 text-blue-500 mr-2" />
+            <span className="text-sm font-medium">Real-time Connection</span>
+          </div>
+          <Badge variant={isConnected ? 'success' : 'danger'}>
+            {isConnected ? 'Connected' : 'Disconnected'}
+          </Badge>
+        </div>
+        
+        <div className="flex items-center justify-between">
+          <div className="flex items-center">
+            <Brain className="w-5 h-5 text-purple-500 mr-2" />
+            <span className="text-sm font-medium">AI Services</span>
+          </div>
+          <Badge variant="success">Active</Badge>
+        </div>
+        
+        <div className="flex items-center justify-between">
+          <div className="flex items-center">
+            <Package className="w-5 h-5 text-orange-500 mr-2" />
+            <span className="text-sm font-medium">Data Processing</span>
+          </div>
+          <Badge variant="success">Running</Badge>
+        </div>
+      </div>
+    </Card>
+  );
+};
+
+// Main Dashboard component
+const Dashboard = () => {
+  const { 
+    salesMetrics, 
+    productMetrics, 
+    customerMetrics, 
+    loading, 
+    error 
+  } = useMetrics();
+
+  if (error) {
+    return (
+      <div className="space-y-6">
+        <div className="bg-red-50 border border-red-200 rounded-lg p-4">
+          <div className="flex items-center">
+            <AlertTriangle className="w-5 h-5 text-red-600 mr-2" />
+            <span className="text-red-800">Error loading dashboard data: {error}</span>
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="space-y-6">
-      {/* Header */}
-      <div className="flex items-center justify-between">
-        <div>
-          <h1 className="text-2xl font-bold text-gray-900">Dashboard</h1>
-          <p className="text-gray-600">Real-time business intelligence overview</p>
-        </div>
-        <div className="flex items-center space-x-4">
-          <StatusIndicator status="healthy" label="System Status" />
-          <button
-            onClick={refreshData}
-            className="btn-secondary flex items-center"
-          >
-            <RefreshCw className="h-4 w-4 mr-2" />
-            Refresh
-          </button>
-        </div>
+      {/* Page Header */}
+      <div className="mb-8">
+        <h1 className="text-3xl font-bold text-gray-900">Dashboard</h1>
+        <p className="text-gray-600 mt-2">Monitor your business performance in real-time</p>
       </div>
 
       {/* KPI Cards */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-        <KPICard
+        <MetricCard
           title="Total Revenue"
-          value={dashboardData?.totalRevenue || 342000}
-          change={12.5}
-          changeType="positive"
+          value={salesMetrics ? formatCurrency(salesMetrics.totalRevenue) : '--'}
+          change={salesMetrics ? calculatePercentageChange(salesMetrics.totalRevenue, salesMetrics.totalRevenue * 0.9) : 0}
           icon={DollarSign}
-          format="currency"
+          loading={loading}
         />
-        <KPICard
+        
+        <MetricCard
           title="Total Orders"
-          value={dashboardData?.totalOrders || 1247}
-          change={8.2}
-          changeType="positive"
+          value={salesMetrics ? formatNumber(salesMetrics.totalOrders) : '--'}
+          change={salesMetrics ? calculatePercentageChange(salesMetrics.totalOrders, salesMetrics.totalOrders * 0.85) : 0}
           icon={ShoppingCart}
+          loading={loading}
         />
-        <KPICard
-          title="Active Users"
-          value={dashboardData?.activeUsers || 3456}
-          change={-2.3}
-          changeType="negative"
+        
+        <MetricCard
+          title="Total Customers"
+          value={customerMetrics ? formatNumber(customerMetrics.totalCustomers) : '--'}
+          change={customerMetrics ? calculatePercentageChange(customerMetrics.totalCustomers, customerMetrics.totalCustomers * 0.95) : 0}
           icon={Users}
+          loading={loading}
         />
-        <KPICard
-          title="Conversion Rate"
-          value={dashboardData?.conversionRate || 3.4}
-          change={0.8}
-          changeType="positive"
-          icon={TrendingUp}
-          format="percent"
+        
+        <MetricCard
+          title="Total Products"
+          value={productMetrics ? formatNumber(productMetrics.totalProducts) : '--'}
+          change={productMetrics ? calculatePercentageChange(productMetrics.totalProducts, productMetrics.totalProducts * 0.98) : 0}
+          icon={Package}
+          loading={loading}
         />
       </div>
 
-      {/* Charts Grid */}
+      {/* Charts Row 1 */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        {/* Revenue Chart */}
-        <ChartCard title="Revenue vs Target">
-          <ResponsiveContainer width="100%" height="100%">
-            <AreaChart data={revenueData}>
-              <CartesianGrid strokeDasharray="3 3" />
-              <XAxis dataKey="name" />
-              <YAxis />
-              <Tooltip formatter={(value) => [`$${value.toLocaleString()}`, '']} />
-              <Area
-                type="monotone"
-                dataKey="revenue"
-                stroke="#3B82F6"
-                fill="#3B82F6"
-                fillOpacity={0.3}
-                name="Revenue"
-              />
-              <Line
-                type="monotone"
-                dataKey="target"
-                stroke="#EF4444"
-                strokeDasharray="5 5"
-                name="Target"
-              />
-            </AreaChart>
-          </ResponsiveContainer>
-        </ChartCard>
-
-        {/* Sales by Category */}
-        <ChartCard title="Sales by Category">
-          <ResponsiveContainer width="100%" height="100%">
-            <PieChart>
-              <Pie
-                data={salesData}
-                cx="50%"
-                cy="50%"
-                outerRadius={100}
-                dataKey="value"
-                label={({ name, percent }) => `${name} ${(percent * 100).toFixed(0)}%`}
-              >
-                {salesData.map((entry, index) => (
-                  <Cell key={`cell-${index}`} fill={entry.color} />
-                ))}
-              </Pie>
-              <Tooltip />
-            </PieChart>
-          </ResponsiveContainer>
-        </ChartCard>
-
-        {/* User Activity */}
-        <ChartCard title="User Activity (24h)">
-          <ResponsiveContainer width="100%" height="100%">
-            <LineChart data={activityData}>
-              <CartesianGrid strokeDasharray="3 3" />
-              <XAxis dataKey="time" />
-              <YAxis />
-              <Tooltip />
-              <Line
-                type="monotone"
-                dataKey="users"
-                stroke="#10B981"
-                strokeWidth={2}
-                name="Active Users"
-              />
-            </LineChart>
-          </ResponsiveContainer>
-        </ChartCard>
-
-        {/* Recent Activity */}
-        <div className="card p-6">
-          <h3 className="text-lg font-medium text-gray-900 mb-4">Recent Activity</h3>
-          <div className="space-y-4">
-            <div className="flex items-center space-x-3">
-              <div className="flex-shrink-0">
-                <Activity className="h-5 w-5 text-green-500" />
-              </div>
-              <div className="flex-1">
-                <p className="text-sm text-gray-900">New order #1247</p>
-                <p className="text-xs text-gray-500">2 minutes ago</p>
-              </div>
-            </div>
-            <div className="flex items-center space-x-3">
-              <div className="flex-shrink-0">
-                <Users className="h-5 w-5 text-blue-500" />
-              </div>
-              <div className="flex-1">
-                <p className="text-sm text-gray-900">New user registered</p>
-                <p className="text-xs text-gray-500">5 minutes ago</p>
-              </div>
-            </div>
-            <div className="flex items-center space-x-3">
-              <div className="flex-shrink-0">
-                <TrendingUp className="h-5 w-5 text-purple-500" />
-              </div>
-              <div className="flex-1">
-                <p className="text-sm text-gray-900">Revenue target achieved</p>
-                <p className="text-xs text-gray-500">1 hour ago</p>
-              </div>
-            </div>
-          </div>
-        </div>
+        <SalesTrendChart 
+          data={salesMetrics?.salesTrend} 
+          loading={loading} 
+        />
+        <TopProductsChart 
+          data={productMetrics?.topSellingProducts} 
+          loading={loading} 
+        />
       </div>
-    </div>
-  )
-}
 
-export default Dashboard
+      {/* Charts Row 2 */}
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+        <div className="lg:col-span-2">
+          <CustomerChart 
+            data={customerMetrics?.newCustomersTrend} 
+            loading={loading} 
+          />
+        </div>
+        <SystemStatus />
+      </div>
+
+      {/* Low Stock Alert */}
+      {productMetrics?.productsLowInStock?.length > 0 && (
+        <Card title="Low Stock Alert" className="border-l-4 border-l-orange-500">
+          <div className="space-y-2">
+            {productMetrics.productsLowInStock.map((product) => (
+              <div key={product.productId} className="flex items-center justify-between p-2 bg-orange-50 rounded">
+                <div>
+                  <span className="font-medium">{product.name}</span>
+                  <span className="text-sm text-gray-600 ml-2">({product.category})</span>
+                </div>
+                <Badge variant="warning">
+                  {product.stock} left
+                </Badge>
+              </div>
+            ))}
+          </div>
+        </Card>
+      )}
+    </div>
+  );
+};
+
+export default Dashboard;

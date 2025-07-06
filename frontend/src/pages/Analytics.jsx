@@ -1,297 +1,353 @@
-import React, { useState } from 'react'
-import { useData } from '../contexts/DataContext'
-import ChartCard from '../components/ChartCard'
-import KPICard from '../components/KPICard'
+import React, { useState } from 'react';
 import { 
-  BarChart3, 
-  Filter, 
-  Download,
-  Calendar,
-  TrendingUp,
-  Users,
-  ShoppingBag
-} from 'lucide-react'
-import {
-  BarChart,
-  Bar,
-  LineChart,
-  Line,
-  AreaChart,
-  Area,
-  XAxis,
-  YAxis,
-  CartesianGrid,
-  Tooltip,
+  LineChart, 
+  Line, 
+  BarChart, 
+  Bar, 
+  XAxis, 
+  YAxis, 
+  CartesianGrid, 
+  Tooltip, 
   ResponsiveContainer,
-  ComposedChart,
-  Scatter,
-  ScatterChart,
-  ReferenceLine
-} from 'recharts'
+  PieChart,
+  Pie,
+  Cell,
+  AreaChart,
+  Area
+} from 'recharts';
+import { 
+  TrendingUp, 
+  Calendar, 
+  Download, 
+  Filter,
+  RefreshCw
+} from 'lucide-react';
+import { useMetrics } from '../hooks/useData';
+import { Card, Button, LoadingSpinner, Select } from '../components/UI';
+import { formatCurrency, formatNumber } from '../utils/helpers';
+import { CHART_COLORS } from '../utils/constants';
 
 const Analytics = () => {
-  const { salesMetrics, productMetrics, customerMetrics, loading } = useData()
-  const [dateRange, setDateRange] = useState('30d')
-  const [selectedMetric, setSelectedMetric] = useState('revenue')
+  const [timeRange, setTimeRange] = useState('30d');
+  const [chartType, setChartType] = useState('line');
+  const { salesMetrics, productMetrics, customerMetrics, loading, refetch } = useMetrics();
+
+  const timeRangeOptions = [
+    { value: '7d', label: 'Last 7 days' },
+    { value: '30d', label: 'Last 30 days' },
+    { value: '90d', label: 'Last 3 months' },
+    { value: '1y', label: 'Last year' },
+  ];
+
+  const chartTypeOptions = [
+    { value: 'line', label: 'Line Chart' },
+    { value: 'area', label: 'Area Chart' },
+    { value: 'bar', label: 'Bar Chart' },
+  ];
+
+  const handleExport = () => {
+    // Export analytics data
+    const data = {
+      salesMetrics,
+      productMetrics,
+      customerMetrics,
+      generatedAt: new Date().toISOString(),
+    };
+    
+    const blob = new Blob([JSON.stringify(data, null, 2)], {
+      type: 'application/json',
+    });
+    
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement('a');
+    link.href = url;
+    link.download = `analytics-${new Date().toISOString().split('T')[0]}.json`;
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    URL.revokeObjectURL(url);
+  };
+
+  const renderChart = (data, dataKey, color = CHART_COLORS.primary) => {
+    const ChartComponent = {
+      line: LineChart,
+      area: AreaChart,
+      bar: BarChart,
+    }[chartType];
+
+    if (chartType === 'area') {
+      return (
+        <ResponsiveContainer width="100%" height="100%">
+          <AreaChart data={data}>
+            <CartesianGrid strokeDasharray="3 3" />
+            <XAxis dataKey="_id" />
+            <YAxis />
+            <Tooltip />
+            <Area
+              type="monotone"
+              dataKey={dataKey}
+              stroke={color}
+              fill={`${color}20`}
+            />
+          </AreaChart>
+        </ResponsiveContainer>
+      );
+    }
+
+    if (chartType === 'bar') {
+      return (
+        <ResponsiveContainer width="100%" height="100%">
+          <BarChart data={data}>
+            <CartesianGrid strokeDasharray="3 3" />
+            <XAxis dataKey="_id" />
+            <YAxis />
+            <Tooltip />
+            <Bar dataKey={dataKey} fill={color} />
+          </BarChart>
+        </ResponsiveContainer>
+      );
+    }
+
+    return (
+      <ResponsiveContainer width="100%" height="100%">
+        <LineChart data={data}>
+          <CartesianGrid strokeDasharray="3 3" />
+          <XAxis dataKey="_id" />
+          <YAxis />
+          <Tooltip />
+          <Line
+            type="monotone"
+            dataKey={dataKey}
+            stroke={color}
+            strokeWidth={2}
+          />
+        </LineChart>
+      </ResponsiveContainer>
+    );
+  };
 
   if (loading) {
     return (
-      <div className="flex items-center justify-center h-64">
-        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary-600"></div>
+      <div className="flex items-center justify-center min-h-screen">
+        <LoadingSpinner size="lg" />
       </div>
-    )
+    );
   }
-
-  // Sample analytics data
-  const salesTrend = [
-    { date: '2024-01', revenue: 45000, orders: 250, customers: 180 },
-    { date: '2024-02', revenue: 52000, orders: 280, customers: 200 },
-    { date: '2024-03', revenue: 48000, orders: 260, customers: 190 },
-    { date: '2024-04', revenue: 61000, orders: 320, customers: 240 },
-    { date: '2024-05', revenue: 55000, orders: 300, customers: 220 },
-    { date: '2024-06', revenue: 67000, orders: 350, customers: 280 },
-  ]
-
-  const productPerformance = [
-    { name: 'Smartphone Pro', sales: 120, revenue: 84000, margin: 25 },
-    { name: 'Laptop Ultra', sales: 85, revenue: 127500, margin: 30 },
-    { name: 'Headphones', sales: 200, revenue: 40000, margin: 35 },
-    { name: 'Tablet', sales: 95, revenue: 47500, margin: 28 },
-    { name: 'Smartwatch', sales: 150, revenue: 37500, margin: 32 },
-  ]
-
-  const customerSegments = [
-    { segment: 'Premium', customers: 450, avgValue: 850, retention: 85 },
-    { segment: 'Standard', customers: 1200, avgValue: 320, retention: 65 },
-    { segment: 'Basic', customers: 800, avgValue: 150, retention: 45 },
-  ]
-
-  const cohortData = [
-    { month: 'Jan', week1: 100, week2: 85, week3: 72, week4: 65 },
-    { month: 'Feb', week1: 100, week2: 88, week3: 75, week4: 68 },
-    { month: 'Mar', week1: 100, week2: 82, week3: 70, week4: 62 },
-    { month: 'Apr', week1: 100, week2: 90, week3: 78, week4: 70 },
-  ]
 
   return (
     <div className="space-y-6">
       {/* Header */}
-      <div className="flex items-center justify-between">
+      <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between">
         <div>
-          <h1 className="text-2xl font-bold text-gray-900">Analytics</h1>
-          <p className="text-gray-600">Deep insights into your business performance</p>
+          <h1 className="text-3xl font-bold text-gray-900">Analytics</h1>
+          <p className="text-gray-600 mt-2">Detailed insights into your business performance</p>
         </div>
-        <div className="flex items-center space-x-4">
-          <select
-            value={dateRange}
-            onChange={(e) => setDateRange(e.target.value)}
-            className="border border-gray-300 rounded-md px-3 py-2 text-sm"
+        
+        <div className="flex items-center space-x-4 mt-4 lg:mt-0">
+          <Select
+            value={timeRange}
+            onChange={(e) => setTimeRange(e.target.value)}
+            options={timeRangeOptions}
+            className="w-40"
+          />
+          
+          <Select
+            value={chartType}
+            onChange={(e) => setChartType(e.target.value)}
+            options={chartTypeOptions}
+            className="w-40"
+          />
+          
+          <Button
+            variant="outline"
+            onClick={refetch}
+            className="flex items-center"
           >
-            <option value="7d">Last 7 days</option>
-            <option value="30d">Last 30 days</option>
-            <option value="90d">Last 90 days</option>
-            <option value="1y">Last year</option>
-          </select>
-          <button className="btn-secondary flex items-center">
-            <Filter className="h-4 w-4 mr-2" />
-            Filter
-          </button>
-          <button className="btn-primary flex items-center">
-            <Download className="h-4 w-4 mr-2" />
+            <RefreshCw className="w-4 h-4 mr-2" />
+            Refresh
+          </Button>
+          
+          <Button
+            variant="primary"
+            onClick={handleExport}
+            className="flex items-center"
+          >
+            <Download className="w-4 h-4 mr-2" />
             Export
-          </button>
+          </Button>
         </div>
       </div>
 
-      {/* Key Metrics */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-        <KPICard
-          title="Average Order Value"
-          value={245}
-          change={15.2}
-          changeType="positive"
-          icon={ShoppingBag}
-          format="currency"
-        />
-        <KPICard
-          title="Customer Lifetime Value"
-          value={1250}
-          change={8.7}
-          changeType="positive"
-          icon={Users}
-          format="currency"
-        />
-        <KPICard
-          title="Monthly Growth Rate"
-          value={12.4}
-          change={2.1}
-          changeType="positive"
-          icon={TrendingUp}
-          format="percent"
-        />
-      </div>
-
-      {/* Charts Grid */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        {/* Sales Trend Analysis */}
-        <ChartCard title="Sales Trend Analysis" className="lg:col-span-2">
-          <ResponsiveContainer width="100%" height="100%">
-            <ComposedChart data={salesTrend}>
-              <CartesianGrid strokeDasharray="3 3" />
-              <XAxis dataKey="date" />
-              <YAxis yAxisId="left" />
-              <YAxis yAxisId="right" orientation="right" />
-              <Tooltip />
-              <Bar yAxisId="left" dataKey="revenue" fill="#3B82F6" name="Revenue" />
-              <Line 
-                yAxisId="right" 
-                type="monotone" 
-                dataKey="orders" 
-                stroke="#EF4444" 
-                strokeWidth={2}
-                name="Orders"
-              />
-              <Line 
-                yAxisId="right" 
-                type="monotone" 
-                dataKey="customers" 
-                stroke="#10B981" 
-                strokeWidth={2}
-                name="New Customers"
-              />
-            </ComposedChart>
-          </ResponsiveContainer>
-        </ChartCard>
-
-        {/* Product Performance */}
-        <ChartCard title="Top Products by Revenue">
-          <ResponsiveContainer width="100%" height="100%">
-            <BarChart data={productPerformance} layout="horizontal">
-              <CartesianGrid strokeDasharray="3 3" />
-              <XAxis type="number" />
-              <YAxis type="category" dataKey="name" width={100} />
-              <Tooltip formatter={(value) => [`$${value.toLocaleString()}`, 'Revenue']} />
-              <Bar dataKey="revenue" fill="#8B5CF6" />
-            </BarChart>
-          </ResponsiveContainer>
-        </ChartCard>
-
-        {/* Customer Segments */}
-        <ChartCard title="Customer Segments">
-          <ResponsiveContainer width="100%" height="100%">
-            <ScatterChart data={customerSegments}>
-              <CartesianGrid strokeDasharray="3 3" />
-              <XAxis dataKey="avgValue" name="Avg Order Value" />
-              <YAxis dataKey="retention" name="Retention Rate" />
-              <Tooltip 
-                formatter={(value, name) => [
-                  name === 'avgValue' ? `$${value}` : `${value}%`,
-                  name === 'avgValue' ? 'Avg Order Value' : 'Retention Rate'
-                ]}
-                labelFormatter={(label) => `Segment: ${customerSegments.find(s => s.customers === label)?.segment || ''}`}
-              />
-              <Scatter 
-                dataKey="customers" 
-                fill="#F59E0B"
-                name="Customers"
-              />
-            </ScatterChart>
-          </ResponsiveContainer>
-        </ChartCard>
-
-        {/* Cohort Analysis */}
-        <ChartCard title="Customer Retention Cohort" className="lg:col-span-2">
-          <ResponsiveContainer width="100%" height="100%">
-            <LineChart data={cohortData}>
-              <CartesianGrid strokeDasharray="3 3" />
-              <XAxis dataKey="month" />
-              <YAxis />
-              <Tooltip formatter={(value) => [`${value}%`, 'Retention']} />
-              <Line type="monotone" dataKey="week1" stroke="#3B82F6" name="Week 1" />
-              <Line type="monotone" dataKey="week2" stroke="#8B5CF6" name="Week 2" />
-              <Line type="monotone" dataKey="week3" stroke="#10B981" name="Week 3" />
-              <Line type="monotone" dataKey="week4" stroke="#F59E0B" name="Week 4" />
-              <ReferenceLine y={50} stroke="#EF4444" strokeDasharray="5 5" />
-            </LineChart>
-          </ResponsiveContainer>
-        </ChartCard>
-      </div>
-
-      {/* Detailed Tables */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        {/* Product Performance Table */}
-        <div className="card p-6">
-          <h3 className="text-lg font-medium text-gray-900 mb-4">Product Performance Details</h3>
-          <div className="overflow-x-auto">
-            <table className="min-w-full divide-y divide-gray-200">
-              <thead className="bg-gray-50">
-                <tr>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                    Product
-                  </th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                    Sales
-                  </th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                    Revenue
-                  </th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                    Margin
-                  </th>
-                </tr>
-              </thead>
-              <tbody className="bg-white divide-y divide-gray-200">
-                {productPerformance.map((product, index) => (
-                  <tr key={index}>
-                    <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
-                      {product.name}
-                    </td>
-                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                      {product.sales}
-                    </td>
-                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                      ${product.revenue.toLocaleString()}
-                    </td>
-                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                      {product.margin}%
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
+      {/* Summary Cards */}
+      <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
+        <Card>
+          <div className="flex items-center justify-between">
+            <div>
+              <p className="text-sm text-gray-600">Average Order Value</p>
+              <p className="text-2xl font-bold">
+                {salesMetrics ? formatCurrency(salesMetrics.averageOrderValue) : '--'}
+              </p>
+            </div>
+            <TrendingUp className="w-8 h-8 text-green-500" />
           </div>
-        </div>
+        </Card>
+        
+        <Card>
+          <div className="flex items-center justify-between">
+            <div>
+              <p className="text-sm text-gray-600">Conversion Rate</p>
+              <p className="text-2xl font-bold">3.2%</p>
+            </div>
+            <TrendingUp className="w-8 h-8 text-blue-500" />
+          </div>
+        </Card>
+        
+        <Card>
+          <div className="flex items-center justify-between">
+            <div>
+              <p className="text-sm text-gray-600">Customer Lifetime Value</p>
+              <p className="text-2xl font-bold">$1,245</p>
+            </div>
+            <TrendingUp className="w-8 h-8 text-purple-500" />
+          </div>
+        </Card>
+        
+        <Card>
+          <div className="flex items-center justify-between">
+            <div>
+              <p className="text-sm text-gray-600">Return Rate</p>
+              <p className="text-2xl font-bold">2.1%</p>
+            </div>
+            <TrendingUp className="w-8 h-8 text-orange-500" />
+          </div>
+        </Card>
+      </div>
 
-        {/* Customer Insights */}
-        <div className="card p-6">
-          <h3 className="text-lg font-medium text-gray-900 mb-4">Customer Insights</h3>
-          <div className="space-y-4">
-            <div className="flex justify-between items-center p-4 bg-blue-50 rounded-lg">
-              <div>
-                <p className="text-sm font-medium text-blue-900">High-Value Customers</p>
-                <p className="text-xs text-blue-700">Orders &gt; $500</p>
+      {/* Charts */}
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        <Card title="Revenue Trend">
+          <div className="h-80">
+            {salesMetrics?.salesTrend ? (
+              renderChart(salesMetrics.salesTrend, 'dailyRevenue', CHART_COLORS.primary)
+            ) : (
+              <div className="flex items-center justify-center h-full">
+                <LoadingSpinner />
               </div>
-              <span className="text-2xl font-bold text-blue-900">324</span>
+            )}
+          </div>
+        </Card>
+        
+        <Card title="Order Volume">
+          <div className="h-80">
+            {salesMetrics?.salesTrend ? (
+              renderChart(salesMetrics.salesTrend, 'dailyOrders', CHART_COLORS.secondary)
+            ) : (
+              <div className="flex items-center justify-center h-full">
+                <LoadingSpinner />
+              </div>
+            )}
+          </div>
+        </Card>
+      </div>
+
+      {/* Product Performance */}
+      <Card title="Product Performance Analysis">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+          <div>
+            <h4 className="text-lg font-semibold mb-4">Top Selling Products</h4>
+            <div className="space-y-3">
+              {productMetrics?.topSellingProducts?.map((product, index) => (
+                <div key={product.productId} className="flex items-center justify-between p-3 bg-gray-50 rounded">
+                  <div className="flex items-center">
+                    <div className="w-8 h-8 bg-primary-100 rounded-full flex items-center justify-center mr-3">
+                      <span className="text-primary-600 font-medium">{index + 1}</span>
+                    </div>
+                    <div>
+                      <p className="font-medium">{product.name}</p>
+                      <p className="text-sm text-gray-600">{product.category}</p>
+                    </div>
+                  </div>
+                  <span className="font-bold text-primary-600">
+                    {formatNumber(product.totalQuantitySold)}
+                  </span>
+                </div>
+              ))}
             </div>
-            <div className="flex justify-between items-center p-4 bg-green-50 rounded-lg">
-              <div>
-                <p className="text-sm font-medium text-green-900">Repeat Customers</p>
-                <p className="text-xs text-green-700">3+ orders</p>
-              </div>
-              <span className="text-2xl font-bold text-green-900">156</span>
-            </div>
-            <div className="flex justify-between items-center p-4 bg-yellow-50 rounded-lg">
-              <div>
-                <p className="text-sm font-medium text-yellow-900">At-Risk Customers</p>
-                <p className="text-xs text-yellow-700">No orders in 60 days</p>
-              </div>
-              <span className="text-2xl font-bold text-yellow-900">89</span>
+          </div>
+          
+          <div>
+            <h4 className="text-lg font-semibold mb-4">Low Stock Alerts</h4>
+            <div className="space-y-3">
+              {productMetrics?.productsLowInStock?.map((product) => (
+                <div key={product.productId} className="flex items-center justify-between p-3 bg-red-50 rounded">
+                  <div>
+                    <p className="font-medium">{product.name}</p>
+                    <p className="text-sm text-gray-600">{product.category}</p>
+                  </div>
+                  <span className="font-bold text-red-600">
+                    {product.stock} left
+                  </span>
+                </div>
+              ))}
             </div>
           </div>
         </div>
-      </div>
+      </Card>
+
+      {/* Customer Analytics */}
+      <Card title="Customer Analytics">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+          <div>
+            <h4 className="text-lg font-semibold mb-4">Top Customers</h4>
+            <div className="space-y-3">
+              {customerMetrics?.topSpendingCustomers?.map((customer, index) => (
+                <div key={customer.userId} className="flex items-center justify-between p-3 bg-gray-50 rounded">
+                  <div className="flex items-center">
+                    <div className="w-8 h-8 bg-green-100 rounded-full flex items-center justify-center mr-3">
+                      <span className="text-green-600 font-medium">{index + 1}</span>
+                    </div>
+                    <div>
+                      <p className="font-medium">{customer.username}</p>
+                      <p className="text-sm text-gray-600">{customer.orderCount} orders</p>
+                    </div>
+                  </div>
+                  <span className="font-bold text-green-600">
+                    {formatCurrency(customer.totalSpend)}
+                  </span>
+                </div>
+              ))}
+            </div>
+          </div>
+          
+          <div>
+            <h4 className="text-lg font-semibold mb-4">Customer Growth</h4>
+            <div className="h-64">
+              {customerMetrics?.newCustomersTrend ? (
+                <ResponsiveContainer width="100%" height="100%">
+                  <AreaChart data={customerMetrics.newCustomersTrend}>
+                    <CartesianGrid strokeDasharray="3 3" />
+                    <XAxis dataKey="_id" />
+                    <YAxis />
+                    <Tooltip />
+                    <Area
+                      type="monotone"
+                      dataKey="newCustomers"
+                      stroke={CHART_COLORS.success}
+                      fill={`${CHART_COLORS.success}20`}
+                    />
+                  </AreaChart>
+                </ResponsiveContainer>
+              ) : (
+                <div className="flex items-center justify-center h-full">
+                  <LoadingSpinner />
+                </div>
+              )}
+            </div>
+          </div>
+        </div>
+      </Card>
     </div>
-  )
-}
+  );
+};
 
-export default Analytics
+export default Analytics;
