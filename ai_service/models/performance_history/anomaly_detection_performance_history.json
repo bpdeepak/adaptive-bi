@@ -1,107 +1,5 @@
 [
   {
-    "timestamp": "2025-07-05T07:18:42.015638",
-    "model_name": "anomaly_detection",
-    "metrics": {
-      "outliers_in_training_data": 5,
-      "outlier_percentage": "1.00%"
-    },
-    "additional_info": {
-      "training_samples": 500,
-      "features_used": [
-        "totalAmount",
-        "quantity"
-      ],
-      "contamination": 0.01,
-      "model_type": "IsolationForest"
-    }
-  },
-  {
-    "timestamp": "2025-07-05T07:20:42.333233",
-    "model_name": "anomaly_detection",
-    "metrics": {
-      "outliers_in_training_data": 5,
-      "outlier_percentage": "1.00%"
-    },
-    "additional_info": {
-      "training_samples": 500,
-      "features_used": [
-        "totalAmount",
-        "quantity"
-      ],
-      "contamination": 0.01,
-      "model_type": "IsolationForest"
-    }
-  },
-  {
-    "timestamp": "2025-07-05T07:22:42.373624",
-    "model_name": "anomaly_detection",
-    "metrics": {
-      "outliers_in_training_data": 5,
-      "outlier_percentage": "1.00%"
-    },
-    "additional_info": {
-      "training_samples": 500,
-      "features_used": [
-        "totalAmount",
-        "quantity"
-      ],
-      "contamination": 0.01,
-      "model_type": "IsolationForest"
-    }
-  },
-  {
-    "timestamp": "2025-07-05T07:24:42.310872",
-    "model_name": "anomaly_detection",
-    "metrics": {
-      "outliers_in_training_data": 5,
-      "outlier_percentage": "1.00%"
-    },
-    "additional_info": {
-      "training_samples": 500,
-      "features_used": [
-        "totalAmount",
-        "quantity"
-      ],
-      "contamination": 0.01,
-      "model_type": "IsolationForest"
-    }
-  },
-  {
-    "timestamp": "2025-07-05T07:26:42.351336",
-    "model_name": "anomaly_detection",
-    "metrics": {
-      "outliers_in_training_data": 5,
-      "outlier_percentage": "1.00%"
-    },
-    "additional_info": {
-      "training_samples": 500,
-      "features_used": [
-        "totalAmount",
-        "quantity"
-      ],
-      "contamination": 0.01,
-      "model_type": "IsolationForest"
-    }
-  },
-  {
-    "timestamp": "2025-07-05T07:28:42.234982",
-    "model_name": "anomaly_detection",
-    "metrics": {
-      "outliers_in_training_data": 5,
-      "outlier_percentage": "1.00%"
-    },
-    "additional_info": {
-      "training_samples": 500,
-      "features_used": [
-        "totalAmount",
-        "quantity"
-      ],
-      "contamination": 0.01,
-      "model_type": "IsolationForest"
-    }
-  },
-  {
     "timestamp": "2025-07-05T07:30:42.233782",
     "model_name": "anomaly_detection",
     "metrics": {
@@ -834,6 +732,108 @@
   },
   {
     "timestamp": "2025-07-06T07:06:25.939320",
+    "model_name": "anomaly_detection",
+    "metrics": {
+      "outliers_in_training_data": 5,
+      "outlier_percentage": "1.00%"
+    },
+    "additional_info": {
+      "training_samples": 500,
+      "features_used": [
+        "totalAmount",
+        "quantity"
+      ],
+      "contamination": 0.01,
+      "model_type": "IsolationForest"
+    }
+  },
+  {
+    "timestamp": "2025-07-06T07:48:08.414377",
+    "model_name": "anomaly_detection",
+    "metrics": {
+      "outliers_in_training_data": 5,
+      "outlier_percentage": "1.00%"
+    },
+    "additional_info": {
+      "training_samples": 500,
+      "features_used": [
+        "totalAmount",
+        "quantity"
+      ],
+      "contamination": 0.01,
+      "model_type": "IsolationForest"
+    }
+  },
+  {
+    "timestamp": "2025-07-06T10:51:59.875071",
+    "model_name": "anomaly_detection",
+    "metrics": {
+      "outliers_in_training_data": 5,
+      "outlier_percentage": "1.00%"
+    },
+    "additional_info": {
+      "training_samples": 500,
+      "features_used": [
+        "totalAmount",
+        "quantity"
+      ],
+      "contamination": 0.01,
+      "model_type": "IsolationForest"
+    }
+  },
+  {
+    "timestamp": "2025-07-06T11:06:59.734617",
+    "model_name": "anomaly_detection",
+    "metrics": {
+      "outliers_in_training_data": 5,
+      "outlier_percentage": "1.00%"
+    },
+    "additional_info": {
+      "training_samples": 500,
+      "features_used": [
+        "totalAmount",
+        "quantity"
+      ],
+      "contamination": 0.01,
+      "model_type": "IsolationForest"
+    }
+  },
+  {
+    "timestamp": "2025-07-06T11:21:59.745904",
+    "model_name": "anomaly_detection",
+    "metrics": {
+      "outliers_in_training_data": 5,
+      "outlier_percentage": "1.00%"
+    },
+    "additional_info": {
+      "training_samples": 500,
+      "features_used": [
+        "totalAmount",
+        "quantity"
+      ],
+      "contamination": 0.01,
+      "model_type": "IsolationForest"
+    }
+  },
+  {
+    "timestamp": "2025-07-06T12:27:53.092715",
+    "model_name": "anomaly_detection",
+    "metrics": {
+      "outliers_in_training_data": 5,
+      "outlier_percentage": "1.00%"
+    },
+    "additional_info": {
+      "training_samples": 500,
+      "features_used": [
+        "totalAmount",
+        "quantity"
+      ],
+      "contamination": 0.01,
+      "model_type": "IsolationForest"
+    }
+  },
+  {
+    "timestamp": "2025-07-06T12:42:53.136884",
     "model_name": "anomaly_detection",
     "metrics": {
       "outliers_in_training_data": 5,

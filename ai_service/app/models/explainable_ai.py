@@ -109,6 +109,12 @@ class ExplainableAI:
             if X_instance.empty:
                 return {'status': 'error', 'message': 'X_instance is empty, cannot generate SHAP explanation.'}
 
+            # Ensure we only have a single row for SHAP explanation
+            if len(X_instance) > 1:
+                X_instance = X_instance.iloc[:1]  # Take only the first row
+            elif len(X_instance) == 0:
+                return {'status': 'error', 'message': 'X_instance has no rows, cannot generate SHAP explanation.'}
+
             # Get SHAP values
             shap_values = explainer.shap_values(X_instance)
             
@@ -123,15 +129,42 @@ class ExplainableAI:
             else:
                 shap_values_arr = shap_values
             
+            # Ensure shap_values_arr is 1D (for single instance)
+            if shap_values_arr.ndim > 1:
+                shap_values_arr = shap_values_arr.flatten() if shap_values_arr.shape[0] == 1 else shap_values_arr[0]
+            
             # Get feature contributions
             feature_contributions = []
             for i, feature in enumerate(self.feature_names[model_name]):
                 # Ensure index is within bounds of shap_values_arr
                 if i < len(shap_values_arr):
-                    contribution = float(shap_values_arr[i])
+                    # Safely extract contribution value, handling multi-dimensional arrays
+                    contribution_value = shap_values_arr[i]
+                    if isinstance(contribution_value, np.ndarray):
+                        contribution = float(contribution_value.item()) if contribution_value.size == 1 else float(contribution_value.flatten()[0])
+                    else:
+                        contribution = float(contribution_value)
+                    
+                    # Safely extract feature value
+                    try:
+                        feature_value = X_instance.iloc[0, i]
+                        if isinstance(feature_value, np.ndarray):
+                            value = float(feature_value.item()) if feature_value.size == 1 else float(feature_value.flatten()[0])
+                        elif pd.isna(feature_value) or feature_value is None:
+                            value = 0.0
+                        elif isinstance(feature_value, (int, float, np.integer, np.floating)):
+                            value = float(feature_value)
+                        elif isinstance(feature_value, bool):
+                            value = float(feature_value)
+                        else:
+                            # For strings, dates, or other types, try to convert to float via string
+                            value = float(str(feature_value))
+                    except (ValueError, TypeError, AttributeError):
+                        value = 0.0
+                        
                     feature_contributions.append({
                         'feature': feature,
-                        'value': float(str(X_instance.iloc[0, i])) if X_instance.iloc[0, i] is not None else 0.0,  # Safe conversion
+                        'value': value,
                         'contribution': contribution,
                         'abs_contribution': abs(contribution)
                     })
@@ -140,10 +173,17 @@ class ExplainableAI:
             feature_contributions.sort(key=lambda x: x['abs_contribution'], reverse=True)
             
             # Get base value and prediction
-            base_value = float(explainer.expected_value)
-            if isinstance(explainer.expected_value, np.ndarray):
-                # For binary classification, typically use expected value of the positive class
-                base_value = float(explainer.expected_value[1]) if len(explainer.expected_value) == 2 else float(explainer.expected_value[0])
+            try:
+                if isinstance(explainer.expected_value, np.ndarray):
+                    # For binary classification, typically use expected value of the positive class
+                    if len(explainer.expected_value) == 2:
+                        base_value = float(explainer.expected_value[1])
+                    else:
+                        base_value = float(explainer.expected_value[0])
+                else:
+                    base_value = float(explainer.expected_value)
+            except (ValueError, TypeError, IndexError):
+                base_value = 0.0
             
             prediction = getattr(model, 'predict')(X_instance)[0]
             prediction_proba = None

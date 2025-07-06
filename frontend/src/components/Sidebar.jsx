@@ -3,15 +3,10 @@ import { NavLink, useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import { 
   BarChart3, 
-  TrendingUp, 
-  Users, 
-  Settings, 
   LogOut, 
   Brain,
   Home,
-  Activity,
-  ShoppingCart,
-  UserCheck
+  Activity
 } from 'lucide-react';
 
 const Sidebar = ({ isOpen, onClose }) => {
@@ -35,21 +30,6 @@ const Sidebar = ({ isOpen, onClose }) => {
       icon: BarChart3,
     },
     {
-      name: 'Sales',
-      href: '/sales',
-      icon: TrendingUp,
-    },
-    {
-      name: 'Products',
-      href: '/products',
-      icon: ShoppingCart,
-    },
-    {
-      name: 'Customers',
-      href: '/customers',
-      icon: Users,
-    },
-    {
       name: 'AI Insights',
       href: '/ai-insights',
       icon: Brain,
@@ -61,14 +41,7 @@ const Sidebar = ({ isOpen, onClose }) => {
     },
   ];
 
-  // Add admin-only routes
-  if (user?.role === 'admin' || user?.role === 'superadmin') {
-    navItems.push({
-      name: 'User Management',
-      href: '/admin/users',
-      icon: UserCheck,
-    });
-  }
+  // No admin-only routes needed anymore
 
   return (
     <>
@@ -133,19 +106,6 @@ const Sidebar = ({ isOpen, onClose }) => {
             </div>
             
             <div className="space-y-2">
-              <NavLink
-                to="/settings"
-                className="flex items-center px-3 py-2 text-sm text-gray-700 rounded-lg hover:bg-gray-100"
-                onClick={() => {
-                  if (window.innerWidth < 1024) {
-                    onClose();
-                  }
-                }}
-              >
-                <Settings className="w-4 h-4 mr-3" />
-                Settings
-              </NavLink>
-              
               <button
                 onClick={handleLogout}
                 className="flex items-center w-full px-3 py-2 text-sm text-red-700 rounded-lg hover:bg-red-50"

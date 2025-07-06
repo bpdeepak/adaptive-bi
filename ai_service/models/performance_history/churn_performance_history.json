@@ -1,65 +1,5 @@
 [
   {
-    "timestamp": "2025-07-05T07:18:49.919689",
-    "model_name": "churn",
-    "metrics": {
-      "auc_score": 0.9432279304800552,
-      "accuracy": 0.8423153692614771,
-      "churn_rate": 0.7040143798681845
-    },
-    "additional_info": {}
-  },
-  {
-    "timestamp": "2025-07-05T07:20:50.384344",
-    "model_name": "churn",
-    "metrics": {
-      "auc_score": 0.9432279304800552,
-      "accuracy": 0.8423153692614771,
-      "churn_rate": 0.7040143798681845
-    },
-    "additional_info": {}
-  },
-  {
-    "timestamp": "2025-07-05T07:22:51.569596",
-    "model_name": "churn",
-    "metrics": {
-      "auc_score": 0.9442986687246768,
-      "accuracy": 0.8542914171656687,
-      "churn_rate": 0.70760934691432
-    },
-    "additional_info": {}
-  },
-  {
-    "timestamp": "2025-07-05T07:24:51.469055",
-    "model_name": "churn",
-    "metrics": {
-      "auc_score": 0.9463148755546981,
-      "accuracy": 0.8562874251497006,
-      "churn_rate": 0.7077844311377246
-    },
-    "additional_info": {}
-  },
-  {
-    "timestamp": "2025-07-05T07:26:50.584579",
-    "model_name": "churn",
-    "metrics": {
-      "auc_score": 0.9447500968616815,
-      "accuracy": 0.8542914171656687,
-      "churn_rate": 0.7100059916117436
-    },
-    "additional_info": {}
-  },
-  {
-    "timestamp": "2025-07-05T07:28:52.460440",
-    "model_name": "churn",
-    "metrics": {
-      "auc_score": 0.9405146239286675,
-      "accuracy": 0.8343313373253493,
-      "churn_rate": 0.7070101857399641
-    },
-    "additional_info": {}
-  },
-  {
     "timestamp": "2025-07-05T07:30:51.373399",
     "model_name": "churn",
     "metrics": {
@@ -496,6 +436,66 @@
       "auc_score": 0.954085528827797,
       "accuracy": 0.8874172185430463,
       "churn_rate": 0.6447105788423154
+    },
+    "additional_info": {}
+  },
+  {
+    "timestamp": "2025-07-06T07:48:14.697303",
+    "model_name": "churn",
+    "metrics": {
+      "auc_score": 0.9866587017124652,
+      "accuracy": 0.9591836734693877,
+      "churn_rate": 0.6303901437371663
+    },
+    "additional_info": {}
+  },
+  {
+    "timestamp": "2025-07-06T10:52:09.132057",
+    "model_name": "churn",
+    "metrics": {
+      "auc_score": 0.9950684931506849,
+      "accuracy": 0.983739837398374,
+      "churn_rate": 0.5926829268292683
+    },
+    "additional_info": {}
+  },
+  {
+    "timestamp": "2025-07-06T11:07:06.595997",
+    "model_name": "churn",
+    "metrics": {
+      "auc_score": 0.995311638168781,
+      "accuracy": 0.975609756097561,
+      "churn_rate": 0.5980392156862745
+    },
+    "additional_info": {}
+  },
+  {
+    "timestamp": "2025-07-06T11:22:05.798037",
+    "model_name": "churn",
+    "metrics": {
+      "auc_score": 0.9998582766439909,
+      "accuracy": 0.9917355371900827,
+      "churn_rate": 0.5930521091811415
+    },
+    "additional_info": {}
+  },
+  {
+    "timestamp": "2025-07-06T12:28:01.122862",
+    "model_name": "churn",
+    "metrics": {
+      "auc_score": 0.9994251221615408,
+      "accuracy": 0.975,
+      "churn_rate": 0.5954773869346733
+    },
+    "additional_info": {}
+  },
+  {
+    "timestamp": "2025-07-06T12:43:00.042679",
+    "model_name": "churn",
+    "metrics": {
+      "auc_score": 0.9994251221615408,
+      "accuracy": 0.975,
+      "churn_rate": 0.5954773869346733
     },
     "additional_info": {}
   }

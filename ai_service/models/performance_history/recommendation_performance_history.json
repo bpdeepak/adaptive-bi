@@ -1,77 +1,5 @@
 [
   {
-    "timestamp": "2025-07-05T07:16:43.135291",
-    "model_name": "recommendation",
-    "metrics": {
-      "users": 28,
-      "items": 84,
-      "components": 27,
-      "total_interactions": 88,
-      "sparsity_percentage": 3.74
-    },
-    "additional_info": {}
-  },
-  {
-    "timestamp": "2025-07-05T07:18:42.714210",
-    "model_name": "recommendation",
-    "metrics": {
-      "users": 28,
-      "items": 84,
-      "components": 27,
-      "total_interactions": 88,
-      "sparsity_percentage": 3.74
-    },
-    "additional_info": {}
-  },
-  {
-    "timestamp": "2025-07-05T07:20:43.132349",
-    "model_name": "recommendation",
-    "metrics": {
-      "users": 28,
-      "items": 84,
-      "components": 27,
-      "total_interactions": 88,
-      "sparsity_percentage": 3.74
-    },
-    "additional_info": {}
-  },
-  {
-    "timestamp": "2025-07-05T07:22:43.069202",
-    "model_name": "recommendation",
-    "metrics": {
-      "users": 28,
-      "items": 84,
-      "components": 27,
-      "total_interactions": 88,
-      "sparsity_percentage": 3.74
-    },
-    "additional_info": {}
-  },
-  {
-    "timestamp": "2025-07-05T07:24:42.982514",
-    "model_name": "recommendation",
-    "metrics": {
-      "users": 29,
-      "items": 87,
-      "components": 28,
-      "total_interactions": 91,
-      "sparsity_percentage": 3.61
-    },
-    "additional_info": {}
-  },
-  {
-    "timestamp": "2025-07-05T07:26:43.021930",
-    "model_name": "recommendation",
-    "metrics": {
-      "users": 29,
-      "items": 87,
-      "components": 28,
-      "total_interactions": 91,
-      "sparsity_percentage": 3.61
-    },
-    "additional_info": {}
-  },
-  {
     "timestamp": "2025-07-05T07:28:42.924706",
     "model_name": "recommendation",
     "metrics": {
@@ -596,6 +524,78 @@
       "components": 50,
       "total_interactions": 1507,
       "sparsity_percentage": 2.36
+    },
+    "additional_info": {}
+  },
+  {
+    "timestamp": "2025-07-06T07:48:08.909507",
+    "model_name": "recommendation",
+    "metrics": {
+      "users": 81,
+      "items": 799,
+      "components": 50,
+      "total_interactions": 1527,
+      "sparsity_percentage": 2.36
+    },
+    "additional_info": {}
+  },
+  {
+    "timestamp": "2025-07-06T10:52:01.064380",
+    "model_name": "recommendation",
+    "metrics": {
+      "users": 83,
+      "items": 814,
+      "components": 50,
+      "total_interactions": 1612,
+      "sparsity_percentage": 2.39
+    },
+    "additional_info": {}
+  },
+  {
+    "timestamp": "2025-07-06T11:07:00.363886",
+    "model_name": "recommendation",
+    "metrics": {
+      "users": 82,
+      "items": 816,
+      "components": 50,
+      "total_interactions": 1609,
+      "sparsity_percentage": 2.4
+    },
+    "additional_info": {}
+  },
+  {
+    "timestamp": "2025-07-06T11:22:00.267080",
+    "model_name": "recommendation",
+    "metrics": {
+      "users": 83,
+      "items": 820,
+      "components": 50,
+      "total_interactions": 1618,
+      "sparsity_percentage": 2.38
+    },
+    "additional_info": {}
+  },
+  {
+    "timestamp": "2025-07-06T12:27:53.692375",
+    "model_name": "recommendation",
+    "metrics": {
+      "users": 83,
+      "items": 820,
+      "components": 50,
+      "total_interactions": 1623,
+      "sparsity_percentage": 2.38
+    },
+    "additional_info": {}
+  },
+  {
+    "timestamp": "2025-07-06T12:42:53.600998",
+    "model_name": "recommendation",
+    "metrics": {
+      "users": 83,
+      "items": 820,
+      "components": 50,
+      "total_interactions": 1623,
+      "sparsity_percentage": 2.38
     },
     "additional_info": {}
   }

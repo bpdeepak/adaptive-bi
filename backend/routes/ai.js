@@ -5,7 +5,11 @@ const {
     getAnomalyDetection, 
     getRecommendations, 
     getPricingSimulation,
-    getAIServiceStatus 
+    getAIServiceStatus,
+    getChurnExplanation,
+    getPricingExplanation,
+    getPricingExplanationByUserId,
+    getDebugUsers
 } = require('../controllers/aiController');
 const { protect } = require('../middleware/auth');
 
@@ -21,5 +25,13 @@ router.post('/pricing-simulation', getPricingSimulation);
 
 // AI service status
 router.get('/status', getAIServiceStatus);
+
+// Explainable AI endpoints
+router.get('/explain/churn/:userId', getChurnExplanation);
+router.post('/explain/pricing', getPricingExplanation);
+router.get('/explain/pricing/:userId', getPricingExplanationByUserId);
+
+// Debug endpoints
+router.get('/debug/users', getDebugUsers);
 
 module.exports = router;

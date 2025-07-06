@@ -286,3 +286,185 @@ exports.getAIServiceStatus = asyncHandler(async (req, res, next) => {
     });
   }
 });
+
+/**
+ * @desc    Get explainable AI insights for churn prediction
+ * @route   GET /api/ai/explain/churn/:userId
+ * @access  Private
+ */
+exports.getChurnExplanation = asyncHandler(async (req, res, next) => {
+  try {
+    const { userId } = req.params;
+    
+    if (!userId) {
+      return res.status(400).json({
+        success: false,
+        message: 'User ID is required'
+      });
+    }
+
+    // Call AI service for churn explanation
+    const response = await aiServiceClient.post(`/api/v1/explain/churn/${userId}`);
+
+    logger.info(`Churn explanation requested for user ${userId} by ${req.user.userId}`);
+
+    res.status(200).json({
+      success: true,
+      data: response.data,
+      message: 'Churn prediction explanation generated successfully'
+    });
+
+  } catch (error) {
+    if (error.response) {
+      logger.error('AI Service churn explanation error:', {
+        status: error.response.status,
+        data: error.response.data
+      });
+      res.status(error.response.status).json({
+        success: false,
+        message: error.response.data.detail || error.response.data.message || 'Explanation service error'
+      });
+    } else {
+      logger.error('AI Service connection error:', error);
+      res.status(503).json({
+        success: false,
+        message: 'AI service temporarily unavailable'
+      });
+    }
+  }
+});
+
+/**
+ * @desc    Get explainable AI insights for pricing prediction
+ * @route   POST /api/ai/explain/pricing
+ * @access  Private
+ */
+exports.getPricingExplanation = asyncHandler(async (req, res, next) => {
+  try {
+    const productData = req.body;
+    
+    if (!productData) {
+      return res.status(400).json({
+        success: false,
+        message: 'Product data is required'
+      });
+    }
+
+    // Call AI service for pricing explanation
+    const response = await aiServiceClient.post('/api/v1/explain/pricing', productData);
+
+    logger.info(`Pricing explanation requested by user ${req.user.userId}`, {
+      productData
+    });
+
+    res.status(200).json({
+      success: true,
+      data: response.data,
+      message: 'Pricing prediction explanation generated successfully'
+    });
+
+  } catch (error) {
+    if (error.response) {
+      logger.error('AI Service pricing explanation error:', {
+        status: error.response.status,
+        data: error.response.data
+      });
+      res.status(error.response.status).json({
+        success: false,
+        message: error.response.data.detail || error.response.data.message || 'Explanation service error'
+      });
+    } else {
+      logger.error('AI Service connection error:', error);
+      res.status(503).json({
+        success: false,
+        message: 'AI service temporarily unavailable'
+      });
+    }
+  }
+});
+
+/**
+ * @desc    Get explainable AI insights for pricing prediction by user ID
+ * @route   GET /api/ai/explain/pricing/:userId
+ * @access  Private
+ */
+exports.getPricingExplanationByUserId = asyncHandler(async (req, res, next) => {
+  try {
+    const { userId } = req.params;
+    
+    if (!userId) {
+      return res.status(400).json({
+        success: false,
+        message: 'User ID is required'
+      });
+    }
+
+    // Call AI service for pricing explanation by user ID
+    const response = await aiServiceClient.post(`/api/v1/explain/pricing/${userId}`);
+
+    logger.info(`Pricing explanation requested for user ${userId} by ${req.user.userId}`);
+
+    res.status(200).json({
+      success: true,
+      data: response.data,
+      message: 'Pricing prediction explanation generated successfully'
+    });
+
+  } catch (error) {
+    if (error.response) {
+      logger.error('AI Service pricing explanation error:', {
+        status: error.response.status,
+        data: error.response.data
+      });
+      res.status(error.response.status).json({
+        success: false,
+        message: error.response.data.detail || error.response.data.message || 'Explanation service error'
+      });
+    } else {
+      logger.error('AI Service connection error:', error);
+      res.status(503).json({
+        success: false,
+        message: 'AI service temporarily unavailable'
+      });
+    }
+  }
+});
+
+/**
+ * @desc    Get sample user IDs for debugging
+ * @route   GET /api/ai/debug/users
+ * @access  Private
+ */
+exports.getDebugUsers = asyncHandler(async (req, res, next) => {
+  try {
+    // Call AI service for debug user IDs
+    const response = await aiServiceClient.get('/api/v1/debug/users');
+
+    logger.info(`Debug users requested by user ${req.user.userId}`);
+
+    res.status(200).json({
+      success: true,
+      user_ids: response.data.user_ids,
+      total_users: response.data.total_users,
+      message: 'Debug user IDs retrieved successfully'
+    });
+
+  } catch (error) {
+    if (error.response) {
+      logger.error('AI Service debug users error:', {
+        status: error.response.status,
+        data: error.response.data
+      });
+      res.status(error.response.status).json({
+        success: false,
+        message: error.response.data.detail || error.response.data.message || 'Debug service error'
+      });
+    } else {
+      logger.error('AI Service connection error:', error);
+      res.status(503).json({
+        success: false,
+        message: 'AI service temporarily unavailable'
+      });
+    }
+  }
+});

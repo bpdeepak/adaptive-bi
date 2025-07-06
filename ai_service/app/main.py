@@ -17,6 +17,7 @@ from app.api.routes import forecast, anomaly, recommend, health
 
 # Import new Phase 4 API routes
 from app.api.routes import advanced_endpoints
+from app.api import explainable_endpoints
 
 # Import existing Phase 3 Model Manager
 from app.models.model_manager import model_manager, ModelManager
@@ -311,6 +312,7 @@ app.include_router(recommend.router, prefix="/api/v1/recommend", tags=["Recommen
 
 # Include new advanced API routers (Phase 4)
 app.include_router(advanced_endpoints.router, prefix="/api/v1/ai", tags=["Advanced AI"])
+app.include_router(explainable_endpoints.router, prefix="/api/v1", tags=["Explainable AI"])
 
 
 @app.get("/", summary="Root endpoint", tags=["Root"])

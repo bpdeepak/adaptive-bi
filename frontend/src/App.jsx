@@ -1,6 +1,5 @@
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
-import { Toaster } from 'react-hot-toast';
 import { AuthProvider } from './context/AuthContext';
 import ProtectedRoute from './components/ProtectedRoute';
 import Layout from './components/Layout';
@@ -12,13 +11,8 @@ import Dashboard from './pages/Dashboard';
 
 // Lazy load pages for better performance
 const Analytics = React.lazy(() => import('./pages/Analytics'));
-const Sales = React.lazy(() => import('./pages/Sales'));
-const Products = React.lazy(() => import('./pages/Products'));
-const Customers = React.lazy(() => import('./pages/Customers'));
 const AIInsights = React.lazy(() => import('./pages/AIInsights'));
 const Health = React.lazy(() => import('./pages/Health'));
-const Settings = React.lazy(() => import('./pages/Settings'));
-const UserManagement = React.lazy(() => import('./pages/UserManagement'));
 
 // Loading fallback for lazy-loaded components
 const LoadingFallback = () => (
@@ -32,30 +26,6 @@ function App() {
     <AuthProvider>
       <Router>
         <div className="App">
-          {/* Toast notifications */}
-          <Toaster
-            position="top-right"
-            toastOptions={{
-              duration: 4000,
-              style: {
-                background: '#363636',
-                color: '#fff',
-              },
-              success: {
-                duration: 3000,
-                style: {
-                  background: '#10b981',
-                },
-              },
-              error: {
-                duration: 5000,
-                style: {
-                  background: '#ef4444',
-                },
-              },
-            }}
-          />
-
           <Routes>
             {/* Public routes */}
             <Route path="/login" element={<Login />} />
@@ -80,27 +50,6 @@ function App() {
                 </React.Suspense>
               } />
               
-              {/* Sales management */}
-              <Route path="sales" element={
-                <React.Suspense fallback={<LoadingFallback />}>
-                  <Sales />
-                </React.Suspense>
-              } />
-              
-              {/* Product management */}
-              <Route path="products" element={
-                <React.Suspense fallback={<LoadingFallback />}>
-                  <Products />
-                </React.Suspense>
-              } />
-              
-              {/* Customer management */}
-              <Route path="customers" element={
-                <React.Suspense fallback={<LoadingFallback />}>
-                  <Customers />
-                </React.Suspense>
-              } />
-              
               {/* AI insights */}
               <Route path="ai-insights" element={
                 <React.Suspense fallback={<LoadingFallback />}>
@@ -113,22 +62,6 @@ function App() {
                 <React.Suspense fallback={<LoadingFallback />}>
                   <Health />
                 </React.Suspense>
-              } />
-              
-              {/* Settings */}
-              <Route path="settings" element={
-                <React.Suspense fallback={<LoadingFallback />}>
-                  <Settings />
-                </React.Suspense>
-              } />
-              
-              {/* Admin-only routes */}
-              <Route path="admin/users" element={
-                <ProtectedRoute requiredRole="admin">
-                  <React.Suspense fallback={<LoadingFallback />}>
-                    <UserManagement />
-                  </React.Suspense>
-                </ProtectedRoute>
               } />
             </Route>
 
